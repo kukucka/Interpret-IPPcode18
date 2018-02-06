@@ -33,13 +33,27 @@ class XMLCreator{
 
     function newInstruction($instruction){
         xmlwriter_start_element($this->xw, $instruction);
-
+        xmlwriter_start_attribute($this->xw, 'order');
+        xmlwriter_text($counter);
+        xmlwriter_end_attribute($this->xw, 'order');
+        xmlwriter_start_attribute($this->xw, 'opcode'); 
+        xmlwriter_text(strtoupper($instruction->getName())); // mozna vraci navratovou hodnotu, nemusi to nic udelat
+        xmlwriter_end_attribute($this->xw, 'opcode');
+        self::$counter++;
     }
 
-    private function endInstruction($instruction){
+    function endInstruction($instruction){
         xmlwriter_end_element($this->xw, $instruction);
     }
 
+    function newArgument($argument){
+        xmlwriter_start_element($this->xw, 'arg' . $argument->getPosition());
+        xmlwriter_start_attribute($this->xw, 'type');
+        xmlwriter_text($argument->getType());
+        xmlwriter_end_attribute($this->xw, 'type');
+        xmlwriter_text($argument->getValue());
+    }
+    //presunout jinam
     function createArguments($instruction, $arrayOfArguments){
         $count = count($arrayOfArguments);
         if($numOfArguments != $count){
