@@ -19,28 +19,45 @@ class XMLCreator{
         xmlwriter_start_document($this->xw, '1.0', 'UTF-8');
         xmlwriter_set_indent($this->xw, 1);#druhy argument je boolovska hodnota, ktera ovlada pristup do XML
         xmlwriter_start_element($this->xw, 'program');
-        xmlwriter_start_attribute($this->xw, 'opcode');
+        xmlwriter_start_attribute($this->xw, 'language');
         xmlwriter_text($this->xw, 'IPPcode18');
-        xmlwriter_end_attribute($this->xw, 'opcode');
-        echo xmlwriter_output_memory($this->xw);
-        print "\n";
+        xmlwriter_end_attribute($this->xw, 'language');
     }
 
     function endXML(){
         xmlwriter_end_element($this->xw, 'program');        
         xmlwriter_end_document($this->xw);
-        
+        echo xmlwriter_output_memory($this->xw);
+    
     }
 
-    function createInstruction(){
+    function newInstruction($instruction){
+        xmlwriter_start_element($this->xw, $instruction);
 
     }
 
-    function argumentType(){
+    private function endInstruction($instruction){
+        xmlwriter_end_element($this->xw, $instruction);
     }
 
-    private function typeCheck(){
+    function createArguments($instruction, $arrayOfArguments){
+        $count = count($arrayOfArguments);
+        if($numOfArguments != $count){
+            fprintf(STDERR, "Syntakticka chyba?!");       
+            exit(2);   
+        }
+        if($count == 1){
 
+        }elseif($count == 2){
+
+        }elseif($count == 3){
+
+        }else{
+            fprintf(STDERR, "Syntakticka chyba?!");
+            exit(2);        
+        }
+
+        endInstruction($instruction);
     }
 
     //pak poresit napriklad nejaky znaku co tam nejdou v XML
