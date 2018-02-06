@@ -1,5 +1,9 @@
 <?php
+include("XMLCreator.php");
 
-echo "ahoj\n";
+$woo = new XMLCreator;
+$woo->lol();
+$woo->initiateXML();
+$woo->endXML();
 
 ?>
