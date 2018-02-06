@@ -1,4 +1,8 @@
 <?php
+
+include("XMLArgument.php");
+include("XMLInstruction.php");
+
 class XMLCreator{
     static private $counter;
     private $xw;
@@ -7,13 +11,13 @@ class XMLCreator{
         $this->xw = xmlwriter_open_memory();       
     }
 
-    function lol(){
-        echo self::$counter;        
-        $numOfOranges = 4;
-        echo $numOfOranges;
-        self::$counter++;
-        echo self::$counter;
-    }
+    // function lol(){
+    //     echo self::$counter;        
+    //     $numOfOranges = 4;
+    //     echo $numOfOranges;
+    //     self::$counter++;
+    //     echo self::$counter;
+    // }
 
     function initiateXML(){
         xmlwriter_start_document($this->xw, '1.0', 'UTF-8');
@@ -52,27 +56,28 @@ class XMLCreator{
         xmlwriter_text($argument->getType());
         xmlwriter_end_attribute($this->xw, 'type');
         xmlwriter_text($argument->getValue());
+        xmlwriter_end_element($this->xw, 'arg' . $argument->getPosition());
     }
     //presunout jinam
-    function createArguments($instruction, $arrayOfArguments){
-        $count = count($arrayOfArguments);
-        if($numOfArguments != $count){
-            fprintf(STDERR, "Syntakticka chyba?!");       
-            exit(2);   
-        }
-        if($count == 1){
+    // function createArguments($instruction, $arrayOfArguments){
+    //     $count = count($arrayOfArguments);
+    //     if($instruction->getNumOfArguments != $count){
+    //         fprintf(STDERR, "Syntakticka chyba?!");       
+    //         exit(2);   
+    //     }
+    //     if($count == 1){
 
-        }elseif($count == 2){
+    //     }elseif($count == 2){
 
-        }elseif($count == 3){
+    //     }elseif($count == 3){
 
-        }else{
-            fprintf(STDERR, "Syntakticka chyba?!");
-            exit(2);        
-        }
+    //     }else{
+    //         fprintf(STDERR, "Syntakticka chyba?!");
+    //         exit(2);        
+    //     }
 
-        endInstruction($instruction);
-    }
+    //     endInstruction($instruction);
+    // }
 
     //pak poresit napriklad nejaky znaku co tam nejdou v XML
 
