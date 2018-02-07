@@ -1,12 +1,12 @@
 <?php
 include('XMLInstruction.php');
-include('XMLArgument.php');
 include('XMLCreator.php');
+include('XMLArgument.php');
 include('Analyzer.php');
 
-$a = new Analyzer;
+ $a = new Analyzer;
 
-$a->startLoading();
+ $a->startLoading();
 
 // $arg = new XMLCreator;
 //

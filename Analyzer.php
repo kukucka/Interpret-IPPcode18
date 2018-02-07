@@ -1,11 +1,16 @@
 <?php
 //naimplementovat ignorovani komentaru
-Class Analyzer{
-    private $multiLineComent = false;
+// include('XMLArgument.php');
 
+
+Class Analyzer{
+    
     function getInput(){
-        $line = fgets(STDIN);
-        $arrayOfWords = preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $line, -1, PREG_SPLIT_NO_EMPTY);
+        $stdin = fopen('php://stdin', 'r'); 
+        $line = fgets($stdin);
+        $lineFiltered = preg_split('/(#+)/', $line, -1, PREG_SPLIT_NO_EMPTY);
+        //kdyz je prazdny radek error? wut?!
+        $arrayOfWords = preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $lineFiltered[0], -1, PREG_SPLIT_NO_EMPTY); //prepsat
         // $filteredArray = $this->cleareComments($arrayOfWords);
         return $arrayOfWords;
     }
@@ -19,13 +24,50 @@ Class Analyzer{
             // }
             
             $instruction = $this->analyzeInstruction($arrayOfWords[0]);
-            print $instruction->getName();
+            array_shift($arrayOfWords);
+            $arrayOfArguments = $this->handleArguments($arrayOfWords, $instruction);
+            // print $instruction->getName();
+            // foreach($arrayOfArguments as $word){
+            //     print $word->getPosition();
+            //     print "\n";
+            // }
+            $arg = new XMLCreator; //pridat do konstruktoru
+            $arg->initiateXML();
+            $arg->createArguments($instruction, $arrayOfArguments);
+            $arg->endXML();
+
             // $arrayOfArguments = $this->analyzeArguments($arrayOfWords);
         }
     }
 
+    function handleArguments($arrayOfArguments, $instruction){
+        $stderr = fopen('php://stderr', 'w'); //refactor this to global        
+        $numOfArguments = count($arrayOfArguments);
+        $classifiedArguments;
+        if(($instruction->getNumOfArguments()) == $numOfArguments){
+            for($i = 0; $i < $numOfArguments; $i++){
+                $classifiedArguments[$i] = $this->analyzeArgument($arrayOfArguments[$i], $i);
+            }
+            return $classifiedArguments;
+        }else{
+            fprintf($stderr, "Number of arguments differ");
+            exit(2);            
+        }
+    }
+
+    function analyzeArgument($argument, $position){
+        if(preg_match('/^bool@/', $argument) || preg_match('/^int@/', $argument) || 
+        preg_match('/^string@/', $argument)){
+            $splitArgument = explode('@', $argument, 2);
+            $newArgument = new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);
+        }
+        return $newArgument;
+    }
+
     function analyzeInstruction($instruction){
         $length = strlen($instruction);
+        $stderr = fopen('php://stderr', 'w'); 
+        
         if($length == 2){
             if(preg_match('/(L|l)(T|t)/', $instruction)){
                 $newInstruction = new XMLInstruction('lt',3);
@@ -36,7 +78,7 @@ Class Analyzer{
             }elseif(preg_match('/(O|o)(R|r)/', $instruction)){
                 $newInstruction = new XMLInstruction('or',3);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 3){               
@@ -51,7 +93,7 @@ Class Analyzer{
             }elseif(preg_match('/(N|n)(O|o)(T|t)/', $instruction)){
                 $newInstruction = new XMLInstruction('not',3);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 4){
@@ -70,7 +112,7 @@ Class Analyzer{
             }elseif(preg_match('/(J|j)(U|u)(M|m)(P|p)/', $instruction)){
                 $newInstruction = new XMLInstruction('jump',1);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 5){
@@ -83,7 +125,7 @@ Class Analyzer{
             }elseif(preg_match('/(B|b)(R|r)(E|e)(A|a)(K|k)/', $instruction)){
                 $newInstruction = new XMLInstruction('break',0);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 6){
@@ -98,7 +140,7 @@ Class Analyzer{
             }elseif(preg_match('/(D|d)(P|p)(R|r)(I|i)(N|n)(T|t)/', $instruction)){
                 $newInstruction = new XMLInstruction('dprint',1);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 7){
@@ -107,7 +149,7 @@ Class Analyzer{
             }elseif(preg_match('/(S|s)(E|e)(T|t)(C|c)(H|h)(A|a)(R|r)/', $instruction)){
                 $newInstruction = new XMLInstruction('setchar',3);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 8){
@@ -120,7 +162,7 @@ Class Analyzer{
             }elseif(preg_match('/(J|j)(U|u)(M|m)(P|p)(I|i)(F|f)(E|e)(Q|q)/', $instruction)){
                 $newInstruction = new XMLInstruction('jumpifeq',3);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 9){
@@ -129,18 +171,18 @@ Class Analyzer{
             }elseif(preg_match('/(J|j)(U|u)(M|m)(P|p)(I|i)(F|f)(N|n)(E|e)(Q|q)/', $instruction)){
                 $newInstruction = new XMLInstruction('jumpifneq',3);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }elseif($length == 11){
             if(preg_match('/(C|c)(R|r)(E|e)(A|a)(T|t)(E|e)(F|f)(R|r)(A|a)(M|m)(E|e)/',$instruction)){
                 $newInstruction = new XMLInstruction('createframe',0);
             }else{
-                fprintf(STDERR, "Instruction missing");
+                fprintf($stderr, "Instruction missing");
                 exit(2);
             }
         }else{
-            fprintf(STDERR, "Instruction missing");
+            fprintf($stderr, "Instruction missing");
             exit(2);
         }
         
