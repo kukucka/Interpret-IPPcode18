@@ -24,7 +24,7 @@ class XMLCreator{
     
     }
 
-    function newInstruction($instruction){
+    private function newInstruction($instruction){
         xmlwriter_start_element($this->xw, 'instruction');
         xmlwriter_start_attribute($this->xw, 'order');
         xmlwriter_text($this->xw, self::$counter);
@@ -35,11 +35,11 @@ class XMLCreator{
         self::$counter++;
     }
 
-    function endInstruction($instruction){
+    private function endInstruction($instruction){
         xmlwriter_end_element($this->xw);
     }
 
-    function newArgument($argument){
+    private function newArgument($argument){
         xmlwriter_start_element($this->xw, 'arg' . $argument->getPosition());
         xmlwriter_start_attribute($this->xw, 'type');
         xmlwriter_text($this->xw,$argument->getType());
@@ -49,6 +49,7 @@ class XMLCreator{
     }
     //presunout jinam
 //////////////TEST/////////////////////////////////////
+//Prejmenovat !!!! 
     function createArguments($instruction, $arrayOfArguments){
         $this->newInstruction($instruction);
         $count = count($arrayOfArguments);
