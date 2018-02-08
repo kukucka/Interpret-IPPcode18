@@ -4,51 +4,156 @@
 
 
 Class Analyzer{
-    
+    //TODO: vytvorit constructor
     function getInput(){
         $stdin = fopen('php://stdin', 'r'); 
         $line = fgets($stdin);
-        $lineFiltered = preg_split('/(#+)/', $line, -1, PREG_SPLIT_NO_EMPTY);
+        $lineFiltered = preg_replace('/#.*/','', $line);
         //kdyz je prazdny radek error? wut?!
-        $arrayOfWords = preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $lineFiltered[0], -1, PREG_SPLIT_NO_EMPTY); //prepsat
+        $arrayOfWords = preg_split('/\s+/', $lineFiltered, -1, PREG_SPLIT_NO_EMPTY); //prepsat
         // $filteredArray = $this->cleareComments($arrayOfWords);
         return $arrayOfWords;
     }
 
     function startLoading(){
         $condition = true;
-        while($condition){
+        $arg = new XMLCreator; //pridat do konstruktoru
+        while(!feof($arrayOfWords)){
             $arrayOfWords = $this->getInput();
             // foreach($arrayOfWords as $word){
             //     print "$word\n";
             // }
+            if($arrayOfWords != null){
+                $arg->initiateXML();
+                $instruction = $this->analyzeInstruction($arrayOfWords[0]);
+                array_shift($arrayOfWords);
+                $arrayOfArguments = $this->handleArguments($arrayOfWords, $instruction);
+                // print $instruction->getName();
+                
+                $this->checkTypesOfArgumentsInInstruction($instruction, $arrayOfArguments);
+        
+                $arg->createArguments($instruction, $arrayOfArguments);
+                $arg->endXML();                
+            }
             
-            $instruction = $this->analyzeInstruction($arrayOfWords[0]);
-            array_shift($arrayOfWords);
-            $arrayOfArguments = $this->handleArguments($arrayOfWords, $instruction);
-            // print $instruction->getName();
-            // foreach($arrayOfArguments as $word){
-            //     print $word->getPosition();
-            //     print "\n";
-            // }
-            $arg = new XMLCreator; //pridat do konstruktoru
-            $arg->initiateXML();
-            $arg->createArguments($instruction, $arrayOfArguments);
-            $arg->endXML();
-
             // $arrayOfArguments = $this->analyzeArguments($arrayOfWords);
+        }
+        
+    }
+
+    function checkTypesOfArgumentsInInstruction($instruction, $arrayOfArguments){
+        
+        $typeOfInstrucion = $instruction->getName();
+        
+        switch ($typeOfInstrucion){
+            case "createframe":
+            case "pushframe":
+            case "popframe":
+            case "return":
+            case "break":
+                if($arrayOfArguments != null){
+                    print "ma argumenty";
+                    exit(2); 
+                }
+                break;
+            case "move":
+            case "int2char":
+            case "strlen":
+            case "type":
+                if(($arrayOfArguments[0]->getType() != "variable") || ($arrayOfArguments[1]->getType() != "variable" &&
+                $arrayOfArguments[1]->getType() != "constant")){
+                    print "var sym error";
+                    exit(2);  
+                }
+                break;
+            case "defvar":
+            case "pops":
+                if($arrayOfArguments[0]->getType() != "variable"){
+                    print "var error";
+                    exit(2);  
+                }
+                break;
+            case "call":
+                if($arrayOfArguments[0]->getType() != "label"){
+                    print "label error";
+                    exit(2);  
+                }
+                break;
+            case "add":
+            case "sub":
+            case "mul":
+            case "idiv":
+            case "lt":
+            case "gt":
+            case "eq":
+            case "and":
+            case "or":
+            case "not":
+            case "stri2int":
+            case "concat":
+            case "getchar":
+            case "setchar":
+                if(($arrayOfArguments[0]->getType() != "variable") || ($arrayOfArguments[1]->getType() != "variable" &&
+                $arrayOfArguments[1]->getType() != "constant")|| ($arrayOfArguments[2]->getType() != "variable" &&
+                $arrayOfArguments[2]->getType() != "constant")){
+                    print "var sym sym error";
+                    exit(2);  
+                }
+                break;
+            case "read":
+                if(($arrayOfArguments[0]->getType() != "variable") || $arrayOfArguments[1]->getType() != "constant"){
+                    print "var const error";
+                    exit(2);  
+                }
+                break;
+            case "write":
+            case "dprint":
+                if($arrayOfArguments[0]->getType() != "variable" || $arrayOfArguments[1]->getType() != "constant"){
+                    print "sym error";
+                    exit(2);  
+                }
+                break;
+            case "label":
+            case "jump":
+            case "pushs";
+                if($arrayOfArguments[0]->getType() != "label"){
+                    print "lab error";
+                    exit(2);  
+                }
+                break;
+            case "jumpifeq":
+            case "jumpifneq":
+                if(($arrayOfArguments[0]->getType() != "label") || ($arrayOfArguments[1]->getType() != "variable" &&
+                $arrayOfArguments[1]->getType() != "constant")|| ($arrayOfArguments[2]->getType() != "variable" &&
+                $arrayOfArguments[2]->getType() != "constant")){
+                    print "lab sym sym error";
+                    exit(2);  
+                }
+                break;
+            default: //34 instrukci
+                print "default error";
+                exit(2);
         }
     }
 
     function handleArguments($arrayOfArguments, $instruction){
         $stderr = fopen('php://stderr', 'w'); //refactor this to global        
         $numOfArguments = count($arrayOfArguments);
-        $classifiedArguments;
+        $classifiedArguments; //smazat
         if(($instruction->getNumOfArguments()) == $numOfArguments){
-            for($i = 0; $i < $numOfArguments; $i++){
-                $classifiedArguments[$i] = $this->analyzeArgument($arrayOfArguments[$i], $i);
+            if($numOfArguments == 0){
+                return null;
+            }else{
+                for($i = 0; $i < $numOfArguments; $i++){
+                    $classifiedArguments[$i] = $this->analyzeArgument($arrayOfArguments[$i], $i);
+                    if($classifiedArguments[$i] == null){
+                        print "CHYBA";
+                        exit(21);
+                    }
+                }
+                return $classifiedArguments;
             }
-            return $classifiedArguments;
+            
         }else{
             fprintf($stderr, "Number of arguments differ");
             exit(2);            
@@ -59,9 +164,20 @@ Class Analyzer{
         if(preg_match('/^bool@/', $argument) || preg_match('/^int@/', $argument) || 
         preg_match('/^string@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
-            $newArgument = new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);
+            return new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);
+        }else if(preg_match('/^(G|g)(F|f)@/', $argument) || preg_match('/^(T|t)(F|f)@/', $argument) || 
+        preg_match('/^(L|l)(F|f)@/', $argument)){
+            $splitArgument = explode('@', $argument, 2);
+            if(preg_match('/^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$/',$splitArgument[1])){
+                return new XMLArgument(strtoupper($splitArgument[0]), $splitArgument[1], $position+1);
+            }
+            return null;
+        }else if(preg_match('/^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$/',$argument)){
+            return new XMLArgument("label", $argument, $position+1);            
+        }else{
+            return null;
         }
-        return $newArgument;
+        
     }
 
     function analyzeInstruction($instruction){

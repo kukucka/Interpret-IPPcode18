@@ -42,7 +42,7 @@ class XMLCreator{
     private function newArgument($argument){
         xmlwriter_start_element($this->xw, 'arg' . $argument->getPosition());
         xmlwriter_start_attribute($this->xw, 'type');
-        xmlwriter_text($this->xw,$argument->getType());
+        xmlwriter_text($this->xw,$argument->getName());
         xmlwriter_end_attribute($this->xw);
         xmlwriter_text($this->xw, $argument->getValue());
         xmlwriter_end_element($this->xw);
@@ -57,7 +57,9 @@ class XMLCreator{
             fprintf(STDERR, "Syntaktick2 chyba?!");
             exit(2);
         }
-        if($count == 1){
+        if($count == 0){
+        }
+        elseif($count == 1){
             $this->newArgument($arrayOfArguments[0]);
         }elseif($count == 2){
             $this->newArgument($arrayOfArguments[0]);
