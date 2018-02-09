@@ -22,8 +22,7 @@ class XMLArgument{
         }elseif($this->name == "GF" || $this->name == "TF" || $this->name == "LF"){
             $this->type = "variable";
         }else{
-            print "Argument chyba";
-            exit(2);
+            exit(21);
         }
     }
 
@@ -42,6 +41,4 @@ class XMLArgument{
         return $this->position;
     }
 }
-
-
 ?>

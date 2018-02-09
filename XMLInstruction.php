@@ -7,7 +7,6 @@ class XMLInstruction{
     function __construct($name, $numOfArguments){
         $this->name = $name;
         $this->numOfArguments = $numOfArguments;
-        // echo $name;
     }
 
     function getName(){
