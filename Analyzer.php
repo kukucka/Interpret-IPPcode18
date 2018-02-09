@@ -14,10 +14,8 @@ Class Analyzer{
             $line = preg_replace('/\s*/','', $line);            
         }while($line == null);
         if(strtolower($line) != ".ippcode18"){
-            print "EXIT";
             exit(21);
         }
-        
     }
 
     //TODO mozna to trochu predelam
@@ -28,14 +26,13 @@ Class Analyzer{
         $line = fgets($this->stdin);
         $lineFiltered = preg_replace('/#.*/','', $line);
             //neda se prepsat EOF?       
-        print count($this->splitIntoWords($lineFiltered));
         //nebezpeci kontrolovat pocet prvku po splitIntoWords
         return $lineFiltered;
             //kdyz je prazdny radek error? wut?!
             // $filteredArray = $this->cleareComments($arrayOfWords);
         
     }
-    
+    //if count = 0 return null, udelat check na to!
     function splitIntoWords($line){
         $arrayOfWords = preg_split('/\s+/', $line, -1, PREG_SPLIT_NO_EMPTY); //prepsat -> presunout treba split        
         return $arrayOfWords;
