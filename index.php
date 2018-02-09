@@ -3,10 +3,24 @@ include('XMLInstruction.php');
 include('XMLCreator.php');
 include('XMLArgument.php');
 include('Analyzer.php');
+//TODO argument
+$analyzer = new Analyzer;
+$xmlCreator = new XMLCreator;
+$xmlCreator->initiateXML();
+while(($line=$analyzer->readLine()) != null){
+    $arrayOfWords = $analyzer->splitIntoWords($line);
+    if(count($arrayOfWords) == 0){
+        continue;
+    }
+    $instruction = $analyzer->analyzeInstruction($arrayOfWords[0]);
+    array_shift($arrayOfWords);
+    $arrayOfArguments = $analyzer->handleArguments($arrayOfWords, $instruction);
+    $analyzer->checkTypesOfArgumentsInInstruction($instruction, $arrayOfArguments);
+    $xmlCreator->createArguments($instruction, $arrayOfArguments);
+    
+}
+$xmlCreator->endXML();
 
- $a = new Analyzer;
-
- $a->startLoading();
 
 // $arg = new XMLCreator;
 //

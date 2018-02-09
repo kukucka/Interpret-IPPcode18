@@ -5,41 +5,68 @@
 
 Class Analyzer{
     //TODO: vytvorit constructor
-    function getInput(){
-        $stdin = fopen('php://stdin', 'r'); 
-        $line = fgets($stdin);
-        $lineFiltered = preg_replace('/#.*/','', $line);
-        //kdyz je prazdny radek error? wut?!
-        $arrayOfWords = preg_split('/\s+/', $lineFiltered, -1, PREG_SPLIT_NO_EMPTY); //prepsat
-        // $filteredArray = $this->cleareComments($arrayOfWords);
-        return $arrayOfWords;
-    }
+    private $stdin;
 
-    function startLoading(){
-        $condition = true;
-        $arg = new XMLCreator; //pridat do konstruktoru
-        while(!feof($arrayOfWords)){
-            $arrayOfWords = $this->getInput();
-            // foreach($arrayOfWords as $word){
-            //     print "$word\n";
-            // }
-            if($arrayOfWords != null){
-                $arg->initiateXML();
-                $instruction = $this->analyzeInstruction($arrayOfWords[0]);
-                array_shift($arrayOfWords);
-                $arrayOfArguments = $this->handleArguments($arrayOfWords, $instruction);
-                // print $instruction->getName();
-                
-                $this->checkTypesOfArgumentsInInstruction($instruction, $arrayOfArguments);
-        
-                $arg->createArguments($instruction, $arrayOfArguments);
-                $arg->endXML();                
-            }
-            
-            // $arrayOfArguments = $this->analyzeArguments($arrayOfWords);
+    function __construct(){
+        $this->stdin = fopen('php://stdin', 'r');
+        do{
+            $line = $this->readLine();
+            $line = preg_replace('/\s*/','', $line);            
+        }while($line == null);
+        if(strtolower($line) != ".ippcode18"){
+            print "EXIT";
+            exit(21);
         }
         
     }
+
+    //TODO mozna to trochu predelam
+    function readLine(){
+        if(feof($this->stdin)){
+            return null;
+        }
+        $line = fgets($this->stdin);
+        $lineFiltered = preg_replace('/#.*/','', $line);
+            //neda se prepsat EOF?       
+        print count($this->splitIntoWords($lineFiltered));
+        //nebezpeci kontrolovat pocet prvku po splitIntoWords
+        return $lineFiltered;
+            //kdyz je prazdny radek error? wut?!
+            // $filteredArray = $this->cleareComments($arrayOfWords);
+        
+    }
+    
+    function splitIntoWords($line){
+        $arrayOfWords = preg_split('/\s+/', $line, -1, PREG_SPLIT_NO_EMPTY); //prepsat -> presunout treba split        
+        return $arrayOfWords;
+    }
+
+
+    // function load(){
+    //     $condition = true;
+    //     $arg = new XMLCreator; //pridat do konstruktoru
+    //     while(!feof($arrayOfWords)){
+    //         $arrayOfWords = $this->getInput();
+    //         // foreach($arrayOfWords as $word){
+    //         //     print "$word\n";
+    //         // }
+    //         if($arrayOfWords != null){
+    //             $arg->initiateXML();
+    //             $instruction = $this->analyzeInstruction($arrayOfWords[0]);
+    //             array_shift($arrayOfWords);
+    //             $arrayOfArguments = $this->handleArguments($arrayOfWords, $instruction);
+    //             // print $instruction->getName();
+                
+    //             $this->checkTypesOfArgumentsInInstruction($instruction, $arrayOfArguments);
+        
+    //             $arg->createArguments($instruction, $arrayOfArguments);
+    //             $arg->endXML();                
+    //         }
+            
+    //         // $arrayOfArguments = $this->analyzeArguments($arrayOfWords);
+    //     }
+        
+    // }
 
     function checkTypesOfArgumentsInInstruction($instruction, $arrayOfArguments){
         
@@ -108,7 +135,7 @@ Class Analyzer{
                 break;
             case "write":
             case "dprint":
-                if($arrayOfArguments[0]->getType() != "variable" || $arrayOfArguments[1]->getType() != "constant"){
+                if($arrayOfArguments[0]->getType() != "variable" && $arrayOfArguments[0]->getType() != "constant"){
                     print "sym error";
                     exit(2);  
                 }
