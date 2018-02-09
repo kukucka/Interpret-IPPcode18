@@ -2,3 +2,5 @@
 .idea
 .vscode
 output.out
+venv
+.idea
