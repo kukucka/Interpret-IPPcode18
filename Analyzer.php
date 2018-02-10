@@ -55,12 +55,13 @@ Class Analyzer{
         if(preg_match('/^bool@/', $argument) || preg_match('/^int@/', $argument) || 
         preg_match('/^string@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
+            //tady poresit asi jestli je to true nebo false
             return new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);
-        }else if(preg_match('/^(G|g)(F|f)@/', $argument) || preg_match('/^(T|t)(F|f)@/', $argument) || 
-        preg_match('/^(L|l)(F|f)@/', $argument)){
+        }else if(preg_match('/^GF@/', $argument) || preg_match('/^TF@/', $argument) || 
+        preg_match('/^LF@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
             if(preg_match('/^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$/',$splitArgument[1])){
-                return new XMLArgument("var", strtoupper($splitArgument[0]).'@'.$splitArgument[1], $position+1);
+                return new XMLArgument("var", $argument, $position+1);
             }
             return null;
         }else if(preg_match('/^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$/',$argument)){
