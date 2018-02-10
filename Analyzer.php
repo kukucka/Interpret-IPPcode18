@@ -60,7 +60,7 @@ Class Analyzer{
         preg_match('/^(L|l)(F|f)@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
             if(preg_match('/^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$/',$splitArgument[1])){
-                return new XMLArgument(strtoupper($splitArgument[0]), $splitArgument[1], $position+1);
+                return new XMLArgument("var", strtoupper($splitArgument[0]).'@'.$splitArgument[1], $position+1);
             }
             return null;
         }else if(preg_match('/^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$/',$argument)){

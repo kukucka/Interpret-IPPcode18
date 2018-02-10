@@ -19,7 +19,7 @@ class XMLArgument{
         }elseif($this->name == "bool" || $this->name == "string" ||
         $this->name == "int"){
             $this->type = "constant";
-        }elseif($this->name == "GF" || $this->name == "TF" || $this->name == "LF"){
+        }elseif($this->name == "var"){
             $this->type = "variable";
         }else{
             exit(21);

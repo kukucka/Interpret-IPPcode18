@@ -4,6 +4,7 @@ include('XMLCreator.php');
 include('XMLArgument.php');
 include('Analyzer.php');
 //TODO argument
+//TODO zkontrolovat errory cisla
 //TODO je otazka zda GF muze byt i Gf atd.
 if(count($argv) == 1){
 }elseif(count($argv) == 2){
