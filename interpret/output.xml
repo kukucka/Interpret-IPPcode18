@@ -7,7 +7,7 @@
   <arg1 type="var">GF@counter</arg1>
   <arg2 type="string">sdf</arg2>
  </instruction>
- <instruction order="3" opcode="LABEL">
+ <instruction order="0" opcode="LABEL">
   <arg1 type="label">while</arg1>
  </instruction>
  <instruction order="4" opcode="JUMPIFEQ">
@@ -35,4 +35,6 @@
  <instruction order="10" opcode="LABEL">
   <arg1 type="label">end</arg1>
  </instruction>
+<instruction order="11" opcode="BREAK"/>
+
 </program>

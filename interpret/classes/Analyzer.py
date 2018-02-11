@@ -1,15 +1,22 @@
 import xml.etree.ElementTree as ET
+from .Instruction import Instruction
+from .Argument import Argument
+
 # pouzit dictionary na ukladani jednotlivych instrukci key = order
 # TODO kdyz bude order = 0 je to chyba
+# TODO prejmenovat na parser
+# TODO checknout zda text obsahuje white space?
 class XMLAnalyzer:
     def __init__(self, file):
         self.file = file
-        self.listOfOpcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1
+        self.listOfOpcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1,
                          'RETURN': 0, 'PUSHS': 1, 'POPS': 1, 'ADD': 3, 'SUB': 3, 'MUL': 3,
                          'IDIV': 3, 'LT': 3, 'GT': 3, 'EQ': 3, 'AND': 3, 'OR': 3, 'NOT': 3,
                          'INT2CHAR': 2, 'STRI2INT': 3, 'READ': 2, 'WRITE': 1, 'CONCAT': 3,
                          'STRLEN': 2, 'GETCHAR': 3, 'SETCHAR': 3, 'TYPE': 2, 'LABEL': 1,
                          'JUMP': 1, 'JUMPIFEQ': 3, 'JUMPIFNEQ': 3, 'DPRINT': 1, 'BREAK': 0}
+        self.dictionaryOfCommands = {}
+
 
     def analyzeXmlFile(self):
         root = self.getRoot()
@@ -55,15 +62,63 @@ class XMLAnalyzer:
     def checkElements(self, root):
         for child in root:
             if child.tag == 'instruction':
-                self.checkInstruction(child)
+                self.createInstruction(child)
                 # self.checkArguments(child)
             else:
                 print("Error checkElements")
                 exit(420)
 
-    def checkInstruction(self, instruction):
+    def createInstruction(self, instruction):
         self.checkInstructionAtributes(instruction)
+        newInstruction = Instruction(instruction.get('opcode'));
+        if len(instruction) == self.listOfOpcodes.get(instruction.get('opcode')):
+            positionOfArg = 1
+            for child in instruction:
+                if child.tag == 'arg'+str(positionOfArg):
+                    argument = Argument(child.get('type'), child.text)
+                    # print(argument.getType() + " " + argument.getValue())
+                    newInstruction.setArgument(argument)
+                    positionOfArg += 1
+                else:
+                    print("Error createInstruction")
+                    exit(420)
+        else:
+            print("Error createInstruction")
+            exit(420)
+        # self.checkArguments(newInstruction)
+        self.checkArgumentsValidy(newInstruction)
+        self.addToDictionaryOfCommands(newInstruction, instruction)
+        # newInstruction.setArgument()
 
+    def checkArgumentsValidy(self, instruction):
+        opCode = instruction.getOpcode()
+        numOfArgs = instruction.getNumberOfArguments()
+        listOfArgs = instruction.getListOfArguments()
+        print(opCode + " " + str(numOfArgs))
+        if(opCode == 'CREATEFRAME' or opCode == 'PUSHFRAME' or opCode == 'POPFRAME' or
+        opCode == 'RETURN' or opCode == 'BREAK'):
+            return
+        elif opCode == 'MOVE' or opCode == 'INT2CHAR' or opCode == 'STRLEN' or opCode == 'TYPE':
+            if listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
+            listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
+            listOfArgs[1] != 'bool'):
+                print("Error checkArgumentsValidy")
+                exit(420)
+        # elif (opCode == )
+
+
+
+    def addToDictionaryOfCommands(self, newInstruction, instruction):
+        self.dictionaryOfCommands.update({instruction.get('order'): newInstruction})
+        # print(self.dictionaryOfCommands)
+
+    # def getArgument(self):
+
+    # def createCommand(self):
+
+    # def checkArgument(self, instruction):
+
+    # def createArgument(self, argument):
 
     def checkInstructionAtributes(self, instruction):
         if (len(instruction.attrib) >= 2) and (len(instruction.attrib)) <= 4:
@@ -72,6 +127,9 @@ class XMLAnalyzer:
             for key, value in instruction.attrib.items():
                 if key == 'order':
                     isOrder = True
+                    if instruction.get('order') == str(0):
+                        print("Error checkInstructionAtributes order == 0")
+                        exit(420)
                 elif key == 'opcode':
                     isOpcode = True
                     self.checkOpcode(value)
@@ -88,10 +146,13 @@ class XMLAnalyzer:
             exit(420)
 
     def checkOpcode(self, value):
-        print(value)
+        for key in self.listOfOpcodes:
+            if key == value:
+                return
+        print("Error checkOpcode")
+        exit(420)
 
     #
-    # def areArgumentsValid(self):
     #
     # def checkAttributesOfInstruction(self, attributes):
     #

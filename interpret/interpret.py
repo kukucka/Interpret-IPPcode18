@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 # TODO poruseni formatu textu, udelat to pres catch?
 # TODO replace zase nejaky special znaky z XML
 # TODO chytit pripadne error z TE.parse
-from classes.XMLAnalyzer import XMLAnalyzer
+from classes.Analyzer import XMLAnalyzer
 
 # print("Heelllo")
 # tree = ET.parse('C:\Interpret-IPPcode18\interpret\')

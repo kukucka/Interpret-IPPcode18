@@ -1,7 +1,7 @@
 class Instruction:
     def __init__(self, opcode):
         self.opcode = opcode
-        self.listOfArgument = None
+        self.listOfArgument = []
 
     def getOpcode(self):
         return self.opcode
