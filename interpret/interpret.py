@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 # TODO poruseni formatu textu, udelat to pres catch?
 # TODO replace zase nejaky special znaky z XML
 # TODO chytit pripadne error z TE.parse
+# TODO zkontrolovat jestli jsou spravne \xxx v interpretu i parseru
 from classes.Analyzer import XMLAnalyzer
 
 # print("Heelllo")

@@ -10,7 +10,7 @@ from .Argument import Argument
 class XMLAnalyzer:
     def __init__(self, file):
         self.file = file
-        self.listOfOpcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1,
+        self.dictionaryOfOpcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1,
                          'RETURN': 0, 'PUSHS': 1, 'POPS': 1, 'ADD': 3, 'SUB': 3, 'MUL': 3,
                          'IDIV': 3, 'LT': 3, 'GT': 3, 'EQ': 3, 'AND': 3, 'OR': 3, 'NOT': 3,
                          'INT2CHAR': 2, 'STRI2INT': 3, 'READ': 2, 'WRITE': 1, 'CONCAT': 3,
@@ -23,6 +23,7 @@ class XMLAnalyzer:
         root = self.getRoot()
         self.checkRoot(root)
         self.checkElements(root)
+        return self.dictionaryOfCommands
 
     def getRoot(self):
         tree = ET.parse(self.file)
@@ -72,7 +73,7 @@ class XMLAnalyzer:
     def createInstruction(self, instruction):
         self.checkInstructionAtributes(instruction)
         newInstruction = Instruction(instruction.get('opcode'));
-        if len(instruction) == self.listOfOpcodes.get(instruction.get('opcode')):
+        if len(instruction) == self.dictionaryOfOpcodes.get(instruction.get('opcode')):
             positionOfArg = 1
             for child in instruction:
                 if child.tag == 'arg'+str(positionOfArg):
@@ -191,7 +192,7 @@ class XMLAnalyzer:
             exit(420)
 
     def checkOpcode(self, value):
-        for key in self.listOfOpcodes:
+        for key in self.dictionaryOfOpcodes:
             if key == value:
                 return
         print("Error checkOpcode")
