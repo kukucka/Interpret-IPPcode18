@@ -6,6 +6,7 @@ from .Argument import Argument
 # TODO kdyz bude order = 0 je to chyba
 # TODO prejmenovat na parser
 # TODO checknout zda text obsahuje white space?
+# TODO za GF@ neni nic prazdno
 class XMLAnalyzer:
     def __init__(self, file):
         self.file = file
@@ -104,7 +105,51 @@ class XMLAnalyzer:
             listOfArgs[1] != 'bool'):
                 print("Error checkArgumentsValidy")
                 exit(420)
-        # elif (opCode == )
+        elif opCode == 'DEFVAR' or opCode == 'POPS':
+            if listOfArgs[0].getType() != 'var':
+                print("Error checkArgumentsValidy")
+                exit(420)
+        elif opCode == 'LABEL':
+            if listOfArgs[0].getType() != 'label':
+                print("Error checkArgumentsValidy")
+                exit(420)
+        elif (opCode == 'ADD' or opCode == 'SUB' or opCode == 'MUL' or opCode == 'IDIV' or
+        opCode == 'LT' or opCode == 'GT' or opCode == 'EQ' or opCode == 'AND' or opCode == 'OR' or
+        opCode == 'NOT' or opCode == 'STRI2INT' or opCode == 'CONCAT' or opCode == 'GETCHAR' or
+        opCode == 'SETCHAR'):
+            if (listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
+            listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
+            listOfArgs[1] != 'bool') or (listOfArgs[2].getType() != 'var' and
+            listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
+            listOfArgs[2] != 'bool')):
+                print("Error checkArgumentsValidy")
+                exit(420)
+        elif opCode == 'READ':
+            if (listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'string' and
+            listOfArgs[1].getType() != 'int' and listOfArgs[1] != 'bool')):
+                print("Error checkArgumentsValidy")
+                exit(420)
+        elif opCode == 'WRITE' or opCode == 'DPRINT' or opCode == 'PUSHS':
+            if(listOfArgs[0].getType() != 'var' and listOfArgs[0].getType() != 'string' and
+             listOfArgs[0].getType() != 'int' and listOfArgs[0] != 'bool'):
+                print("Error checkArgumentsValidy")
+                exit(420)
+        elif opCode == 'LABEL' or opCode == 'JUMP':
+            if listOfArgs[0].getType() != 'label':
+                print("Error checkArgumentsValidy")
+                exit(420)
+        elif opCode == 'JUMPIFEQ' or opCode == 'JUMPIFNEQ':
+            if(listOfArgs[0].getType() != 'label' or (listOfArgs[1].getType() != 'var' and
+            listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
+            listOfArgs[1] != 'bool') or (listOfArgs[2].getType() != 'var' and
+            listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
+            listOfArgs[2] != 'bool')):
+                print("Error checkArgumentsValidy")
+                exit(420)
+        else:
+            print("Error checkArgumentsValidy")
+            exit(420)
+
 
 
 
