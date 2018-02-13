@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 # TODO chytit pripadne error z TE.parse
 # TODO zkontrolovat jestli jsou spravne \xxx v interpretu i parseru
 from classes.Analyzer import XMLAnalyzer
-from classes.Execute import  Execute
+from classes.Execute import Execute
 # print("Heelllo")
 # tree = ET.parse('C:\Interpret-IPPcode18\interpret\')
 # root = tree.getroot()
@@ -13,6 +13,7 @@ file = 'output.xml'
 cl = XMLAnalyzer(file)
 dicOfVar = cl.analyzeXmlFile()
 s = Execute(dicOfVar)
+s.start()
 #
 # tree = ET.parse('output.xml')
 # root = tree.getroot()
