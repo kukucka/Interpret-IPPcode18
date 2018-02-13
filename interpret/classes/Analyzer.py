@@ -158,14 +158,6 @@ class XMLAnalyzer:
         self.dictionaryOfCommands.update({instruction.get('order'): newInstruction})
         # print(self.dictionaryOfCommands)
 
-    # def getArgument(self):
-
-    # def createCommand(self):
-
-    # def checkArgument(self, instruction):
-
-    # def createArgument(self, argument):
-
     def checkInstructionAtributes(self, instruction):
         if (len(instruction.attrib) >= 2) and (len(instruction.attrib)) <= 4:
             isOrder = False

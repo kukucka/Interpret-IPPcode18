@@ -1,6 +1,6 @@
 class Frame:
     def __init__(self):
-        dictionaryOfVariables = {}
+        self.dictionaryOfVariables = {}
 
     def copyFrame(self):
         return self.dictionaryOfVariables
@@ -14,7 +14,7 @@ class Frame:
     def udpateValueOfVar(self, var, value):
         self.dictionaryOfVariables.update({var: value})
 
-    def varName(self, varName):
+    def findVar(self, varName):
         try:
             value = self.dictionaryOfVariables.get(varName)
             if value is None:
@@ -26,3 +26,5 @@ class Frame:
             exit(420)
 
 
+    def wipeFrame(self):
+        self.dictionaryOfVariables = {}

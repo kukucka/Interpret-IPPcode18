@@ -7,7 +7,7 @@ class Variable:
     def getType(self):
         return self.type
 
-    def getReacg(self):
+    def getReach(self):
         return self.reach
 
     def getName(self):
