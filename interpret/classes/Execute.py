@@ -1,3 +1,5 @@
+import re
+
 from .Stack import Stack
 from .Variable import Variable
 from .FrameManager import FrameManager
@@ -6,8 +8,8 @@ class Execute:
     def __init__(self, dictionaryOfCommands):
         self.dicOfCom = dictionaryOfCommands
         self.curInst = 1
-        self.frames = FrameManager
-        self.stack = Stack
+        self.frames = FrameManager()
+        self.stack = Stack()
 
     def start(self):
         while self.curInst < len(self.dicOfCom):
@@ -21,7 +23,7 @@ class Execute:
             elif opcode == 'PUSHFRAME':
                 self.executePushframe(instruction)
             elif opcode == 'DEFVAR':
-                self.executeDefvar(instruction)
+                self.executeDefvar(instruction.getListOfArguments())
             elif opcode == 'CALL':
                 self.executeCall(instruction)
             elif opcode == 'RETURN':
@@ -83,9 +85,37 @@ class Execute:
             else:
                 print("Error execute start")
                 exit(420)
+            self.curInst += 1
 
-    def executeMove(self, instruction):
-        self.executeMove(instruction)
+    # def executeMove(self, instruction):
+        # self.executeMove(instruction)
+    #TODO muzu definovat promenu LF@something????
+    def executeDefvar(self, arguments):
+        # if instruction.getListOfArguments()
+        # if preg_match('/^bool@/', $argument) || preg_match('/^int@/', $argument) ||
+        # preg_match('/^string@/', $argument
+        print(arguments[0].getType())
+        if len(arguments[0].getValue().split()) != 1:
+            print("Cant define multiple variables in one command")
+            exit(420)
+        if re.match(r'^GF@', arguments[0].getValue().strip()):
+            value = arguments[0].getValue().split('@', 1)
+            if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
+                var = Variable(value[1])
+                self.frames.addVarToGf(var)
+            else:
+                print("ERROR executeDefvar ")
+                exit(420)
+        elif re.match(r'^TF@', arguments[0].getValue().strip()):
+            value = arguments[0].getValue().split('@', 1)
+            if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
+                var = Variable(value[1])
+                self.frames.addVarToTf(var)
+            else:
+               print("ERROR executeDefvar ")
+               exit(420)
+
+
 
     # def executePushframe(self, instruction):
     #     self.executePushframe(instruction)

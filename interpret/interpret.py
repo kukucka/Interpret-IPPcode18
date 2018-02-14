@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
 # TODO poruseni formatu textu, udelat to pres catch?
+# TODO je validni kdyz mam napirklad
 # TODO replace zase nejaky special znaky z XML
 # TODO chytit pripadne error z TE.parse
 # TODO zkontrolovat jestli jsou spravne \xxx v interpretu i parseru

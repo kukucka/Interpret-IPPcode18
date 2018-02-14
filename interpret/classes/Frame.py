@@ -11,7 +11,7 @@ class Frame:
     def addVarToDictionary(self, var):
         self.dictionaryOfVariables.update({var: None})
 
-    def udpateValueOfVar(self, var, value):
+    def updateValueOfVar(self, var, value):
         self.dictionaryOfVariables.update({var: value})
 
     def findVar(self, varName):
