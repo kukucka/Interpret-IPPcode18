@@ -1,11 +1,13 @@
+import copy
+
 class Frame:
     def __init__(self):
         self.dictionaryOfVariables = {}
 
     def copyFrame(self):
-        return self.dictionaryOfVariables
+        return copy.deepcopy(self.dictionaryOfVariables)
 
-    def setFrame(self, dictionaryOfVariables):
+    def setDictionary(self, dictionaryOfVariables):
         self.dictionaryOfVariables = dictionaryOfVariables
 
     def addVarToDictionary(self, var):
@@ -32,6 +34,5 @@ class Frame:
             print("Error varName, var doesnt exist")
             exit(420)
 
-
     def wipeFrame(self):
-        self.dictionaryOfVariables = {}
+        self.dictionaryOfVariables.clear()

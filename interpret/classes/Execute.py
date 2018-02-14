@@ -91,6 +91,7 @@ class Execute:
     # def executeMove(self, instruction):
         # self.executeMove(instruction)
     #TODO muzu definovat promenu LF@something????
+    # TODO nejaka divna vec zbyla v lf kdyz z nej popnu
     def executeDefvar(self, arguments):
         # if instruction.getListOfArguments()
         # if preg_match('/^bool@/', $argument) || preg_match('/^int@/', $argument) ||
@@ -117,9 +118,20 @@ class Execute:
             else:
                 print("ERROR temporary frame not defined")
                 exit(55)
+        elif re.match(r'^LF@', arguments[0].getValue().strip()):
+            if self.frames.isLfDefined():
+                value = arguments[0].getValue().split('@', 1)
+                if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
+                    self.frames.addVarToLf(value[1])
+                else:
+                   print("ERROR executeDefvar ")
+                   exit(420)
+            else:
+                print("ERROR temporary frame not defined")
+                exit(55)
 
     def executeCreateframe(self):
-        self.frames.createTf();
+        self.frames.createTf()
 
     def executePushframe(self):
         self.frames.pushTfToLfStack()
@@ -129,12 +141,59 @@ class Execute:
 
     def executeMove(self, instruction):
         argument = instruction.getListOfArguments()
-        type = self.returnType(instruction)
+        name = argument[0].getValue().split('@', 1)
         if re.match(r'^GF@', argument[0].getValue().strip()):
-            if()
+            if self.frames.isVarInGf(name[1]):
+                if argument[1].getType() == "var":
+                    variable = Variable(name[1], self.returnValue(argument[1].getValue()), self.returnType(argument[1].getValue()))
+                else:
+                    variable = Variable(name[1], argument[1].getValue(), argument[1].getType())
+
+                self.frames.updateVarInGf(name[1], variable)
+        elif re.match(r'^LF@', argument[0].getValue().strip()):
+            if self.frames.isVarInLf(name[1]):
+                if argument[1].getType() == "var":
+                    variable = Variable(name[1], self.returnValue(argument[1].getValue()), self.returnType(argument[1].getValue()))
+                else:
+                    variable = Variable(name[1], argument[1].getValue(), argument[1].getType())
+
+                self.frames.updateVarInLf(name[1], variable)
+        elif re.match(r'^TF@', argument[0].getValue().strip()):
+            if self.frames.isVarInTf(name[1]):
+                if argument[1].getType() == "var":
+                    variable = Variable(name[1], self.returnValue(argument[1].getValue()), self.returnType(argument[1].getValue()))
+                else:
+                    variable = Variable(name[1], argument[1].getValue(), argument[1].getType())
+
+                self.frames.updateVarInTf(name[1], variable)
+        else:
+            print("ERROR executeMove")
+            exit(420)
+
+    def returnType(self, argument):
+        name = argument.split('@', 1)
+        if re.match(r'^GF@', argument.strip()):
+            var = self.frames.getVarFromGf(name[1])
+            return var.getType()
+        elif re.match(r'^LF@', argument.strip()):
+            var = self.frames.getVarFromLf(name[1])
+            return var.getType()
+        elif re.match(r'^TF@', argument.strip()):
+            var = self.frames.getVarFromTf(name[1])
+            return var.getType()
 
 
-
+    def returnValue(self, argument):
+        name = argument.split('@', 1)
+        if re.match(r'^GF@', argument.strip()):
+            var = self.frames.getVarFromGf(name[1])
+            return var.getValue()
+        elif re.match(r'^LF@', argument.strip()):
+            var = self.frames.getVarFromLf(name[1])
+            return var.getValue()
+        if re.match(r'^TF@', argument.strip()):
+            var = self.frames.getVarFromTf(name[1])
+            return var.getValue()
 
 
     # def executePushframe(self, instruction):

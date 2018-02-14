@@ -8,18 +8,22 @@ class FrameManager:
         self.lf = Frame()
         self.lfStack = Stack()
         self.tfDefined = False
+        self.lfDefined = False
 
     def isTfDefined(self):
         return self.tfDefined
 
-    def defineTf(self):
-        self.tfDefined = True
+    def isLfDefined(self):
+        return self.lfDefined
 
     def addVarToGf(self, var):
         self.gf.addVarToDictionary(var)
 
     def addVarToTf(self, var):
         self.tf.addVarToDictionary(var)
+
+    def addVarToLf(self, var):
+        self.lf.addVarToDictionary(var)
 
     def getVarFromGf(self, var):
         return self.gf.findVar(var)
@@ -50,9 +54,10 @@ class FrameManager:
 
     def pushTfToLfStack(self):
         self.lfStack.push(self.tf.copyFrame())
-        self.lf = self.lfStack.top()
+        self.lf.setDictionary(self.lfStack.top())
         self.tf.wipeFrame()
         self.tfDefined = False
+        self.lfDefined = True
 
     def createTf(self):
         self.tf.wipeFrame()
@@ -62,7 +67,9 @@ class FrameManager:
         if(self.lfStack.isEmpty()):
             print("Error Empty stack")
             exit(55)
-        self.tf = self.lfStack.pop()
-        print(self.lfStack.top())
-        self.lf = self.lfStack.top()
+        self.tf.setDictionary(self.lfStack.pop())
+        if self.lfStack.isEmpty():
+            self.lfDefined = False
+        self.tfDefined = True
+        self.lf.setDictionary(self.lfStack.top())
 
