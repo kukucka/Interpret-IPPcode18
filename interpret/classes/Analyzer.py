@@ -15,7 +15,8 @@ class XMLAnalyzer:
                          'IDIV': 3, 'LT': 3, 'GT': 3, 'EQ': 3, 'AND': 3, 'OR': 3, 'NOT': 3,
                          'INT2CHAR': 2, 'STRI2INT': 3, 'READ': 2, 'WRITE': 1, 'CONCAT': 3,
                          'STRLEN': 2, 'GETCHAR': 3, 'SETCHAR': 3, 'TYPE': 2, 'LABEL': 1,
-                         'JUMP': 1, 'JUMPIFEQ': 3, 'JUMPIFNEQ': 3, 'DPRINT': 1, 'BREAK': 0}
+                         'JUMP': 1, 'JUMPIFEQ': 3, 'JUMPIFNEQ': 3, 'DPRINT': 1, 'BREAK': 0,
+                         'POPFRAME': 0}
         self.dictionaryOfCommands = {}
 
 

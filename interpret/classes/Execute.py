@@ -10,18 +10,19 @@ class Execute:
         self.curInst = 1
         self.frames = FrameManager()
         self.stack = Stack()
-
+    # TODO co vytysknout kdyz je prommena nedefinovana
     def start(self):
         while self.curInst < len(self.dicOfCom):
             instruction = self.dicOfCom.get(str(self.curInst))
             opcode = instruction.getOpcode()
             if opcode == 'MOVE':
-                print("works")
                 self.executeMove(instruction)
             elif opcode == 'CREATEFRAME':
-                self.executeCreateframe(instruction)
+                self.executeCreateframe()
             elif opcode == 'PUSHFRAME':
-                self.executePushframe(instruction)
+                self.executePushframe()
+            elif opcode == 'POPFRAME':
+                self.executePopframe()
             elif opcode == 'DEFVAR':
                 self.executeDefvar(instruction.getListOfArguments())
             elif opcode == 'CALL':
@@ -101,19 +102,38 @@ class Execute:
         if re.match(r'^GF@', arguments[0].getValue().strip()):
             value = arguments[0].getValue().split('@', 1)
             if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
-                var = Variable(value[1])
-                self.frames.addVarToGf(var)
+                self.frames.addVarToGf(value[1])
             else:
                 print("ERROR executeDefvar ")
                 exit(420)
         elif re.match(r'^TF@', arguments[0].getValue().strip()):
-            value = arguments[0].getValue().split('@', 1)
-            if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
-                var = Variable(value[1])
-                self.frames.addVarToTf(var)
+            if self.frames.isTfDefined():
+                value = arguments[0].getValue().split('@', 1)
+                if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
+                    self.frames.addVarToTf(value[1])
+                else:
+                   print("ERROR executeDefvar ")
+                   exit(420)
             else:
-               print("ERROR executeDefvar ")
-               exit(420)
+                print("ERROR temporary frame not defined")
+                exit(55)
+
+    def executeCreateframe(self):
+        self.frames.createTf();
+
+    def executePushframe(self):
+        self.frames.pushTfToLfStack()
+
+    def executePopframe(self):
+        self.frames.popFromLfStack()
+
+    def executeMove(self, instruction):
+        argument = instruction.getListOfArguments()
+        type = self.returnType(instruction)
+        if re.match(r'^GF@', argument[0].getValue().strip()):
+            if()
+
+
 
 
 

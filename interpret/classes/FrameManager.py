@@ -4,11 +4,10 @@ from .Frame import Frame
 class FrameManager:
     def __init__(self):
         self.gf = Frame()
-        self.lfStack = Stack()
         self.tf = Frame()
-        self.stack = Stack()
-        self.tfDefined = False
         self.lf = Frame()
+        self.lfStack = Stack()
+        self.tfDefined = False
 
     def isTfDefined(self):
         return self.tfDefined
@@ -34,20 +33,36 @@ class FrameManager:
     def updateVarInLf(self, var, value):
         self.lf.updateValueOfVar(var, value)
 
+    def isVarInGf(self, varName):
+        return self.gf.isVarDefined(varName)
+
+    def isVarInTf(self, varName):
+        return self.tf.isVarDefined(varName)
+
+    def isVarInLf(self, varName):
+        return self.lf.isVarDefined(varName)
+
     def getVarFromTf(self, var):
         return self.tf.findVar(var)
 
     def getVarFromLf(self, var):
         return self.lf.findVar(var)
 
-    def pushTftoLfStack(self):
+    def pushTfToLfStack(self):
         self.lfStack.push(self.tf.copyFrame())
-        self.lf = self.tf
+        self.lf = self.lfStack.top()
         self.tf.wipeFrame()
         self.tfDefined = False
+
+    def createTf(self):
+        self.tf.wipeFrame()
+        self.tfDefined = True
 
     def popFromLfStack(self):
         if(self.lfStack.isEmpty()):
             print("Error Empty stack")
-            exit(420)
+            exit(55)
         self.tf = self.lfStack.pop()
+        print(self.lfStack.top())
+        self.lf = self.lfStack.top()
+

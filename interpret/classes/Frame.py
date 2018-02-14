@@ -14,6 +14,13 @@ class Frame:
     def updateValueOfVar(self, var, value):
         self.dictionaryOfVariables.update({var: value})
 
+    def isVarDefined(self, varName):
+        if varName in self.dictionaryOfVariables:
+           return True
+        else:
+            print("Error varName, var doesnt exist")
+            exit(420)
+
     def findVar(self, varName):
         try:
             value = self.dictionaryOfVariables.get(varName)

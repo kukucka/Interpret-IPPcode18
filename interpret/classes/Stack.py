@@ -12,7 +12,10 @@ class Stack:
         return self.items.pop()
 
     def top(self):
-        return self.items[len(self.items) - 1]
+        if len(self.items) == 0:
+            return None
+        else:
+            return self.items[len(self.items) - 1]
 
     def size(self):
         return len(self.items)
