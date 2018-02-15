@@ -11,7 +11,7 @@
  </instruction>
  <instruction order="5" opcode="MOVE">
   <arg1 type="var">GF@counter</arg1>
-  <arg2 type="string">sdf</arg2> </instruction>
+  <arg2 type="string">1as2</arg2> </instruction>
  <instruction order="6" opcode="CREATEFRAME">
  </instruction>
  <instruction order="7" opcode="DEFVAR">
@@ -19,7 +19,7 @@
  </instruction>
  <instruction order="8" opcode="MOVE">
   <arg1 type="var">LF@loll</arg1>
-  <arg2 type="var">GF@counter</arg2>
+  <arg2 type="int">100</arg2>
  </instruction>
  <instruction order="9" opcode="POPFRAME">
  </instruction>
@@ -29,19 +29,21 @@
   <arg1 type="var">LF@loll</arg1>
  </instruction>
 <instruction order="12" opcode="WRITE">
-   <arg1 type="string">123as</arg1>
+   <arg1 type="int">12220</arg1>
  </instruction>
  <instruction order="13" opcode="POPFRAME">
  </instruction>
   <instruction order="14" opcode="WRITE">
   <arg1 type="var">TF@loll</arg1>
  </instruction>
- <instruction order="20" opcode="ADD">
+ <instruction order="15" opcode="MUL">
   <arg1 type="var">GF@counter</arg1>
-  <arg2 type="string">sdf</arg2>
-  <arg3 type="string">sd</arg3>
+  <arg2 type="var">TF@loll</arg2>
+  <arg3 type="int">0</arg3>
  </instruction>
- <instruction order="21" opcode="DEFVAR">
-  <arg1 type="var">TF@counter</arg1>
+ <instruction order="16" opcode="MUL">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="var">TF@loll</arg3>
  </instruction>
 </program>
