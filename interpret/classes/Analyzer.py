@@ -12,7 +12,7 @@ class XMLAnalyzer:
         self.file = file
         self.dictionaryOfOpcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1,
                          'RETURN': 0, 'PUSHS': 1, 'POPS': 1, 'ADD': 3, 'SUB': 3, 'MUL': 3,
-                         'IDIV': 3, 'LT': 3, 'GT': 3, 'EQ': 3, 'AND': 3, 'OR': 3, 'NOT': 3,
+                         'IDIV': 3, 'LT': 3, 'GT': 3, 'EQ': 3, 'AND': 3, 'OR': 3, 'NOT': 2,
                          'INT2CHAR': 2, 'STRI2INT': 3, 'READ': 2, 'WRITE': 1, 'CONCAT': 3,
                          'STRLEN': 2, 'GETCHAR': 3, 'SETCHAR': 3, 'TYPE': 2, 'LABEL': 1,
                          'JUMP': 1, 'JUMPIFEQ': 3, 'JUMPIFNEQ': 3, 'DPRINT': 1, 'BREAK': 0,
@@ -101,7 +101,8 @@ class XMLAnalyzer:
         if(opCode == 'CREATEFRAME' or opCode == 'PUSHFRAME' or opCode == 'POPFRAME' or
         opCode == 'RETURN' or opCode == 'BREAK'):
             return
-        elif opCode == 'MOVE' or opCode == 'INT2CHAR' or opCode == 'STRLEN' or opCode == 'TYPE':
+        elif (opCode == 'MOVE' or opCode == 'INT2CHAR' or opCode == 'STRLEN' or opCode == 'TYPE' or
+            opCode == 'NOT'):
             if listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
             listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
             listOfArgs[1] != 'bool'):
@@ -117,7 +118,7 @@ class XMLAnalyzer:
                 exit(420)
         elif (opCode == 'ADD' or opCode == 'SUB' or opCode == 'MUL' or opCode == 'IDIV' or
         opCode == 'LT' or opCode == 'GT' or opCode == 'EQ' or opCode == 'AND' or opCode == 'OR' or
-        opCode == 'NOT' or opCode == 'STRI2INT' or opCode == 'CONCAT' or opCode == 'GETCHAR' or
+        opCode == 'STRI2INT' or opCode == 'CONCAT' or opCode == 'GETCHAR' or
         opCode == 'SETCHAR'):
             if (listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
             listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and

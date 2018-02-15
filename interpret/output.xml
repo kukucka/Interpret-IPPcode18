@@ -38,8 +38,8 @@
  </instruction>
  <instruction order="15" opcode="MUL">
   <arg1 type="var">GF@counter</arg1>
-  <arg2 type="var">TF@loll</arg2>
-  <arg3 type="int">0</arg3>
+  <arg2 type="int">TF@loll</arg2>
+  <arg3 type="var">TF@loll</arg3>
  </instruction>
  <instruction order="16" opcode="MUL">
   <arg1 type="var">GF@counter</arg1>

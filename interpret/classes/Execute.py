@@ -11,6 +11,7 @@ class Execute:
         self.curInst = 1
         self.frames = FrameManager()
         self.stack = Stack()
+        self.callStack = Stack()
     # TODO co vytysknout kdyz je prommena nedefinovana
     def start(self):
         while self.curInst <= len(self.dicOfCom):
@@ -181,7 +182,7 @@ class Execute:
     # na tuhle a checkne to a vrati bool zatim je to rozbite
     def executeArithmeticOperations(self, arguments, typeOfOperation):
         if arguments[1].getType() == 'var' and arguments[2].getType() == 'int':
-            if self.returnType(arguments[1].getValue()) == 'int' and self.checkIfValueEqualsType(arguments[2].getValue(), arguments[2].getType()):
+            if self.returnType(arguments[1].getValue()) == 'int' and self.isInt(arguments[2].getValue(), arguments[2].getType()):
                 if typeOfOperation == AR.ADD:
                     value = int(self.returnValue(arguments[1].getValue())) + int(arguments[2].getValue())
                     self.assignValueToVar(arguments[0].getValue(), value)
@@ -203,7 +204,7 @@ class Execute:
                 print("ERROR cant use string/bool in arithmetic operation")
                 exit(420)
         elif arguments[1].getType() == 'int' and arguments[2].getType() == 'var':
-            if self.returnType(arguments[2].getValue()) == 'int':
+            if self.isInt(arguments[1].getValue(), arguments[1].getType()) and self.returnType(arguments[2].getValue()) == 'int':
                 if typeOfOperation == AR.ADD:
                     value = int(arguments[1].getValue()) + int(self.returnValue(arguments[2].getValue()))
                     self.assignValueToVar(arguments[0].getValue(), value)
@@ -250,27 +251,41 @@ class Execute:
                 print("ERROR executeArithmeticOperations not ints")
                 exit(420)
         elif arguments[1].getType() == 'int' and arguments[2].getType() == 'int':
-            if typeOfOperation == AR.ADD:
-                value = int(arguments[1].getValue()) + int(arguments[2].getValue())
-                self.assignValueToVar(arguments[0].getValue(), value)
-            elif typeOfOperation == AR.SUB:
-                value = int(arguments[1].getValue()) - int(arguments[2].getValue())
-                self.assignValueToVar(arguments[0].getValue(), value)
-            elif typeOfOperation == AR.MUL:
-                value = int(arguments[1].getValue()) * int(arguments[2].getValue())
-                self.assignValueToVar(arguments[0].getValue(), value)
-            elif typeOfOperation == AR.IDIV:
-                argValue = int(arguments[2].getValue())
-                if argValue == 0:
-                    print("ERROR cant devide with zero")
-                    exit(57)
-                value = int(int(arguments[1].getValue()) / argValue)
-                self.assignValueToVar(arguments[0].getValue(), value)
-            print(self.returnValue(arguments[0].getValue()))
-            print("AHO4")
+            if self.isInt(arguments[1].getValue(), arguments[1].getType())  and self.isInt(arguments[2].getValue(), arguments[2].getType()):
+                if typeOfOperation == AR.ADD:
+                    value = int(arguments[1].getValue()) + int(arguments[2].getValue())
+                    self.assignValueToVar(arguments[0].getValue(), value)
+                elif typeOfOperation == AR.SUB:
+                    value = int(arguments[1].getValue()) - int(arguments[2].getValue())
+                    self.assignValueToVar(arguments[0].getValue(), value)
+                elif typeOfOperation == AR.MUL:
+                    value = int(arguments[1].getValue()) * int(arguments[2].getValue())
+                    self.assignValueToVar(arguments[0].getValue(), value)
+                elif typeOfOperation == AR.IDIV:
+                    argValue = int(arguments[2].getValue())
+                    if argValue == 0:
+                        print("ERROR cant devide with zero")
+                        exit(57)
+                    value = int(int(arguments[1].getValue()) / argValue)
+                    self.assignValueToVar(arguments[0].getValue(), value)
+                print(self.returnValue(arguments[0].getValue()))
+                print("AHO4")
+            else:
+                print("ERROR executeArithmeticOperations not ints")
+                exit(420)
         else:
             print("ERROR executeArithmeticOperations not ints")
             exit(420)
+
+    def isInt(self, value, type):
+        result = self.checkIfValueEqualsType(value, type)
+        try:
+            result = int(result)
+            return True
+        except ValueError:
+            exit(430)
+
+
     # TODO mozna pouzit pro konkatenaci pridat parametr type
     def assignValueToVar(self, variable, value):
         name = variable.split('@', 1)
