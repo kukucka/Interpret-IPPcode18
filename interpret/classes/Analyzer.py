@@ -105,7 +105,7 @@ class XMLAnalyzer:
             opCode == 'NOT'):
             if listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
             listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
-            listOfArgs[1] != 'bool'):
+            listOfArgs[1].getType() != 'bool'):
                 print("Error checkArgumentsValidy")
                 exit(420)
         elif opCode == 'DEFVAR' or opCode == 'POPS':
@@ -122,14 +122,14 @@ class XMLAnalyzer:
         opCode == 'SETCHAR'):
             if (listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
             listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
-            listOfArgs[1] != 'bool') or (listOfArgs[2].getType() != 'var' and
+            listOfArgs[1].getType() != 'bool') or (listOfArgs[2].getType() != 'var' and
             listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
-            listOfArgs[2] != 'bool')):
+            listOfArgs[2].getType() != 'bool')):
                 print("Error checkArgumentsValidy")
                 exit(420)
         elif opCode == 'READ':
             if (listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'string' and
-            listOfArgs[1].getType() != 'int' and listOfArgs[1] != 'bool')):
+            listOfArgs[1].getType() != 'int' and listOfArgs[1].getType() != 'bool')):
                 print("Error checkArgumentsValidy")
                 exit(420)
         elif opCode == 'WRITE' or opCode == 'DPRINT' or opCode == 'PUSHS':
@@ -144,17 +144,14 @@ class XMLAnalyzer:
         elif opCode == 'JUMPIFEQ' or opCode == 'JUMPIFNEQ':
             if(listOfArgs[0].getType() != 'label' or (listOfArgs[1].getType() != 'var' and
             listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
-            listOfArgs[1] != 'bool') or (listOfArgs[2].getType() != 'var' and
+            listOfArgs[1].getType() != 'bool') or (listOfArgs[2].getType() != 'var' and
             listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
-            listOfArgs[2] != 'bool')):
+            listOfArgs[2].getType() != 'bool')):
                 print("Error checkArgumentsValidy")
                 exit(420)
         else:
             print("Error checkArgumentsValidy")
             exit(420)
-
-
-
 
     def addToDictionaryOfCommands(self, newInstruction, instruction):
         self.dictionaryOfCommands.update({instruction.get('order'): newInstruction})

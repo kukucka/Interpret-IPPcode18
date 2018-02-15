@@ -4,6 +4,7 @@ from .Stack import Stack
 from .Variable import Variable
 from .FrameManager import FrameManager
 from .Operations import ArithmeticOperations as AR
+from .Operations import CompareOperations as CO
 
 class Execute:
     def __init__(self, dictionaryOfCommands):
@@ -44,11 +45,11 @@ class Execute:
             elif opcode == 'IDIV':
                 self.executeArithmeticOperations(instruction.getListOfArguments(), AR.IDIV)
             elif opcode == 'LT':
-                self.executeLt(instruction)
+                self.executeCompareOperations(instruction.getListOfArguments(), CO.LT)
             elif opcode == 'GT':
-                self.executeGt(instruction)
+                self.executeCompareOperations(instruction.getListOfArguments(), CO.GT)
             elif opcode == 'EQ':
-                self.executeEq(instruction)
+                self.executeCompareOperations(instruction.getListOfArguments(), CO.EQ)
             elif opcode == 'AND':
                 self.executeAnd(instruction)
             elif opcode == 'OR':
@@ -185,20 +186,20 @@ class Execute:
             if self.returnType(arguments[1].getValue()) == 'int' and self.isInt(arguments[2].getValue(), arguments[2].getType()):
                 if typeOfOperation == AR.ADD:
                     value = int(self.returnValue(arguments[1].getValue())) + int(arguments[2].getValue())
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.SUB:
                     value = int(self.returnValue(arguments[1].getValue())) - int(arguments[2].getValue())
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.MUL:
                     value = int(self.returnValue(arguments[1].getValue())) * int(arguments[2].getValue())
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.IDIV:
                     argValue = int(arguments[2].getValue())
                     if argValue == 0:
                         print("ERROR cant devide with zero")
                         exit(57)
                     value = int(int(self.returnValue(arguments[1].getValue())) / argValue)
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 print(self.returnValue(arguments[0].getValue()))
             else:
                 print("ERROR cant use string/bool in arithmetic operation")
@@ -207,20 +208,20 @@ class Execute:
             if self.isInt(arguments[1].getValue(), arguments[1].getType()) and self.returnType(arguments[2].getValue()) == 'int':
                 if typeOfOperation == AR.ADD:
                     value = int(arguments[1].getValue()) + int(self.returnValue(arguments[2].getValue()))
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.SUB:
                     value = int(arguments[1].getValue()) - int(self.returnValue(arguments[2].getValue()))
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.MUL:
                     value = int(arguments[1].getValue()) * int(self.returnValue(arguments[2].getValue()))
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.IDIV:
                     argValue = int(self.returnValue(arguments[2].getValue()))
                     if argValue == 0:
                         print("ERROR cant devide with zero")
                         exit(57)
                     value = int(int(arguments[1].getValue()) / argValue)
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 print(self.returnValue(arguments[0].getValue()))
                 print("AHO2")
             else:
@@ -231,20 +232,20 @@ class Execute:
             self.returnType(arguments[2].getValue()) == 'int'):
                 if typeOfOperation == AR.ADD:
                     value = int(self.returnValue(arguments[1].getValue())) + int(self.returnValue(arguments[2].getValue()))
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.SUB:
                     value = int(self.returnValue(arguments[1].getValue())) - int(self.returnValue(arguments[2].getValue()))
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.MUL:
                     value = int(self.returnValue(arguments[1].getValue())) * int(self.returnValue(arguments[2].getValue()))
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.IDIV:
                     argValue = int(self.returnValue(arguments[2].getValue()))
                     if argValue == 0:
                         print("ERROR cant devide with zero")
                         exit(57)
                     value = int(int(self.returnValue(arguments[1].getValue())) / argValue)
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 print(self.returnValue(arguments[0].getValue()))
                 print("AHO")
             else:
@@ -254,20 +255,20 @@ class Execute:
             if self.isInt(arguments[1].getValue(), arguments[1].getType())  and self.isInt(arguments[2].getValue(), arguments[2].getType()):
                 if typeOfOperation == AR.ADD:
                     value = int(arguments[1].getValue()) + int(arguments[2].getValue())
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.SUB:
                     value = int(arguments[1].getValue()) - int(arguments[2].getValue())
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.MUL:
                     value = int(arguments[1].getValue()) * int(arguments[2].getValue())
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 elif typeOfOperation == AR.IDIV:
                     argValue = int(arguments[2].getValue())
                     if argValue == 0:
                         print("ERROR cant devide with zero")
                         exit(57)
                     value = int(int(arguments[1].getValue()) / argValue)
-                    self.assignValueToVar(arguments[0].getValue(), value)
+                    self.assignValueToVar(arguments[0].getValue(), value, 'int')
                 print(self.returnValue(arguments[0].getValue()))
                 print("AHO4")
             else:
@@ -277,6 +278,62 @@ class Execute:
             print("ERROR executeArithmeticOperations not ints")
             exit(420)
 
+
+    def executeCompareOperations(self, arguments, typeOfOperator):
+        valuesToCompare = self.compareTypesOfArguments(arguments)
+        print(valuesToCompare)
+        if typeOfOperator == CO.GT:
+            if valuesToCompare[0] > valuesToCompare[1]:
+                self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
+            else:
+                self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+        elif typeOfOperator == CO.LT:
+            if valuesToCompare[0] < valuesToCompare[1]:
+                self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
+            else:
+                self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+        elif typeOfOperator == CO.EQ:
+            if valuesToCompare[0] == valuesToCompare[1]:
+                self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
+            else:
+                self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+        else:
+            print("Error inexecute CompareOperations")
+            exit(430)
+
+    def compareTypesOfArguments(self, arguments):
+        argValue = []
+        if arguments[1].getType() == 'var':
+            arg1 = self.returnType(arguments[1].getValue())
+            argValue.append(str(self.returnValue(arguments[1].getValue())))
+        else:
+            arg1 = arguments[1].getType()
+            if arg1 == 'string':
+                self.isStr(arguments[1].getValue(), arg1)
+            elif arg1 == 'int':
+                self.isInt(arguments[1].getValue(), arg1)
+            elif arg1 == 'bool':
+                self.isBool(arguments[1].getValue(), arg1)
+            argValue.append(str(arguments[1].getValue()))
+        if arguments[2].getType() == 'var':
+            arg2 = self.returnType(arguments[2].getValue())
+            argValue.append(str(self.returnValue(arguments[2].getValue())))
+        else:
+            arg2 = arguments[2].getType()
+            if arg1 == 'string':
+                self.isStr(arguments[2].getValue(), arg2)
+            elif arg1 == 'int':
+                self.isInt(arguments[2].getValue(), arg2)
+            elif arg1 == 'bool':
+                self.isBool(arguments[2].getValue(), arg2)
+            argValue.append(str(arguments[2].getValue()))
+        if arg1 != arg2:
+            print("ERROR compareTypesOfArguments types are not equal")
+            exit(420)
+
+        return argValue
+
+
     def isInt(self, value, type):
         result = self.checkIfValueEqualsType(value, type)
         try:
@@ -285,27 +342,43 @@ class Execute:
         except ValueError:
             exit(430)
 
+    def isStr(self, value, type):
+        result = self.checkIfValueEqualsType(value, type)
+        try:
+            result = str(result)
+            return True
+        except ValueError:
+            exit(430)
+
+    def isBool(self, value,type):
+        result = self.checkIfValueEqualsType(value, type)
+        try:
+            result = str(result)
+            return True
+        except ValueError:
+            exit(430)
+
 
     # TODO mozna pouzit pro konkatenaci pridat parametr type
-    def assignValueToVar(self, variable, value):
+    def assignValueToVar(self, variable, value, type):
         name = variable.split('@', 1)
         if re.match(r'^GF@', variable.strip()):
             if self.frames.isVarInGf(name[1]):
-                var = Variable(name[1], value, 'int')
+                var = Variable(name[1], value, type)
                 self.frames.updateVarInGf(name[1], var)
             else:
                 print("ERROR cant assign to undefinded variable")
                 exit(420)
         elif re.match(r'^TF@', variable.strip()):
             if self.frames.isVarInTf(name[1]):
-                var = Variable(name[1], value, 'int')
+                var = Variable(name[1], value, type)
                 self.frames.updateVarInTf(name[1], var)
             else:
                 print("ERROR cant assign to undefinded variable")
                 exit(420)
         elif re.match(r'^LF@', variable.strip()):
             if self.frames.isVarInLf(name[1]):
-                var = Variable(name[1], value, 'int')
+                var = Variable(name[1], value, type)
                 self.frames.updateVarInLf(name[1], var)
             else:
                 print("ERROR cant assign to undefinded variable")
