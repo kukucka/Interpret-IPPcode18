@@ -60,7 +60,7 @@ class Execute:
             elif opcode == 'READ':
                 self.executeRead(instruction)
             elif opcode == 'WRITE':
-                self.executeWrite(instruction)
+                self.executeWrite(instruction.getListOfArguments())
             elif opcode == 'CONCAT':
                 self.executeConcat(instruction)
             elif opcode == 'STRLEN':
@@ -195,7 +195,44 @@ class Execute:
             var = self.frames.getVarFromTf(name[1])
             return var.getValue()
 
+    def executeWrite(self, argument):
+        if argument[0].getType() == 'var':
+            print(self.returnValue(argument[0].getValue()))
+        else:
+            self.checkIfValueEqualsType(argument[0].getValue(), argument[0].getType())
+            print(argument[0].getValue())
 
+    def checkIfValueEqualsType(self, value, type):
+        if type == 'int':
+            if value != None:
+                try:
+                    return int(value)
+                except ValueError:
+                    print("Value is not int")
+                    exit(200)
+            else:
+                print("ERROR checkifValueEqualsType")
+                exit(430)
+        elif type == 'string':
+    #         TODO tady bude check jestli je string valid
+    #          TODO co vytisknout v pripade prazdneho stringu None?
+            return value
+        #   TODO checknout jestli muze byt napriklad TruE FaALsE
+        elif type == 'bool':
+            if value != None:
+                if re.match(r'^true$', value.lower()):
+                    return 'true'
+                elif re.match(r'^false', value.lower()):
+                    return 'false'
+                else:
+                    print("Not bool checkifValueEqualsType")
+                    exit(430)
+            else:
+                print("ERROR checkifValueEqualsType")
+                exit(430)
+        else:
+            print("ERROR checkifValueEqualsType")
+            exit(430)
     # def executePushframe(self, instruction):
     #     self.executePushframe(instruction)
     #

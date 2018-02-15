@@ -25,16 +25,23 @@
  </instruction>
  <instruction order="10" opcode="PUSHFRAME">
  </instruction>
- <instruction order="11" opcode="LABEL">
-  <arg1 type="label">end</arg1>
+ <instruction order="11" opcode="WRITE">
+  <arg1 type="var">LF@loll</arg1>
  </instruction>
-<instruction order="11" opcode="BREAK"/>
- <instruction order="12" opcode="ADD">
+<instruction order="12" opcode="WRITE">
+   <arg1 type="string">123as</arg1>
+ </instruction>
+ <instruction order="13" opcode="POPFRAME">
+ </instruction>
+  <instruction order="14" opcode="WRITE">
+  <arg1 type="var">TF@loll</arg1>
+ </instruction>
+ <instruction order="20" opcode="ADD">
   <arg1 type="var">GF@counter</arg1>
   <arg2 type="string">sdf</arg2>
   <arg3 type="string">sd</arg3>
  </instruction>
- <instruction order="13" opcode="DEFVAR">
+ <instruction order="21" opcode="DEFVAR">
   <arg1 type="var">TF@counter</arg1>
  </instruction>
 </program>

@@ -20,10 +20,18 @@ class FrameManager:
         self.gf.addVarToDictionary(var)
 
     def addVarToTf(self, var):
-        self.tf.addVarToDictionary(var)
+        if self.tfDefined:
+            self.tf.addVarToDictionary(var)
+        else:
+            print("ERROR addVarToTf")
+            exit(420)
 
     def addVarToLf(self, var):
-        self.lf.addVarToDictionary(var)
+        if self.lfDefined:
+            self.lf.addVarToDictionary(var)
+        else:
+            print("ERROR addVarToLf")
+            exit(420)
 
     def getVarFromGf(self, var):
         return self.gf.findVar(var)
@@ -32,25 +40,51 @@ class FrameManager:
         self.gf.updateValueOfVar(var, value)
 
     def updateVarInTf(self, var, value):
-        self.tf.updateValueOfVar(var, value)
+        if self.tfDefined:
+            self.tf.updateValueOfVar(var, value)
+        else:
+            print("ERROR updateVarInTf")
+            exit(420)
 
     def updateVarInLf(self, var, value):
-        self.lf.updateValueOfVar(var, value)
+        if self.lfDefined:
+            self.lf.updateValueOfVar(var, value)
+        else:
+            print("ERROR updateVarInLf")
+            exit(420)
 
     def isVarInGf(self, varName):
         return self.gf.isVarDefined(varName)
 
     def isVarInTf(self, varName):
-        return self.tf.isVarDefined(varName)
+        if self.tfDefined:
+            return self.tf.isVarDefined(varName)
+        else:
+            print("ERROR isVarInTf")
+            exit(420)
 
     def isVarInLf(self, varName):
-        return self.lf.isVarDefined(varName)
+        if self.lfDefined:
+            return self.lf.isVarDefined(varName)
+        else:
+            print("ERROR isVarInLf")
+            exit(420)
 
     def getVarFromTf(self, var):
+        if self.tfDefined:
+            return self.tf.findVar(var)
+        else:
+            print("ERROR getVarFromTf")
+            exit(420)
+
         return self.tf.findVar(var)
 
     def getVarFromLf(self, var):
-        return self.lf.findVar(var)
+        if self.lfDefined:
+            return self.lf.findVar(var)
+        else:
+            print("ERROR getVarFromLf")
+            exit(420)
 
     def pushTfToLfStack(self):
         self.lfStack.push(self.tf.copyFrame())

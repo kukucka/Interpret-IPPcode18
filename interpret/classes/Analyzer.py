@@ -133,7 +133,7 @@ class XMLAnalyzer:
                 exit(420)
         elif opCode == 'WRITE' or opCode == 'DPRINT' or opCode == 'PUSHS':
             if(listOfArgs[0].getType() != 'var' and listOfArgs[0].getType() != 'string' and
-             listOfArgs[0].getType() != 'int' and listOfArgs[0] != 'bool'):
+             listOfArgs[0].getType() != 'int' and listOfArgs[0].getType() != 'bool'):
                 print("Error checkArgumentsValidy")
                 exit(420)
         elif opCode == 'LABEL' or opCode == 'JUMP':
