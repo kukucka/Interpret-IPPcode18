@@ -282,7 +282,6 @@ class Execute:
 
     def executeCompareOperations(self, arguments, typeOfOperator):
         valuesToCompare = self.compareTypesOfArguments(arguments)
-        print(valuesToCompare)
         if typeOfOperator == CO.GT:
             if valuesToCompare[0] > valuesToCompare[1]:
                 self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
@@ -301,28 +300,62 @@ class Execute:
         else:
             print("Error inexecute CompareOperations")
             exit(430)
+
     def executeLogicOperations(self, arguments, typeOfOperator):
+        args = []
         if typeOfOperator == LO.AND or typeOfOperator == LO.OR:
-            if arguments[1].getType() == 'bool' and arguments[2].getType() == 'bool':
-                if typeOfOperator == LO.AND:
-                    if self.isBool(arguments[1].getValue()) and self.isBool(arguments[2].getValue()):
-                        boolValues = self.getBoolValues(arguments);
-                        if boolValues[0] and boolValues[1]:
-                            self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
-                        else:
-                            self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+            args.append(self.checkAndReturnBoolValue(arguments[1]))
+            args.append(self.checkAndReturnBoolValue(arguments[2]))
+            if typeOfOperator == LO.AND:
+                if args[0] and args[1]:
+                    self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
+                else:
+                    self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+            elif typeOfOperator == LO.OR:
+                if args[0] or args[1]:
+                    self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
+                else:
+                    self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+        elif typeOfOperator == LO.NOT:
+            args.append(self.checkAndReturnBoolValue(arguments[1]))
+            if not args[0]:
+                self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
+            else:
+                self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+
         # elif typeOfOperator == LO.NOT:
-    def getBoolValues(selfa,arguments):
-        values = []
-        if arguments[1].getValue() == 'true':
-            values.append(True)
+
+    def checkAndReturnBoolValue(self, argument):
+        if argument.getType() == 'var':
+            if self.returnType(argument.getValue()) == 'bool':
+                arg1 = self.returnValue(argument.getValue())
+                if self.isBool(arg1):
+                    return self.getBoolValues(argument)
+                else:
+                    print("ERROR not a bool")
+                    exit(420)
+            else:
+                print("ERROR not a bool")
+                exit(420)
         else:
-            values.append(False)
-        if arguments[2].getValue() == 'true':
-            values.append(True)
+            if argument.getType() == 'bool':
+                if self.isBool(argument.getValue()):
+                    return self.getBoolValues(argument)
+                else:
+                    print("ERROR not a bool")
+                    exit(420)
+            else:
+                print("ERROR not a bool")
+                exit(420)
+
+
+
+    def getBoolValues(selfa,argument):
+        if argument.getValue() == 'true':
+            return True
         else:
-            values.append(False)
-        return values
+            return False
+
 
     def compareTypesOfArguments(self, arguments):
         argValue = []

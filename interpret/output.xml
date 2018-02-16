@@ -52,10 +52,16 @@
      <instruction order="18" opcode="AND">
   <arg1 type="var">GF@counter</arg1>
   <arg2 type="bool">false</arg2>
-  <arg3 type="bool">false</arg3>
-
+  <arg3 type="var">GF@counter</arg3>
      </instruction>
        <instruction order="19" opcode="WRITE">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+      <instruction order="20" opcode="NOT">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="var">GF@counter</arg2>
+     </instruction>
+        <instruction order="21" opcode="WRITE">
   <arg1 type="var">GF@counter</arg1>
  </instruction>
 
