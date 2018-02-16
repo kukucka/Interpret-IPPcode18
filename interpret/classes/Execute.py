@@ -5,6 +5,7 @@ from .Variable import Variable
 from .FrameManager import FrameManager
 from .Operations import ArithmeticOperations as AR
 from .Operations import CompareOperations as CO
+from .Operations import LogicOperations as LO
 
 class Execute:
     def __init__(self, dictionaryOfCommands):
@@ -51,11 +52,11 @@ class Execute:
             elif opcode == 'EQ':
                 self.executeCompareOperations(instruction.getListOfArguments(), CO.EQ)
             elif opcode == 'AND':
-                self.executeAnd(instruction)
+                self.executeLogicOperations(instruction.getListOfArguments(), LO.AND)
             elif opcode == 'OR':
-                self.executeOr(instruction)
+                self.executeLogicOperations(instruction.getListOfArguments(), LO.OR)
             elif opcode == 'NOT':
-                self.executeNot(instruction)
+                self.executeLogicOperations(instruction.getListOfArguments(), LO.NOT)
             elif opcode == 'INT2CHAR':
                 self.executeInt2Char(instruction)
             elif opcode == 'STRI2INT':
@@ -300,6 +301,28 @@ class Execute:
         else:
             print("Error inexecute CompareOperations")
             exit(430)
+    def executeLogicOperations(self, arguments, typeOfOperator):
+        if typeOfOperator == LO.AND or typeOfOperator == LO.OR:
+            if arguments[1].getType() == 'bool' and arguments[2].getType() == 'bool':
+                if typeOfOperator == LO.AND:
+                    if self.isBool(arguments[1].getValue()) and self.isBool(arguments[2].getValue()):
+                        boolValues = self.getBoolValues(arguments);
+                        if boolValues[0] and boolValues[1]:
+                            self.assignValueToVar(arguments[0].getValue(), 'true', 'bool')
+                        else:
+                            self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
+        # elif typeOfOperator == LO.NOT:
+    def getBoolValues(selfa,arguments):
+        values = []
+        if arguments[1].getValue() == 'true':
+            values.append(True)
+        else:
+            values.append(False)
+        if arguments[2].getValue() == 'true':
+            values.append(True)
+        else:
+            values.append(False)
+        return values
 
     def compareTypesOfArguments(self, arguments):
         argValue = []
@@ -350,8 +373,8 @@ class Execute:
         except ValueError:
             exit(430)
 
-    def isBool(self, value,type):
-        result = self.checkIfValueEqualsType(value, type)
+    def isBool(self, value):
+        result = self.checkIfValueEqualsType(value, 'bool')
         try:
             result = str(result)
             return True
@@ -429,9 +452,9 @@ class Execute:
         #   TODO checknout jestli muze byt napriklad TruE FaALsE
         elif type == 'bool':
             if value != None:
-                if re.match(r'^true$', value.lower()):
+                if re.match(r'^true$', value):
                     return 'true'
-                elif re.match(r'^false', value.lower()):
+                elif re.match(r'^false', value):
                     return 'false'
                 else:
                     print("Not bool checkifValueEqualsType")

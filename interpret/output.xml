@@ -49,4 +49,14 @@
    <instruction order="17" opcode="WRITE">
   <arg1 type="var">GF@counter</arg1>
  </instruction>
+     <instruction order="18" opcode="AND">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="bool">false</arg2>
+  <arg3 type="bool">false</arg3>
+
+     </instruction>
+       <instruction order="19" opcode="WRITE">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+
 </program>
