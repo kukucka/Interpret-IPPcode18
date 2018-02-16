@@ -34,9 +34,9 @@ class Execute:
             elif opcode == 'RETURN':
                 self.executeReturn(instruction)
             elif opcode == 'PUSHS':
-                self.executePushs(instruction)
+                self.executePushs(instruction.getListOfArguments())
             elif opcode == 'POPS':
-                self.executePops(instruction)
+                self.executePops(instruction.getListOfArguments())
             elif opcode == 'ADD':
                 self.executeArithmeticOperations(instruction.getListOfArguments(), AR.ADD)
             elif opcode == 'SUB':
@@ -323,7 +323,26 @@ class Execute:
             else:
                 self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
 
-        # elif typeOfOperator == LO.NOT:
+    def executePushs(self, argument):
+        args = []
+        if argument[0].getType() == 'var':
+            args.append(self.returnValue(argument[0].getValue()))
+            args.append(self.returnType(argument[0].getValue()))
+        else:
+            if self.checkIfValueEqualsType(argument[0].getValue(), argument[0].getType()):
+                args.append(argument[0].getValue())
+                args.append(argument[0].getType())
+        self.stack.push(args)
+
+    def executePops(self, argument):
+        if self.stack.isEmpty():
+            print("Nelze popnout z prazdneho zasobniku")
+            exit(56)
+        else:
+            popVal = self.stack.pop()
+            self.assignValueToVar(argument[0].getValue(), popVal[0], popVal[1])
+
+
 
     def checkAndReturnBoolValue(self, argument):
         if argument.getType() == 'var':
@@ -350,7 +369,7 @@ class Execute:
 
 
 
-    def getBoolValues(selfa,argument):
+    def getBoolValues(self,argument):
         if argument.getValue() == 'true':
             return True
         else:

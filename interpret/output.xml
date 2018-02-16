@@ -64,5 +64,22 @@
         <instruction order="21" opcode="WRITE">
   <arg1 type="var">GF@counter</arg1>
  </instruction>
-
+       <instruction order="22" opcode="PUSHS">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+        <instruction order="23" opcode="PUSHS">
+  <arg1 type="string">asdsadaw</arg1>
+ </instruction>
+        <instruction order="24" opcode="POPS">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+            <instruction order="25" opcode="WRITE">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+         <instruction order="26" opcode="POPS">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+    <instruction order="27" opcode="WRITE">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
 </program>
