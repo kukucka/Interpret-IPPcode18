@@ -37,7 +37,6 @@ class XMLAnalyzer:
 
     def checkRoot(self, root):
         if root.tag == 'program':
-            print("program equals")
             self.checkRootAtributes(root)
         else:
             exit(420)
@@ -102,7 +101,7 @@ class XMLAnalyzer:
         opCode = instruction.getOpcode()
         numOfArgs = instruction.getNumberOfArguments()
         listOfArgs = instruction.getListOfArguments()
-        print(opCode + " " + str(numOfArgs))
+        # print(opCode + " " + str(numOfArgs))
         if(opCode == 'CREATEFRAME' or opCode == 'PUSHFRAME' or opCode == 'POPFRAME' or
         opCode == 'RETURN' or opCode == 'BREAK'):
             return

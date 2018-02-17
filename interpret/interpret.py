@@ -7,12 +7,13 @@ import xml.etree.ElementTree as ET
 # TODO zkontrolovat jestli jsou spravne \xxx v interpretu i parseru
 # TODO READ Type je to string?
 # TODO LF muzeme vlozit i kdyz je nedefinovany
+# TODO  WRITE: jak ma koncit radek vypisu write EOL nebo ne
 from classes.Analyzer import XMLAnalyzer
 from classes.Execute import Execute
 # print("Heelllo")
 # tree = ET.parse('C:\Interpret-IPPcode18\interpret\')
 # root = tree.getroot()
-file = 'output.xml'
+file = 'output2.xml'
 cl = XMLAnalyzer(file)
 dicOfVar = cl.analyzeXmlFile()
 s = Execute(dicOfVar)

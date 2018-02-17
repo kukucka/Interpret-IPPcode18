@@ -68,7 +68,7 @@ class Execute:
             elif opcode == 'WRITE':
                 self.executeWrite(instruction.getListOfArguments())
             elif opcode == 'CONCAT':
-                self.executeConcat(instruction)
+                self.executeConcat(instruction.getListOfArguments())
             elif opcode == 'STRLEN':
                 self.executeStrlen(instruction)
             elif opcode == 'GETCHAR':
@@ -89,7 +89,8 @@ class Execute:
             elif opcode == 'DPRINT':
                 self.executeDprint(instruction)
             elif opcode == 'BREAK':
-                self.executeBreak(instruction)
+                self.curInst += 1
+                continue
             else:
                 print("Error execute start")
                 exit(420)
@@ -104,10 +105,7 @@ class Execute:
                     print("Error getLabels, label already exists")
                     exit(52)
                 else:
-                    print(instNum)
-                    print(labelName)
                     self.labels.update({labelName: instNum})
-                    print(self.labels)
 
     def getLabelName(self, inst):
             arg = inst.getListOfArguments()
@@ -143,20 +141,44 @@ class Execute:
         if valuesToCompare[0] == valuesToCompare[1]:
             self.executeJump(instruction)
 
+    def executeJumpIfNeq(self, instruction):
+        valuesToCompare = self.compareTypesOfArguments(instruction.getListOfArguments())
+        if valuesToCompare[0] != valuesToCompare[1]:
+            self.executeJump(instruction)
+
 
 
     def executeCall(self, instruction):
         self.callStack.push(self.curInst)
         self.setCurInst(self.getLabelPosition(self.getLabelName(instruction)))
-# def executeMove(self, instruction):
-        # self.executeMove(instruction)
-    #TODO muzu definovat promenu LF@something????
+
+    def executeConcat(self, arguments):
+        arg1 = self.checkAndReturnString(arguments[1])
+        arg2 = self.checkAndReturnString(arguments[2])
+        concatArg = arg1 + arg2
+        self.assignValueToVar(arguments[0].getValue(), concatArg, 'string')
+
+    def checkAndReturnString(self, argument):
+        if argument.getType() == 'string':
+            self.isStr(argument.getValue())
+            return argument.getValue()
+        elif argument.getType() == 'var':
+            if self.returnType(argument.getValue()) == 'string':
+                str = self.returnValue(argument.getValue())
+                self.isStr(str)
+                return str
+            else:
+                print(argument.getValue() + " is not a strings")
+                exit(420)
+        else:
+            print(argument.getValue() + " is not a type of strings")
+            exit(420)
+
     # TODO nejaka divna vec zbyla v lf kdyz z nej popnu
     def executeDefvar(self, arguments):
         # if instruction.getListOfArguments()
         # if preg_match('/^bool@/', $argument) || preg_match('/^int@/', $argument) ||
         # preg_match('/^string@/', $argument
-        print(arguments[0].getType())
         if len(arguments[0].getValue().split()) != 1:
             print("Cant define multiple variables in one command")
             exit(420)
@@ -232,10 +254,10 @@ class Execute:
 
     def executeWrite(self, argument):
         if argument[0].getType() == 'var':
-            print(self.returnValue(argument[0].getValue()))
+            print(self.returnValue(argument[0].getValue())) #mozna pridat ,end=''
         else:
             self.checkIfValueEqualsType(argument[0].getValue(), argument[0].getType())
-            print(argument[0].getValue())
+            print(argument[0].getValue()) #mozna pridat ,end=''
     # TODO checknout ze int je opravdu int   <arg2 type="int">LF@loll</arg2> checkIfValueEqualsType udelam funcki ktera odkaze
     # na tuhle a checkne to a vrati bool zatim je to rozbite
     def executeArithmeticOperations(self, arguments, typeOfOperation):
@@ -257,7 +279,7 @@ class Execute:
                         exit(57)
                     value = int(int(self.returnValue(arguments[1].getValue())) / argValue)
                     self.assignValueToVar(arguments[0].getValue(), value, 'int')
-                print(self.returnValue(arguments[0].getValue()))
+                # print(self.returnValue(arguments[0].getValue()))
             else:
                 print("ERROR cant use string/bool in arithmetic operation")
                 exit(420)
@@ -279,8 +301,7 @@ class Execute:
                         exit(57)
                     value = int(int(arguments[1].getValue()) / argValue)
                     self.assignValueToVar(arguments[0].getValue(), value, 'int')
-                print(self.returnValue(arguments[0].getValue()))
-                print("AHO2")
+                # print(self.returnValue(arguments[0].getValue()))
             else:
                 print("ERROR cant use string/bool in arithmetic operation")
                 exit(420)
@@ -303,8 +324,7 @@ class Execute:
                         exit(57)
                     value = int(int(self.returnValue(arguments[1].getValue())) / argValue)
                     self.assignValueToVar(arguments[0].getValue(), value, 'int')
-                print(self.returnValue(arguments[0].getValue()))
-                print("AHO")
+                # print(self.returnValue(arguments[0].getValue()))
             else:
                 print("ERROR executeArithmeticOperations not ints")
                 exit(420)
@@ -326,8 +346,7 @@ class Execute:
                         exit(57)
                     value = int(int(arguments[1].getValue()) / argValue)
                     self.assignValueToVar(arguments[0].getValue(), value, 'int')
-                print(self.returnValue(arguments[0].getValue()))
-                print("AHO4")
+                # print(self.returnValue(arguments[0].getValue()))
             else:
                 print("ERROR executeArithmeticOperations not ints")
                 exit(420)
@@ -440,11 +459,11 @@ class Execute:
         else:
             arg1 = arguments[1].getType()
             if arg1 == 'string':
-                self.isStr(arguments[1].getValue(), arg1)
+                self.isStr(arguments[1].getValue())
             elif arg1 == 'int':
-                self.isInt(arguments[1].getValue(), arg1)
+                self.isInt(arguments[1].getValue())
             elif arg1 == 'bool':
-                self.isBool(arguments[1].getValue(), arg1)
+                self.isBool(arguments[1].getValue())
             argValue.append(str(arguments[1].getValue()))
         if arguments[2].getType() == 'var':
             arg2 = self.returnType(arguments[2].getValue())
@@ -452,11 +471,11 @@ class Execute:
         else:
             arg2 = arguments[2].getType()
             if arg1 == 'string':
-                self.isStr(arguments[2].getValue(), arg2)
+                self.isStr(arguments[2].getValue())
             elif arg1 == 'int':
-                self.isInt(arguments[2].getValue(), arg2)
+                self.isInt(arguments[2].getValue())
             elif arg1 == 'bool':
-                self.isBool(arguments[2].getValue(), arg2)
+                self.isBool(arguments[2].getValue())
             argValue.append(str(arguments[2].getValue()))
         if arg1 != arg2:
             print("ERROR compareTypesOfArguments types are not equal")
@@ -465,16 +484,16 @@ class Execute:
         return argValue
 
 
-    def isInt(self, value, type):
-        result = self.checkIfValueEqualsType(value, type)
+    def isInt(self, value):
+        result = self.checkIfValueEqualsType(value, 'int')
         try:
             result = int(result)
             return True
         except ValueError:
             exit(430)
 
-    def isStr(self, value, type):
-        result = self.checkIfValueEqualsType(value, type)
+    def isStr(self, value):
+        result = self.checkIfValueEqualsType(value, 'string')
         try:
             result = str(result)
             return True
@@ -555,9 +574,7 @@ class Execute:
                 exit(430)
         elif type == 'string':
     #         TODO tady bude check jestli je string valid
-    #          TODO co vytisknout v pripade prazdneho stringu None?
             return value
-        #   TODO checknout jestli muze byt napriklad TruE FaALsE
         elif type == 'bool':
             if value != None:
                 if re.match(r'^true$', value):

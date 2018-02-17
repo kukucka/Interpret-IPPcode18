@@ -5,16 +5,18 @@
  </instruction>
  <instruction order="2" opcode="MOVE">
   <arg1 type="var">GF@counter</arg1>
-  <arg2 type="string">sdf</arg2>
+  <arg2 type="string"></arg2>
  </instruction>
  <instruction order="3" opcode="LABEL">
   <arg1 type="label">while</arg1>
  </instruction>
- <instruction order="4" opcode="CALL">
+ <instruction order="4" opcode="JUMPIFEQ">
   <arg1 type="label">end</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="string">aaa</arg3>
  </instruction>
  <instruction order="5" opcode="WRITE">
-  <arg1 type="string">counter\032bs\\alt;h&gt;u&amp;je\032</arg1>
+  <arg1 type="string">counter\032obsahuje\032</arg1>
  </instruction>
  <instruction order="6" opcode="WRITE">
   <arg1 type="var">GF@counter</arg1>
@@ -32,11 +34,5 @@
  </instruction>
  <instruction order="10" opcode="LABEL">
   <arg1 type="label">end</arg1>
- </instruction>
-     <instruction order="11" opcode="WRITE">
-  <arg1 type="string">\010</arg1>
- </instruction>
-     <instruction order="12" opcode="RETURN">
-
  </instruction>
 </program>
