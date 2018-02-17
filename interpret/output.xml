@@ -114,7 +114,12 @@
     <instruction order="35" opcode="WRITE">
     <arg1 type="var">GF@stri</arg1>
  </instruction>
-
-
+    <instruction order="36" opcode="STRLEN">
+    <arg1 type="var">GF@stri</arg1>
+     <arg2 type="string  "></arg2>
+ </instruction>
+   <instruction order="37" opcode="WRITE">
+    <arg1 type="var">GF@stri</arg1>
+ </instruction>
 
 </program>

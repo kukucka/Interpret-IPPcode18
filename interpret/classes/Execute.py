@@ -70,13 +70,13 @@ class Execute:
             elif opcode == 'CONCAT':
                 self.executeConcat(instruction.getListOfArguments())
             elif opcode == 'STRLEN':
-                self.executeStrlen(instruction)
+                self.executeStrlen(instruction.getListOfArguments())
             elif opcode == 'GETCHAR':
                 self.executeGetchar(instruction)
             elif opcode == 'SETCHAR':
                 self.executeSetchar(instruction)
             elif opcode == 'TYPE':
-                self.executeType(instruction)
+                self.executeType(instruction.getListOfArguments())
             elif opcode == 'LABEL':
                 self.curInst += 1
                 continue
@@ -157,6 +157,11 @@ class Execute:
         arg2 = self.checkAndReturnString(arguments[2])
         concatArg = arg1 + arg2
         self.assignValueToVar(arguments[0].getValue(), concatArg, 'string')
+
+    def executeStrlen(self, arguments):
+        arg1 = self.checkAndReturnString(arguments[1])
+        number = len(arg1)
+        self.assignValueToVar(arguments[0].getValue(), number, 'int')
 
     def checkAndReturnString(self, argument):
         if argument.getType() == 'string':

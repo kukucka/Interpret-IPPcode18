@@ -13,7 +13,7 @@ from classes.Execute import Execute
 # print("Heelllo")
 # tree = ET.parse('C:\Interpret-IPPcode18\interpret\')
 # root = tree.getroot()
-file = 'output2.xml'
+file = 'output.xml'
 cl = XMLAnalyzer(file)
 dicOfVar = cl.analyzeXmlFile()
 s = Execute(dicOfVar)
