@@ -9,7 +9,7 @@ class FrameManager:
         self.lfStack = Stack()
         self.tfDefined = False
         self.lfDefined = False
-
+    # TODO zmenit jmena
     def isTfDefined(self):
         return self.tfDefined
 
@@ -107,3 +107,11 @@ class FrameManager:
         self.tfDefined = True
         self.lf.setDictionary(self.lfStack.top())
 
+    def checkIfVarInitInGf(self, varName):
+        return self.gf.checkIfVarInicialized(varName)
+
+    def checkIfVarInitInLf(self, varName):
+        return self.lf.checkIfVarInicialized(varName)
+
+    def checkIfVarInitInTf(self, varName):
+        return self.tf.checkIfVarInicialized(varName)

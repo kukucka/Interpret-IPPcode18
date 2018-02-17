@@ -116,10 +116,23 @@
  </instruction>
     <instruction order="36" opcode="STRLEN">
     <arg1 type="var">GF@stri</arg1>
-     <arg2 type="string  "></arg2>
+     <arg2 type="string"></arg2>
  </instruction>
    <instruction order="37" opcode="WRITE">
     <arg1 type="var">GF@stri</arg1>
  </instruction>
-
+ <instruction order="38" opcode="DEFVAR">
+  <arg1 type="var">TF@prvni</arg1>
+ </instruction>
+  <instruction order="39" opcode="MOVE">
+  <arg1 type="var">TF@prvni</arg1>
+  <arg2 type="bool">   true  </arg2>
+ </instruction>
+  <instruction order="40" opcode="TYPE">
+  <arg1 type="var">GF@stri</arg1>
+   <arg2 type="var">TF@prvni</arg2>
+  </instruction>
+   <instruction order="41" opcode="WRITE">
+    <arg1 type="var">GF@stri</arg1>
+ </instruction>
 </program>

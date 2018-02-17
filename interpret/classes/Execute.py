@@ -163,6 +163,34 @@ class Execute:
         number = len(arg1)
         self.assignValueToVar(arguments[0].getValue(), number, 'int')
 
+    def executeType(self, arguments):
+        if arguments[1].getType() == 'var':
+            if self.checkIfVarInicialized(arguments[1].getValue()):
+                type = self.returnType(arguments[1].getValue())
+                value = self.returnValue(arguments[1].getValue())
+                self.checkIfValueEqualsType(value, type)
+                self.assignValueToVar(arguments[0].getValue(), type, 'string')
+            else:
+                self.assignValueToVar(arguments[0].getValue(), '', 'string')
+        elif arguments[1].getType() == 'int':
+            if self.isInt(arguments[1].getValue()):
+                self.assignValueToVar(arguments[0].getValue(), 'int', 'string')
+        elif arguments[1].getType() == 'string':
+            if self.isStr(arguments[1].getValue()):
+                self.assignValueToVar(arguments[0].getValue(), 'string', 'string')
+        elif arguments[1].getType() == 'bool':
+            if self.isBool(arguments[1].getValue()):
+                self.assignValueToVar(arguments[0].getValue(), 'bool', 'string')
+
+    def checkIfVarInicialized(self, varName):
+        name = varName.split('@', 1)
+        if re.match(r'^GF@', varName.strip()):
+            return self.frames.checkIfVarInitInGf(name[1])
+        elif re.match(r'^LF@', varName.strip()):
+            return self.frames.checkIfVarInitInLf(name[1])
+        elif re.match(r'^TF@', varName.strip()):
+            return self.frames.checkIfVarInitInTf(name[1])
+
     def checkAndReturnString(self, argument):
         if argument.getType() == 'string':
             self.isStr(argument.getValue())
@@ -582,9 +610,9 @@ class Execute:
             return value
         elif type == 'bool':
             if value != None:
-                if re.match(r'^true$', value):
+                if re.match(r'^true$', value.strip()):
                     return 'true'
-                elif re.match(r'^false', value):
+                elif re.match(r'^false$', value.strip()):
                     return 'false'
                 else:
                     print("Not bool checkifValueEqualsType")

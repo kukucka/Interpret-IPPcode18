@@ -4,10 +4,11 @@ import xml.etree.ElementTree as ET
 # TODO je validni kdyz mam napirklad
 # TODO replace zase nejaky special znaky z XML
 # TODO chytit pripadne error z TE.parse
-# TODO zkontrolovat jestli jsou spravne \xxx v interpretu i parseru
+# TODO zkontrolovat jestli jsou spravne \xxx v interpretu i v parseru
 # TODO READ Type je to string?
 # TODO LF muzeme vlozit i kdyz je nedefinovany
 # TODO  WRITE: jak ma koncit radek vypisu write EOL nebo ne
+# TODO pokud je type="   string   " tak to neni validni ma to tak byt?
 from classes.Analyzer import XMLAnalyzer
 from classes.Execute import Execute
 # print("Heelllo")
