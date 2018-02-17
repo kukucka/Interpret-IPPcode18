@@ -14,8 +14,10 @@ class Execute:
         self.frames = FrameManager()
         self.stack = Stack()
         self.callStack = Stack()
+        self.labels = {}
     # TODO co vytysknout kdyz je prommena nedefinovana
     def start(self):
+        self.getLabels()
         while self.curInst <= len(self.dicOfCom):
             instruction = self.dicOfCom.get(str(self.curInst))
             opcode = instruction.getOpcode()
@@ -32,7 +34,7 @@ class Execute:
             elif opcode == 'CALL':
                 self.executeCall(instruction)
             elif opcode == 'RETURN':
-                self.executeReturn(instruction)
+                self.executeReturn()
             elif opcode == 'PUSHS':
                 self.executePushs(instruction.getListOfArguments())
             elif opcode == 'POPS':
@@ -76,7 +78,8 @@ class Execute:
             elif opcode == 'TYPE':
                 self.executeType(instruction)
             elif opcode == 'LABEL':
-                self.executeLabel(instruction)
+                self.curInst += 1
+                continue
             elif opcode == 'JUMP':
                 self.executeJump(instruction)
             elif opcode == 'JUMPIFEQ':
@@ -92,7 +95,60 @@ class Execute:
                 exit(420)
             self.curInst += 1
 
-    # def executeMove(self, instruction):
+    def getLabels(self):
+        for instNum in self.dicOfCom:
+            inst = self.dicOfCom.get(str(instNum))
+            if inst.getOpcode() == 'LABEL':
+                labelName = self.getLabelName(inst)
+                if labelName in self.labels:
+                    print("Error getLabels, label already exists")
+                    exit(52)
+                else:
+                    print(instNum)
+                    print(labelName)
+                    self.labels.update({labelName: instNum})
+                    print(self.labels)
+
+    def getLabelName(self, inst):
+            arg = inst.getListOfArguments()
+            labelName = arg[0].getValue()
+            if labelName != None:
+                return labelName
+            else:
+                print("Error isLabel, this is not a label")
+                exit(420)
+
+    def getLabelPosition(self, labelName):
+        if labelName in self.labels.keys():
+            return self.labels.get(labelName)
+        else:
+            print("Label doesnt exist")
+            exit(420)
+
+    def setCurInst(self, position):
+        self.curInst = int(position)
+
+    def executeJump(self, instruction):
+        self.setCurInst(self.getLabelPosition(self.getLabelName(instruction)))
+
+    def executeReturn(self):
+        if self.callStack.isEmpty():
+            print("Cant return anything from empty callStack")
+            exit(420)
+        else:
+            self.setCurInst(self.callStack.pop())
+
+    def executeJumpIfEq(self, instruction):
+        valuesToCompare = self.compareTypesOfArguments(instruction.getListOfArguments())
+        if valuesToCompare[0] == valuesToCompare[1]:
+            self.executeJump(instruction)
+
+
+
+    def executeCall(self, instruction):
+        self.callStack.push(self.curInst)
+        self.setCurInst(self.getLabelPosition(self.getLabelName(instruction)))
+# def executeMove(self, instruction):
         # self.executeMove(instruction)
     #TODO muzu definovat promenu LF@something????
     # TODO nejaka divna vec zbyla v lf kdyz z nej popnu

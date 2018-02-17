@@ -5,6 +5,8 @@ import xml.etree.ElementTree as ET
 # TODO replace zase nejaky special znaky z XML
 # TODO chytit pripadne error z TE.parse
 # TODO zkontrolovat jestli jsou spravne \xxx v interpretu i parseru
+# TODO READ Type je to string?
+# TODO LF muzeme vlozit i kdyz je nedefinovany
 from classes.Analyzer import XMLAnalyzer
 from classes.Execute import Execute
 # print("Heelllo")

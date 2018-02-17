@@ -27,8 +27,13 @@ class XMLAnalyzer:
         return self.dictionaryOfCommands
 
     def getRoot(self):
-        tree = ET.parse(self.file)
-        return tree.getroot()
+        try:
+            tree = ET.parse(self.file)
+            return tree.getroot()
+        except Exception as ex:
+            print(type(ex))
+            print(ex)
+            exit(21)
 
     def checkRoot(self, root):
         if root.tag == 'program':
@@ -137,7 +142,7 @@ class XMLAnalyzer:
              listOfArgs[0].getType() != 'int' and listOfArgs[0].getType() != 'bool'):
                 print("Error checkArgumentsValidy")
                 exit(420)
-        elif opCode == 'LABEL' or opCode == 'JUMP':
+        elif opCode == 'LABEL' or opCode == 'JUMP' or opCode == 'CALL':
             if listOfArgs[0].getType() != 'label':
                 print("Error checkArgumentsValidy")
                 exit(420)
