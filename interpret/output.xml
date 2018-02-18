@@ -157,12 +157,12 @@
  </instruction>
   <instruction order="47" opcode="MOVE">
   <arg1 type="var">GF@treti</arg1>
-  <arg2 type="int">15654000000000000005</arg2>
+  <arg2 type="int">1565400005</arg2>
  </instruction>
      <instruction order="48" opcode="IDIV">
     <arg1 type="var">GF@treti</arg1>
     <arg2 type="var">GF@treti</arg2>
-    <arg3 type="int">0</arg3>
+    <arg3 type="int">2000000</arg3>
  </instruction>
     <instruction order="49" opcode="WRITE">
     <arg1 type="var">GF@treti</arg1>

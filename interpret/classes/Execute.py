@@ -219,6 +219,13 @@ class Execute:
             print(argument.getValue() + " is not a type of strings")
             exit(420)
 
+
+    def checkVarValidity(self, name):
+        if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', name):
+            return True
+        else:
+            print("ERROR in checkVarValidity during executeDefvar ")
+            exit(420)
     # TODO nejaka divna vec zbyla v lf kdyz z nej popnu
     def executeDefvar(self, arguments):
         # if instruction.getListOfArguments()
@@ -227,32 +234,22 @@ class Execute:
         if len(arguments[0].getValue().split()) != 1:
             print("Cant define multiple variables in one command")
             exit(420)
-        if re.match(r'^GF@', arguments[0].getValue().strip()):
-            value = arguments[0].getValue().split('@', 1)
-            if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
+        varName = arguments[0].getValue().strip()
+        value = arguments[0].getValue().split('@', 1)
+        if re.match(r'^GF@', varName):
+            if self.checkVarValidity(value[1]):
                 self.frames.addVarToGf(value[1])
-            else:
-                print("ERROR executeDefvar ")
-                exit(420)
-        elif re.match(r'^TF@', arguments[0].getValue().strip()):
+        elif re.match(r'^TF@', varName):
             if self.frames.isTfDefined():
-                value = arguments[0].getValue().split('@', 1)
-                if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
+                if self.checkVarValidity(value[1]):
                     self.frames.addVarToTf(value[1])
-                else:
-                   print("ERROR executeDefvar ")
-                   exit(420)
             else:
                 print("ERROR temporary frame not defined")
                 exit(55)
-        elif re.match(r'^LF@', arguments[0].getValue().strip()):
+        elif re.match(r'^LF@', varName):
             if self.frames.isLfDefined():
-                value = arguments[0].getValue().split('@', 1)
-                if re.match(r'^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$', value[1]):
+                if self.checkVarValidity(value[1]):
                     self.frames.addVarToLf(value[1])
-                else:
-                   print("ERROR executeDefvar ")
-                   exit(420)
             else:
                 print("ERROR temporary frame not defined")
                 exit(55)
