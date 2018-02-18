@@ -22,7 +22,7 @@ from classes.Execute import Execute
 # tree = ET.parse('C:\Interpret-IPPcode18\interpret\')
 # root = tree.getroot()
 # print(chr(40960) + 'abcd' + chr(240))
-
+# print(ord('A'))
 file = 'output.xml'
 cl = XMLAnalyzer(file)
 dicOfVar = cl.analyzeXmlFile()
