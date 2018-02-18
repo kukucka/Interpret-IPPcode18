@@ -1,5 +1,7 @@
 import re
 
+import sys
+
 from .Stack import Stack
 from .Variable import Variable
 from .FrameManager import FrameManager
@@ -60,7 +62,7 @@ class Execute:
             elif opcode == 'NOT':
                 self.executeLogicOperations(instruction.getListOfArguments(), LO.NOT)
             elif opcode == 'INT2CHAR':
-                self.executeInt2Char(instruction)
+                self.executeInt2Char(instruction.getListOfArguments())
             elif opcode == 'STRI2INT':
                 self.executeStri2Int(instruction)
             elif opcode == 'READ':
@@ -125,6 +127,16 @@ class Execute:
 
     def setCurInst(self, position):
         self.curInst = int(position)
+
+
+    def executeInt2Char(self,arguments):
+        if arguments[1].getType() == 'int':
+            try:
+                number = int(arguments[1].getValue())
+                self.assignValueToVar(arguments[0].getValue(), chr(number), 'string' )
+            except ValueError:
+                print(arguments[1].getValue() + " cant be converted to unicode ")
+                exit(420)
 
     def executeJump(self, instruction):
         self.setCurInst(self.getLabelPosition(self.getLabelName(instruction)))
@@ -488,32 +500,43 @@ class Execute:
         argValue = []
         if arguments[1].getType() == 'var':
             arg1 = self.returnType(arguments[1].getValue())
-            argValue.append(str(self.returnValue(arguments[1].getValue())))
+            if arg1 == 'bool' or arg1 == 'string':
+                argValue.append(str(self.returnValue(arguments[1].getValue())))
+            else:
+                argValue.append(int(self.returnValue(arguments[1].getValue())))
+                print(argValue)
         else:
             arg1 = arguments[1].getType()
             if arg1 == 'string':
                 self.isStr(arguments[1].getValue())
+                argValue.append(str(arguments[1].getValue()))
             elif arg1 == 'int':
                 self.isInt(arguments[1].getValue())
+                argValue.append(int(arguments[1].getValue()))
             elif arg1 == 'bool':
                 self.isBool(arguments[1].getValue())
-            argValue.append(str(arguments[1].getValue()))
+                argValue.append(str(arguments[1].getValue()))
         if arguments[2].getType() == 'var':
             arg2 = self.returnType(arguments[2].getValue())
-            argValue.append(str(self.returnValue(arguments[2].getValue())))
+            if arg2 == 'bool' or arg2 == 'string':
+                argValue.append(str(self.returnValue(arguments[2].getValue())))
+            else:
+                argValue.append(int(self.returnValue(arguments[2].getValue())))
         else:
             arg2 = arguments[2].getType()
             if arg1 == 'string':
                 self.isStr(arguments[2].getValue())
+                argValue.append(str(arguments[2].getValue()))
             elif arg1 == 'int':
                 self.isInt(arguments[2].getValue())
+                argValue.append(int(arguments[2].getValue()))
             elif arg1 == 'bool':
                 self.isBool(arguments[2].getValue())
-            argValue.append(str(arguments[2].getValue()))
+                argValue.append(str(arguments[2].getValue()))
         if arg1 != arg2:
             print("ERROR compareTypesOfArguments types are not equal")
             exit(420)
-
+        print(argValue)
         return argValue
 
 
@@ -623,14 +646,3 @@ class Execute:
         else:
             print("ERROR checkifValueEqualsType")
             exit(430)
-    # def executePushframe(self, instruction):
-    #     self.executePushframe(instruction)
-    #
-    # def executeCreateframe(self, instruction):
-    #     self.executeCreateframe(instruction)
-    #
-    # def executeMove(self, instruction):
-    #     self.executeMove(instruction)
-    #
-    #
-

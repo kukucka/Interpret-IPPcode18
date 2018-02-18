@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# TODO nechat nebo ne header
+
 import xml.etree.ElementTree as ET
 
 # TODO poruseni formatu textu, udelat to pres catch?
@@ -9,11 +13,16 @@ import xml.etree.ElementTree as ET
 # TODO LF muzeme vlozit i kdyz je nedefinovany
 # TODO  WRITE: jak ma koncit radek vypisu write EOL nebo ne
 # TODO pokud je type="   string   " tak to neni validni ma to tak byt?
+# TODO stringy muzou tam byt mezery nebo ne v XML
+# TODO osetrit maximalni velikost integeru
+# TODO whitespace nesmi byt e stringu
 from classes.Analyzer import XMLAnalyzer
 from classes.Execute import Execute
 # print("Heelllo")
 # tree = ET.parse('C:\Interpret-IPPcode18\interpret\')
 # root = tree.getroot()
+# print(chr(40960) + 'abcd' + chr(240))
+
 file = 'output.xml'
 cl = XMLAnalyzer(file)
 dicOfVar = cl.analyzeXmlFile()

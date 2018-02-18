@@ -126,13 +126,45 @@
  </instruction>
   <instruction order="39" opcode="MOVE">
   <arg1 type="var">TF@prvni</arg1>
-  <arg2 type="bool">   true  </arg2>
+  <arg2 type="int">456</arg2>
  </instruction>
   <instruction order="40" opcode="TYPE">
   <arg1 type="var">GF@stri</arg1>
    <arg2 type="var">TF@prvni</arg2>
   </instruction>
    <instruction order="41" opcode="WRITE">
-    <arg1 type="var">GF@stri</arg1>
+    <arg1 type="var">TF@prvni</arg1>
+ </instruction>
+  <instruction order="42" opcode="DEFVAR">
+  <arg1 type="var">GF@druhy</arg1>
+ </instruction>
+  <instruction order="43" opcode="MOVE">
+  <arg1 type="var">GF@druhy</arg1>
+  <arg2 type="int">65</arg2>
+ </instruction>
+    <instruction order="44" opcode="EQ">
+    <arg1 type="var">GF@druhy</arg1>
+    <arg2 type="int">45</arg2>
+    <arg3 type="int">45</arg3>
+ </instruction>
+    <instruction order="45" opcode="MOVE">
+    <arg1 type="var">GF@druhy</arg1>
+         <arg2 type="int">665</arg2>
+
+ </instruction>
+   <instruction order="46" opcode="DEFVAR">
+  <arg1 type="var">GF@treti</arg1>
+ </instruction>
+  <instruction order="47" opcode="MOVE">
+  <arg1 type="var">GF@treti</arg1>
+  <arg2 type="int">156545</arg2>
+ </instruction>
+     <instruction order="48" opcode="LT">
+    <arg1 type="var">GF@druhy</arg1>
+    <arg2 type="var">GF@druhy</arg2>
+    <arg3 type="var">GF@treti</arg3>
+ </instruction>
+    <instruction order="49" opcode="WRITE">
+    <arg1 type="var">GF@druhy</arg1>
  </instruction>
 </program>
