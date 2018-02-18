@@ -89,14 +89,39 @@ class Execute:
             elif opcode == 'JUMPIFNEQ':
                 self.executeJumpIfNeq(instruction)
             elif opcode == 'DPRINT':
-                self.executeDprint(instruction)
+                self.executeDprint(instruction.getListOfArguments())
             elif opcode == 'BREAK':
-                self.curInst += 1
-                continue
+                self.executeBreak()
             else:
                 print("Error execute start")
                 exit(420)
             self.curInst += 1
+
+
+    def executeDprint(self, argument):
+        type = argument[0].getType()
+        value = "Unidentified value"
+        if type == 'var':
+            type = self.returnType(argument[0].getValue())
+        if type == 'int':
+            value = self.returnIntValue(argument[0].getValue())
+        elif type == 'string':
+            value = self.checkAndReturnString(argument[0].getValue())
+        elif type == 'bool':
+            value = str(self.checkAndReturnBoolValue(argument[0])).lower()
+        sys.stderr.write(value+"\n")
+
+    # TODO pridat pocet vykonanych instrukci
+    def executeBreak(self):
+        sys.stderr.write("Positon in code: " + str(self.curInst) + "\n")
+        sys.stderr.write("Global frame contains:\n")
+        self.frames.returnGfFrame()
+        sys.stderr.write("Temporary frame contains:\n")
+        self.frames.returnTfFrame()
+        sys.stderr.write("Local frame contains:\n")
+        self.frames.returnLfFrame()
+
+
 
     def getLabels(self):
         for instNum in self.dicOfCom:
@@ -196,7 +221,9 @@ class Execute:
 
     def executeConcat(self, arguments):
         arg1 = self.checkAndReturnString(arguments[1])
+
         arg2 = self.checkAndReturnString(arguments[2])
+
         concatArg = arg1 + arg2
         self.assignValueToVar(arguments[0].getValue(), concatArg, 'string')
 
@@ -240,6 +267,8 @@ class Execute:
         elif argument.getType() == 'var':
             if self.returnType(argument.getValue()) == 'string':
                 str = self.returnValue(argument.getValue())
+                print("SSSSSSSSSSSSS")
+                print(str)
                 self.isStr(str)
                 return str
             else:
@@ -299,8 +328,14 @@ class Execute:
             variable = Variable(name, self.returnValue(argument.getValue()), self.returnType(argument.getValue()))
         else:
             if argument.getType() == 'int':
-                variable = Variable(name, int(argument.getValue()), argument.getType())
-            else:
+                number = self.isInt(argument.getValue())
+                variable = Variable(name, number, argument.getType())
+            elif argument.getType() == 'string':
+                val = argument.getValue().strip()
+                self.isStr(val)
+                variable = Variable(name, val, argument.getType())
+            elif argument.getType() == 'bool':
+                self.isBool(argument.getValue())
                 variable = Variable(name, argument.getValue(), argument.getType())
         return variable
 
@@ -514,10 +549,16 @@ class Execute:
 
 
     def getBoolValues(self,argument):
-        if argument.getValue() == 'true':
-            return True
+        if argument.getType() == 'var':
+            if self.returnValue(argument.getValue()) == 'true':
+                return True
+            else:
+                return False
         else:
-            return False
+            if argument.getValue() == 'true':
+                return True
+            else:
+                return False
 
 
     def compareTypesOfArguments(self, arguments):
@@ -661,8 +702,12 @@ class Execute:
                 print("ERROR checkifValueEqualsType")
                 exit(430)
         elif type == 'string':
-    #         TODO tady bude check jestli je string valid
-            return value
+            if (len(value.split()) != 1) and (value != ''):
+                print("Not a string")
+                exit(421)
+            #         TODO tady bude check jestli je string valid
+            else:
+                return value
         elif type == 'bool':
             if value != None:
                 if re.match(r'^true$', value.strip()):

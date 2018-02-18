@@ -1,3 +1,5 @@
+import sys
+
 from .Stack import Stack
 from .Frame import Frame
 
@@ -115,3 +117,37 @@ class FrameManager:
 
     def checkIfVarInitInTf(self, varName):
         return self.tf.checkIfVarInicialized(varName)
+
+
+    # FOR BREAK
+
+    def returnGfFrame(self):
+        copyOfGf = self.gf.copyFrame()
+        for key, value in copyOfGf.items():
+            if self.gf.checkIfVarInicialized(key):
+                sys.stderr.write("Variable "+ str(value.getName()) + " has type " + str(value.getType()) + " and value of " + str(value.getValue()) + "\n")
+            else:
+                sys.stderr.write("Variable "+ str(key) + " is not initialized\n")
+    def returnTfFrame(self):
+        if self.tfDefined == True:
+            copyOfTf = self.tf.copyFrame()
+            for key, value in copyOfTf.items():
+                if self.tf.checkIfVarInicialized(key):
+                    sys.stderr.write("Variable " + str(value.getName()) + " has type " + str(
+                        value.getType()) + " and value of " + str(value.getValue()) + "\n")
+                else:
+                    sys.stderr.write("Variable " + str(key) + " is not initialized\n")
+        else:
+            sys.stderr.write("Temporary frame not defined.\n")
+
+    def returnLfFrame(self):
+        if self.lfDefined == True:
+            copyOfLf = self.lf.copyFrame()
+            for key, value in copyOfLf.items():
+                if self.lf.checkIfVarInicialized(key):
+                    sys.stderr.write("Variable " + str(value.getName()) + " has type " + str(
+                        value.getType()) + " and value of " + str(value.getValue()) + "\n")
+                else:
+                    sys.stderr.write("Variable " + str(key) + " is not initialized\n")
+        else:
+            sys.stderr.write("Local frame not defined.\n")

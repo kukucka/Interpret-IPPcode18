@@ -4,6 +4,7 @@ class Argument:
         self.value = value
         self.checkIfValueIsNone()
 
+
     def getType(self):
         return self.type
 
@@ -11,5 +12,6 @@ class Argument:
         return self.value
 
     def checkIfValueIsNone(self):
-        if self.value == None:
-            self.value = ''
+        if self.type == 'string':
+            if self.value == None:
+                self.value = ''

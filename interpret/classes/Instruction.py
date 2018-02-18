@@ -13,4 +13,4 @@ class Instruction:
         self.listOfArgument.append(argument)
 
     def getNumberOfArguments(self):
-        return len(self.listOfArgument);
+        return len(self.listOfArgument)

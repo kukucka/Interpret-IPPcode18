@@ -7,6 +7,9 @@ class Frame:
     def copyFrame(self):
         return copy.deepcopy(self.dictionaryOfVariables)
 
+    def returnFrame(self):
+        return self.dictionaryOfVariables
+
     def setDictionary(self, dictionaryOfVariables):
         self.dictionaryOfVariables = dictionaryOfVariables
 
