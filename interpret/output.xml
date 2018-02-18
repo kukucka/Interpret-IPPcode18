@@ -167,12 +167,46 @@
     <instruction order="49" opcode="WRITE">
     <arg1 type="var">GF@treti</arg1>
  </instruction>
-      <instruction order="50" opcode="GETCHAR">
+      <instruction order="50" opcode="STRI2INT">
     <arg1 type="var">GF@treti</arg1>
-    <arg2 type="string">#$16$$$@stri</arg2>
-    <arg3 type="int">3</arg3>
+    <arg2 type="string">#$$$$@stri</arg2>
+    <arg3 type="int">2</arg3>
  </instruction>
     <instruction order="51" opcode="WRITE">
     <arg1 type="var">GF@treti</arg1>
+ </instruction>
+    <instruction order="52" opcode="DEFVAR">
+  <arg1 type="var">GF@ctvrty</arg1>
+ </instruction>
+  <instruction order="53" opcode="MOVE">
+  <arg1 type="var">GF@ctvrty</arg1>
+  <arg2 type="string">AhojsaS</arg2>
+ </instruction>
+   <instruction order="54" opcode="MOVE">
+  <arg1 type="var">GF@treti</arg1>
+  <arg2 type="int">2</arg2>
+ </instruction>
+       <instruction order="55" opcode="SETCHAR">
+    <arg1 type="var">GF@ctvrty</arg1>
+    <arg2 type="var">GF@treti</arg2>
+    <arg3 type="var">GF@ctvrty</arg3>
+  </instruction>
+    <instruction order="56" opcode="WRITE">
+    <arg1 type="var">GF@ctvrty</arg1>
+ </instruction>
+        <instruction order="57" opcode="READ">
+    <arg1 type="var">GF@ctvrty</arg1>
+    <arg2 type="type">string</arg2>
+  </instruction>
+     <instruction order="58" opcode="WRITE">
+    <arg1 type="var">GF@ctvrty</arg1>
+ </instruction>
+        <instruction order="59" opcode="CONCAT">
+    <arg1 type="var">GF@ctvrty</arg1>
+    <arg2 type="string">a</arg2>
+    <arg3 type="var">GF@ctvrty</arg3>
+  </instruction>
+      <instruction order="60" opcode="WRITE">
+    <arg1 type="var">GF@ctvrty</arg1>
  </instruction>
 </program>

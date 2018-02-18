@@ -66,7 +66,7 @@ class Execute:
             elif opcode == 'STRI2INT':
                 self.executeStri2Int(instruction.getListOfArguments())
             elif opcode == 'READ':
-                self.executeRead(instruction)
+                self.executeRead(instruction.getListOfArguments())
             elif opcode == 'WRITE':
                 self.executeWrite(instruction.getListOfArguments())
             elif opcode == 'CONCAT':
@@ -76,7 +76,7 @@ class Execute:
             elif opcode == 'GETCHAR':
                 self.executeGetchar(instruction.getListOfArguments())
             elif opcode == 'SETCHAR':
-                self.executeSetchar(instruction)
+                self.executeSetchar(instruction.getListOfArguments())
             elif opcode == 'TYPE':
                 self.executeType(instruction.getListOfArguments())
             elif opcode == 'LABEL':
@@ -154,6 +154,19 @@ class Execute:
             exit(58)
         else:
             self.assignValueToVar(arguments[0].getValue(), string[number], 'string')
+    def executeSetchar(self, arguments):
+        stringToChange = self.checkAndReturnString(arguments[0])
+        string = self.checkAndReturnString(arguments[2])
+        number = self.returnIntValue(arguments[1])
+        if number >= len(stringToChange):
+            print("setchar unsucesfull")
+            exit(58)
+        else:
+            shredString = list(stringToChange)
+            shredString[number] = string[0]
+            stringToChange = "".join(shredString)
+            self.assignValueToVar(arguments[0].getValue(), stringToChange, 'string')
+
 
     def executeJump(self, instruction):
         self.setCurInst(self.getLabelPosition(self.getLabelName(instruction)))
@@ -319,6 +332,60 @@ class Execute:
     # TODO checknout ze int je opravdu int   <arg2 type="int">LF@loll</arg2> checkIfValueEqualsType udelam funcki ktera odkaze
     # na tuhle a checkne to a vrati bool zatim je to rozbite
 
+
+    def executeRead(self, argument):
+        value = argument[1].getValue().strip()
+        if value == 'bool':
+            entered = self.getInput()
+            if self.checkReadBool(entered):
+                self.assignValueToVar(argument[0].getValue(), 'true', 'bool')
+            else:
+                self.assignValueToVar(argument[0].getValue(), 'false', 'bool')
+        elif value == 'int':
+            entered = self.getInput()
+            if self.checkReadInt(entered):
+                self.assignValueToVar(argument[0].getValue(), int(entered), 'int')
+            else:
+                self.assignValueToVar(argument[0].getValue(), 0, 'int')
+        elif value == 'string':
+            entered = self.getInput()
+            if self.checkReadString(entered):
+                self.assignValueToVar(argument[0].getValue(), entered, 'string')
+            else:
+                self.assignValueToVar(argument[0].getValue(), '', 'string')
+        else:
+            print("Wrong argument for READ")
+            exit(420)
+
+    def getInput(self):
+        sys.stdin.flush()
+        entered = input()
+        return entered
+
+    def checkReadBool(self, value):
+        if re.match(r'^(T|t)(R|r)(U|u)(E|e)$', value):
+            return True
+        else:
+            return False
+
+    def checkReadInt(self, value):
+        if value != None:
+            try:
+                if int(value):
+                    return True
+            except ValueError:
+                return False
+        else:
+            return False
+
+    def checkReadString(self, value):
+        if value != None:
+            if len(value.split()) != 1:
+                return False
+            else:
+                return True
+        else:
+            return False
     def returnIntValue(self, argument):
         if argument.getType() == 'var':
             if self.returnType(argument.getValue()) == 'int':

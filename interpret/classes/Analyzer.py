@@ -132,8 +132,7 @@ class XMLAnalyzer:
                 print("Error checkArgumentsValidy")
                 exit(420)
         elif opCode == 'READ':
-            if (listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'string' and
-            listOfArgs[1].getType() != 'int' and listOfArgs[1].getType() != 'bool')):
+            if listOfArgs[0].getType() != 'var' or listOfArgs[1].getType() != 'type':
                 print("Error checkArgumentsValidy")
                 exit(420)
         elif opCode == 'WRITE' or opCode == 'DPRINT' or opCode == 'PUSHS':
