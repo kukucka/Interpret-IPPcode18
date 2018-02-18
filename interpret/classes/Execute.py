@@ -64,7 +64,7 @@ class Execute:
             elif opcode == 'INT2CHAR':
                 self.executeInt2Char(instruction.getListOfArguments())
             elif opcode == 'STRI2INT':
-                self.executeStri2Int(instruction)
+                self.executeStri2Int(instruction.getListOfArguments())
             elif opcode == 'READ':
                 self.executeRead(instruction)
             elif opcode == 'WRITE':
@@ -74,7 +74,7 @@ class Execute:
             elif opcode == 'STRLEN':
                 self.executeStrlen(instruction.getListOfArguments())
             elif opcode == 'GETCHAR':
-                self.executeGetchar(instruction)
+                self.executeGetchar(instruction.getListOfArguments())
             elif opcode == 'SETCHAR':
                 self.executeSetchar(instruction)
             elif opcode == 'TYPE':
@@ -130,13 +130,30 @@ class Execute:
 
 
     def executeInt2Char(self,arguments):
-        if arguments[1].getType() == 'int':
-            try:
-                number = int(arguments[1].getValue())
-                self.assignValueToVar(arguments[0].getValue(), chr(number), 'string' )
-            except ValueError:
-                print(arguments[1].getValue() + " cant be converted to unicode ")
-                exit(420)
+        number = self.returnIntValue(arguments[1])
+        try:
+            self.assignValueToVar(arguments[0].getValue(), chr(number), 'string' )
+        except ValueError:
+            print(arguments[1].getValue() + " cant be converted to unicode ")
+            exit(58)
+
+    def executeStri2Int(self, arguments):
+        number = self.returnIntValue(arguments[2])
+        string = self.checkAndReturnString(arguments[1])
+        if number >= len(string):
+            print("sri2Int unsucesfull")
+            exit(58)
+        else:
+            self.assignValueToVar(arguments[0].getValue(), ord(string[number]), 'int')
+
+    def executeGetchar(self, arguments):
+        number = self.returnIntValue(arguments[2])
+        string = self.checkAndReturnString(arguments[1])
+        if number >= len(string):
+            print("getchar unsucesfull")
+            exit(58)
+        else:
+            self.assignValueToVar(arguments[0].getValue(), string[number], 'string')
 
     def executeJump(self, instruction):
         self.setCurInst(self.getLabelPosition(self.getLabelName(instruction)))
@@ -316,7 +333,6 @@ class Execute:
             print("NOT an int")
             exit(430)
 
-
     def executeArithmeticOperations(self, arguments, typeOfOperation):
         values = []
         values.append(self.returnIntValue(arguments[1]))
@@ -334,7 +350,7 @@ class Execute:
             if values[1] == 0:
                 print("ERROR cant divide with zero")
                 exit(57)
-            value = values[0] / values[1]
+            value = int(values[0] / values[1])
             self.assignValueToVar(arguments[0].getValue(), value, 'int')
         else:
             print("ERROR executeArithmeticOperations not ints")
@@ -549,19 +565,19 @@ class Execute:
         if re.match(r'^GF@', argument.strip()):
             var = self.frames.getVarFromGf(name[1])
             if type == 'int':
-                return int(var.getValue())
+                return var.getValue()
             else:
                 return var.getValue()
         elif re.match(r'^LF@', argument.strip()):
             var = self.frames.getVarFromLf(name[1])
             if type == 'int':
-                return int(var.getValue())
+                return var.getValue()
             else:
                 return var.getValue()
         elif re.match(r'^TF@', argument.strip()):
             var = self.frames.getVarFromTf(name[1])
             if type == 'int':
-                return int(var.getValue())
+                return var.getValue()
             else:
                 return var.getValue()
 
