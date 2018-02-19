@@ -8,7 +8,7 @@ include('Analyzer.php');
 //TODO je otazka zda GF muze byt i Gf atd.
 if(count($argv) == 1){
 }elseif(count($argv) == 2){
-    if($argv[1] == "--help"){
+    if($argv[1] == "--help" || $argv[1] == "-h"){
         print "Pomoc doplnit\n";
         exit(0);        
     }else{
