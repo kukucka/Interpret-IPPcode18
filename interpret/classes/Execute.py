@@ -9,6 +9,8 @@ from .Operations import ArithmeticOperations as AR
 from .Operations import CompareOperations as CO
 from .Operations import LogicOperations as LO
 
+
+
 class Execute:
     def __init__(self, dictionaryOfCommands):
         self.dicOfCom = dictionaryOfCommands
@@ -104,9 +106,9 @@ class Execute:
         if type == 'var':
             type = self.returnType(argument[0].getValue())
         if type == 'int':
-            value = self.returnIntValue(argument[0].getValue())
+            value = self.returnIntValue(argument[0])
         elif type == 'string':
-            value = self.checkAndReturnString(argument[0].getValue())
+            value = self.checkAndReturnString(argument[0])
         elif type == 'bool':
             value = str(self.checkAndReturnBoolValue(argument[0])).lower()
         sys.stderr.write(value+"\n")
@@ -263,20 +265,53 @@ class Execute:
     def checkAndReturnString(self, argument):
         if argument.getType() == 'string':
             self.isStr(argument.getValue())
-            return argument.getValue()
+            modifiedString = self.transferString(argument.getValue())
+            return modifiedString
         elif argument.getType() == 'var':
             if self.returnType(argument.getValue()) == 'string':
                 str = self.returnValue(argument.getValue())
-                print("SSSSSSSSSSSSS")
-                print(str)
                 self.isStr(str)
-                return str
+                modifiedString = self.transferString(str)
+                return modifiedString
             else:
                 print(argument.getValue() + " is not a strings")
                 exit(420)
         else:
             print(argument.getValue() + " is not a type of strings")
             exit(420)
+
+    def transferString(self, str):
+        toConvert = []
+        strToMod = list(str)
+        found = False
+        i = 0
+        for letter in str:
+            if found:
+                if re.match(r'[0-9]', strToMod[i]):
+                    toConvert.append(letter)
+                    if(len(toConvert) == 3):
+                        code = ''.join(toConvert)
+                        code = int(code)
+                        strToMod[i] = ''
+                        strToMod[i-1] = ''
+                        strToMod[i-2] = ''
+                        strToMod[i-3] = chr(code)
+                        found = False
+                        toConvert = []
+                else:
+                    print("ERROR")
+                    exit(124)
+            if letter == '\\':
+                found = True
+            i += 1
+        if found:
+            print("ERROR")
+            exit(125)
+        strToMod = ''.join(strToMod)
+        # strMod = re.sub(r'[\\][0-9][0-9][0-9]', r'[0-9][0-9][0-9]', str)
+        # print(strMod)
+        # print(str)
+        return strToMod
 
 
     def checkVarValidity(self, name):
@@ -333,7 +368,8 @@ class Execute:
             elif argument.getType() == 'string':
                 val = argument.getValue().strip()
                 self.isStr(val)
-                variable = Variable(name, val, argument.getType())
+                strMod = self.checkAndReturnString(argument)
+                variable = Variable(name, strMod, argument.getType())
             elif argument.getType() == 'bool':
                 self.isBool(argument.getValue())
                 variable = Variable(name, argument.getValue(), argument.getType())
@@ -360,10 +396,14 @@ class Execute:
 
     def executeWrite(self, argument):
         if argument[0].getType() == 'var':
-            print(self.returnValue(argument[0].getValue())) #mozna pridat ,end=''
+            print(self.returnValue(argument[0].getValue()),end='') #mozna pridat ,end=''
         else:
             self.checkIfValueEqualsType(argument[0].getValue(), argument[0].getType())
-            print(argument[0].getValue()) #mozna pridat ,end=''
+            if argument[0].getType() == 'string':
+                strMod = self.checkAndReturnString(argument[0])
+                print(strMod,end='') #mozna pridat ,end=''
+            else:
+                print(argument[0].getValue(),end='') #mozna pridat ,end=''
     # TODO checknout ze int je opravdu int   <arg2 type="int">LF@loll</arg2> checkIfValueEqualsType udelam funcki ktera odkaze
     # na tuhle a checkne to a vrati bool zatim je to rozbite
 
@@ -573,7 +613,8 @@ class Execute:
             arg1 = arguments[1].getType()
             if arg1 == 'string':
                 self.isStr(arguments[1].getValue())
-                argValue.append(str(arguments[1].getValue()))
+                strMod = self.checkAndReturnString(arguments[1])
+                argValue.append(strMod)
             elif arg1 == 'int':
                 number = self.isInt(arguments[1].getValue())
                 argValue.append(number)
@@ -590,7 +631,8 @@ class Execute:
             arg2 = arguments[2].getType()
             if arg1 == 'string':
                 self.isStr(arguments[2].getValue())
-                argValue.append(str(arguments[2].getValue()))
+                strMod = self.checkAndReturnString(arguments[2])
+                argValue.append(strMod)
             elif arg1 == 'int':
                 number = self.isInt(arguments[2].getValue())
                 argValue.append(number)

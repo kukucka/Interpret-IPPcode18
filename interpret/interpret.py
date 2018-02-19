@@ -16,7 +16,6 @@ import xml.etree.ElementTree as ET
 # TODO stringy muzou tam byt mezery nebo ne v XML
 # TODO osetrit maximalni velikost integeru
 # TODO whitespace nesmi byt e stringu
-# TODO muze byt var v READ jako za type
 from classes.Analyzer import XMLAnalyzer
 from classes.Execute import Execute
 # print("Heelllo")
@@ -24,7 +23,7 @@ from classes.Execute import Execute
 # root = tree.getroot()
 # print(chr(40960) + 'abcd' + chr(240))
 # print(ord('A'))
-file = 'output.xml'
+file = 'output2.xml'
 cl = XMLAnalyzer(file)
 dicOfVar = cl.analyzeXmlFile()
 s = Execute(dicOfVar)

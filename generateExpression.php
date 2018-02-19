@@ -1,10 +1,9 @@
 <?php
 
-
 function getInput(){
     $stdin = fopen('php://stdin', 'r'); 
     $line = fgets($stdin);
-        $arrayOfWords = preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $line, -1, PREG_SPLIT_NO_EMPTY);
+    $arrayOfWords = preg_split('/((^\p{P}+)|(\p{P}*\s+\p{P}*)|(\p{P}+$))/', $line, -1, PREG_SPLIT_NO_EMPTY);
     // $filteredArray = $this->cleareComments($arrayOfWords);
     return $arrayOfWords;
 }

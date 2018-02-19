@@ -6,8 +6,8 @@ Class Analyzer{
     function __construct(){
         $this->stdin = fopen('php://stdin', 'r');
         do{
-            $line = $this->readLine();
-            $line = preg_replace('/\s*/','', $line);            
+            $line = utf8_encode($this->readLine());
+            $line = preg_replace('/\s*/','', $line);          
         }while($line == null);
         if(strtolower($line) != ".ippcode18"){
             exit(21);
@@ -52,11 +52,17 @@ Class Analyzer{
     }
 
     function analyzeArgument($argument, $position){
-        if(preg_match('/^bool@/', $argument) || preg_match('/^int@/', $argument) || 
-        preg_match('/^string@/', $argument)){
+        if(preg_match('/^int@/', $argument) || preg_match('/^string@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
             //tady poresit asi jestli je to true nebo false
             return new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);
+        }else if(preg_match('/^bool@/', $argument)){
+            $splitArgument = explode('@', $argument, 2);            
+            if($splitArgument[1] == 'true' || $splitArgument[1] == 'false'){
+                return new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);        
+            }else{
+                exit(21);                
+            }
         }else if(preg_match('/^GF@/', $argument) || preg_match('/^TF@/', $argument) || 
         preg_match('/^LF@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
