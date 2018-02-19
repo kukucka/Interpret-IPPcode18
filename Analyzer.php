@@ -51,11 +51,66 @@ Class Analyzer{
         }
     }
 
+    function checkEscapeSequences($string){
+        $isOn = false;
+        $num = 0;
+        for($i=0; $i<strlen($string); $i++){
+            if($isOn){
+                if(preg_match('/[0-9]/', $string[$i])){
+                    $num += 1;
+                    if($num == 3){
+                        $num = 0;
+                        $isOn = false;
+                    }
+                }else{
+                    exit(21);
+                }
+            }
+            if($string[$i] == '\\'){
+                $isOn = true;                
+            }
+        }
+        if($isOn){
+            exit(21);
+        }
+    }
+        // toConvert = []
+        // strToMod = list(str)
+        // found = False
+        // i = 0
+        // for letter in str:
+        //     if found:
+        //         if re.match(r'[0-9]', strToMod[i]):
+        //             toConvert.append(letter)
+        //             if(len(toConvert) == 3):
+        //                 code = ''.join(toConvert)
+        //                 code = int(code)
+        //                 strToMod[i] = ''
+        //                 strToMod[i-1] = ''
+        //                 strToMod[i-2] = ''
+        //                 strToMod[i-3] = chr(code)  
+        //                 found = False
+        //                 toConvert = []
+        //         else:
+        //             print("ERROR")
+        //             exit(124)
+        //     if letter == '\\':
+        //         found = True
+        //     i += 1
+        // if found:
+        //     print("ERROR")
+        //     exit(125)
+    // }
+
     function analyzeArgument($argument, $position){
-        if(preg_match('/^int@/', $argument) || preg_match('/^string@/', $argument)){
+        if(preg_match('/^int@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
             //tady poresit asi jestli je to true nebo false
             return new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);
+        }else if(preg_match('/^string@/', $argument)){
+            $splitArgument = explode('@', $argument, 2);
+            $this->checkEscapeSequences($splitArgument[1]);
+            return new XMLArgument($splitArgument[0], $splitArgument[1], $position+1);            
         }else if(preg_match('/^bool@/', $argument)){
             $splitArgument = explode('@', $argument, 2);            
             if($splitArgument[1] == 'true' || $splitArgument[1] == 'false'){

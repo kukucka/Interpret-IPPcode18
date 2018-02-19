@@ -16,7 +16,7 @@
   <arg3 type="string">aaa</arg3>
  </instruction>
  <instruction order="5" opcode="WRITE">
-  <arg1 type="string">counter\032obsahuje\032</arg1>
+  <arg1 type="string">řetězec\032s\032lomítkem\032\092\032a\010novým\035řádkem</arg1>
  </instruction>
  <instruction order="6" opcode="WRITE">
   <arg1 type="var">GF@counter</arg1>
@@ -34,5 +34,9 @@
  </instruction>
  <instruction order="10" opcode="LABEL">
   <arg1 type="label">end</arg1>
+ </instruction>
+ <instruction order="11" opcode="MOVE">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="bool">false</arg2>
  </instruction>
 </program>
