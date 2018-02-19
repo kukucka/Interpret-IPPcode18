@@ -7,7 +7,7 @@ from .Argument import Argument
 # TODO prejmenovat na parser
 # TODO checknout zda text obsahuje white space?
 # TODO za GF@ neni nic prazdno
-class XMLAnalyzer:
+class Analyzer:
     def __init__(self, file):
         self.file = file
         self.dictionaryOfOpcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1,

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # TODO nechat nebo ne header
-
 import xml.etree.ElementTree as ET
 
 # TODO poruseni formatu textu, udelat to pres catch?
@@ -16,15 +15,30 @@ import xml.etree.ElementTree as ET
 # TODO stringy muzou tam byt mezery nebo ne v XML
 # TODO osetrit maximalni velikost integeru
 # TODO whitespace nesmi byt e stringu
-from classes.Analyzer import XMLAnalyzer
+import argparse
+from classes.Analyzer import Analyzer
 from classes.Execute import Execute
 # print("Heelllo")
 # tree = ET.parse('C:\Interpret-IPPcode18\interpret\')
 # root = tree.getroot()
 # print(chr(40960) + 'abcd' + chr(240))
 # print(ord('A'))
-file = 'output2.xml'
-cl = XMLAnalyzer(file)
+try:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--source', '-s', type=str, dest='file', help='file containing XML')
+    args = parser.parse_args()
+    if args.file == None:
+        exit(19)
+    elif args.file == '':
+        exit(20)
+    else:
+        file = args.file
+except Exception as ex:
+    print(type(ex))
+    print(ex)
+    exit(21)
+
+cl = Analyzer(file)
 dicOfVar = cl.analyzeXmlFile()
 s = Execute(dicOfVar)
 s.start()

@@ -74,34 +74,7 @@ Class Analyzer{
             exit(21);
         }
     }
-        // toConvert = []
-        // strToMod = list(str)
-        // found = False
-        // i = 0
-        // for letter in str:
-        //     if found:
-        //         if re.match(r'[0-9]', strToMod[i]):
-        //             toConvert.append(letter)
-        //             if(len(toConvert) == 3):
-        //                 code = ''.join(toConvert)
-        //                 code = int(code)
-        //                 strToMod[i] = ''
-        //                 strToMod[i-1] = ''
-        //                 strToMod[i-2] = ''
-        //                 strToMod[i-3] = chr(code)  
-        //                 found = False
-        //                 toConvert = []
-        //         else:
-        //             print("ERROR")
-        //             exit(124)
-        //     if letter == '\\':
-        //         found = True
-        //     i += 1
-        // if found:
-        //     print("ERROR")
-        //     exit(125)
-    // }
-
+      
     function analyzeArgument($argument, $position){
         if(preg_match('/^int@/', $argument)){
             $splitArgument = explode('@', $argument, 2);

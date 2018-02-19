@@ -401,7 +401,7 @@ class Execute:
             self.checkIfValueEqualsType(argument[0].getValue(), argument[0].getType())
             if argument[0].getType() == 'string':
                 strMod = self.checkAndReturnString(argument[0])
-                print(strMod,end='') #mozna pridat ,end=''
+                print(strMod, end='') #mozna pridat ,end=''
             else:
                 print(argument[0].getValue(),end='') #mozna pridat ,end=''
     # TODO checknout ze int je opravdu int   <arg2 type="int">LF@loll</arg2> checkIfValueEqualsType udelam funcki ktera odkaze
@@ -585,8 +585,6 @@ class Execute:
             else:
                 print("ERROR not a bool")
                 exit(420)
-
-
 
     def getBoolValues(self,argument):
         if argument.getType() == 'var':
