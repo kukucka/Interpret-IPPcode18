@@ -7,32 +7,192 @@
 <meta name="author" content="Marek Kukucka, xkukuc04, 2BIT">
 
 </head>
+<style>
+  #myTable {
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  }
+  .myTr{
+    border-bottom: 1px solid #ddd;
+  }
+  .pass{
+    color: green;
+  }
+  .fail{
+    color: red;
+  }
+  .myTd{
+    padding-right: 25px;
+  }
+  #info-name{
+    font-size: 18px;    
+    padding-left: 15px;
+    padding-right: 25px;
+  }
+  #info-status{
+    font-size: 16px;
+  }
 
+</style>
 <body>
-The content of the document......
+<h1>Tester</h1>
+<div>Choose tests: 
   <select id="mySelect" onchange="filter()">
     <option value="all" selected="selected">All</option>
     <option value="passed">Passed</option>
     <option value="failed">Failed</option>
     </select> 
-  <p id="demo"></p>
-    
-  <table id="table">
-    <tr>
-      <th>LOCATION</th>
-      <th>PASSED</th>
-      <th>MORE</th>
+  <h2>Test result/s</h2>
+</div>
+  <table id="myTable">
+
+    <tr class="myTr">
+      <td class="myTd">LOCATIONsssssssssssssssssssssssssssssssssssss11</td>
+      <td class="myTd fail">FAILED</td>
+      <td onclick="showMore('LOCATIONsssssssssssssssssssssssssssssssssssss11', 'SUCESS')">MORE</td>
     </tr>
+    <tr class="myTr">
+        <td class="myTd">LOCATION11</td>
+        <td class="myTd fail">FAILED</td>
+        <td onclick="showMore('LOCATION11', 'FAILED')">MORE</td>
+      </tr>
+
   </table>
+  <p>  
+    <span id="info-name"></span>
+    <span id="info-status"></span>  
+  </p>
 
+  <p class="LOCATION11"  style="display:none">Input</p>
+  <textarea rows="12" cols="50"  class="LOCATION11" style="display:none" disabled>
+      asd
+  </textarea>
+  <p class="LOCATION11" style="display:none">Output</p>
+  <textarea rows="12" cols="50"  class="LOCATION11" style="display:none" disabled>
 
+  </textarea>
+  <p class="LOCATION11" style="display:none">Expected Output</p>
+  <textarea rows="12" cols="50"  class="LOCATION11" style="display:none" disabled>
+      
+  </textarea>
+  <p class="LOCATION11" style="display:none">Output Code</p>
+  <textarea rows="4" cols="50" class="LOCATION11" style="display:none" disabled>
+      
+  </textarea>
+  <p class="LOCATION11" style="display:none">Expected Output Code</p>
+  <textarea rows="4" cols="50" class="LOCATION11" style="display:none" disabled>
+      
+  </textarea>
+</div>
+  <p class="LOCATION2" style="display:none">Input</p>
+  <textarea rows="12" cols="50"  class="LOCATION2" style="display:none" disabled>
+      hjk
+  </textarea>
+  <p class="LOCATION2" style="display:none">Output</p>
+  <textarea rows="12" cols="50"  class="LOCATION2" style="display:none" disabled>
+
+  </textarea>
+  <p class="LOCATION2" style="display:none">Expected Output</p>
+  <textarea rows="12" cols="50"  class="LOCATION2" style="display:none" disabled>
+      
+  </textarea>
+  <p class="LOCATION2" style="display:none">Output Code</p>
+  <textarea rows="4" cols="50" class="LOCATION2" style="display:none" disabled>
+      
+  </textarea>
+  <p class="LOCATION2" style="display:none">Expected Output Code</p>
+  <textarea rows="4" cols="50" class="LOCATION2" style="display:none" disabled>
+      
+  </textarea>
+  <p class="LOCATION3" style="display:none">Input</p>
+  <textarea rows="12" cols="50"  class="LOCATION3" style="display:none" disabled>
+      lkm
+  </textarea>
+  <p class="LOCATION3" style="display:none">Output</p>
+  <textarea rows="12" cols="50"  class="LOCATION3" style="display:none" disabled>
+
+  </textarea>
+  <p class="LOCATION3" style="display:none">Expected Output</p>
+  <textarea rows="12" cols="50"  class="LOCATION3" style="display:none" disabled>
+      
+  </textarea>
+  <p class="LOCATION3" style="display:none">Output Code</p>
+  <textarea rows="4" cols="50" class="LOCATION3" style="display:none" disabled>
+      
+  </textarea>
+  <p class="LOCATION3" style="display:none">Expected Output Code</p>
+  <textarea rows="4" cols="50" class="LOCATION3" style="display:none" disabled>
+      
+  </textarea>
   <script>
-    var cur= document.getElementById("mySelect").value
+    var cur= document.getElementById("mySelect").value;
+    var table = document.getElementById("myTable");
+    var tr = table.getElementsByTagName("tr");
+    var visible = 'all';
+    var isShowing = false;
+    var outputs = "";
+    var lastName = "";
+    show();
+
 function filter() {
-    console.log(cur)
     this.cur = document.getElementById("mySelect").value;
-    document.getElementById("demo").innerHTML = "You selected: " + cur;
+    show() ;
 }
+function show() {
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1].innerText;
+    if(td === "PASSED" && this.cur === "passed"){
+      tr[i].style.display = "";
+    }else if(td === "FAILED" && this.cur === "failed"){
+      tr[i].style.display = "";
+    }else if(this.cur === "all"){
+      tr[i].style.display = "";
+    }else{
+      tr[i].style.display = "none";
+    }
+  }
+}
+
+function showMore(name, status){
+  if(this.isShowing){
+    if(name === this.lastName){
+      for (i = 0; i < outputs.length; i++) {
+        this.outputs[i].style.display = "none";
+      }
+      this.isShowing = false;
+      this.outputs = "";
+      showInfo("", "");      
+    }else{
+      for(i = 0; i < outputs.length; i++) {
+        this.outputs[i].style.display = "none";
+      }
+      this.lastName = name;    
+      this.outputs = document.getElementsByClassName(name);
+      for (i = 0; i < outputs.length; i++) {
+        this.outputs[i].style.display = "";
+      }
+      showInfo(name, status);      
+    }
+  }else{
+    this.lastName = name;    
+    this.outputs = document.getElementsByClassName(name);
+    for (i = 0; i < outputs.length; i++) {
+      this.outputs[i].style.display = "";
+    }
+    this.isShowing = true;
+    showInfo(name, status);      
+  }
+}
+  function showInfo(name, status){
+    document.getElementById("info-name").innerText=name;
+    document.getElementById("info-status").innerHTML=status
+    if(status === "FAILED"){
+      document.getElementById("info-status").setAttribute("class", "fail");       
+    }else{
+      document.getElementById("info-status").setAttribute("class", "pass");             
+    }
+  }
 
 
 </script>
