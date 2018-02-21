@@ -21,6 +21,8 @@ class XMLArgument{
             $this->type = "constant";
         }elseif($this->name == "var"){
             $this->type = "variable";
+        }elseif($this->name == "type"){
+            $this->type = "type";
         }else{
             exit(21);
         }

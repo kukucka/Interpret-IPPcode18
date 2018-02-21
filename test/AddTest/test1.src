@@ -1,0 +1,14 @@
+.IPPcode18
+DEFVAR GF@counter
+MOVE GF@counter  string@
+#Inicializace  proměnné na prázdný řetězec
+#Jednoduchá iterace , dokud  nebude  splněna zadaná podmínka
+LABEL while
+JUMPIFEQ end  GF@counter  string@
+WRITE string@řetězec\032s\032lomí##tkem\032\092\032a\010novým\035řádkem
+WRITE GF@counter
+WRITE string@\010
+CONCAT GF@counter  GF@counter  string@a
+JUMP while
+LABEL end
+MOVE GF@Souther bool@false

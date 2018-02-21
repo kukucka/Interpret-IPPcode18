@@ -6,9 +6,9 @@ Class Analyzer{
     function __construct(){
         $this->stdin = fopen('php://stdin', 'r');
         do{
-            $line = utf8_encode($this->readLine());
-            $line = preg_replace('/\s*/','', $line);          
-        }while($line == null);
+            $line = utf8_encode($this->readLine()); //mozna ne encode tady musim otestovat
+            $line = preg_replace('/\s*/','', $line);   
+        }while($line == null && !feof($this->stdin));
         if(strtolower($line) != ".ippcode18"){
             exit(21);
         }
@@ -39,7 +39,8 @@ Class Analyzer{
                 return null;
             }else{
                 for($i = 0; $i < $numOfArguments; $i++){
-                    $classifiedArguments[$i] = $this->analyzeArgument($arrayOfArguments[$i], $i);
+                    $classifiedArguments[$i] = $this->analyzeArgument($arrayOfArguments[$i], $i, $instruction);
+                    
                     if($classifiedArguments[$i] == null){
                         exit(21);
                     }
@@ -75,7 +76,7 @@ Class Analyzer{
         }
     }
       
-    function analyzeArgument($argument, $position){
+    function analyzeArgument($argument, $position, $instruction){
         if(preg_match('/^int@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
             //tady poresit asi jestli je to true nebo false
@@ -98,6 +99,13 @@ Class Analyzer{
                 return new XMLArgument("var", $argument, $position+1);
             }
             return null;
+        }else if(strtolower($instruction->getName()) == 'read'){
+            if(preg_match('/^int$/', trim($argument)) || preg_match('/^bool$/', trim($argument)) || 
+            preg_match('/^string$/', trim($argument))){
+                return new XMLArgument("type", $argument, $position+1);                                                    
+            }else{
+                exit(21);                                
+            }
         }else if(preg_match('/^([a-zA-Z_-]|[*]|[$]|[%]|[&])([a-zA-Z0-9_-]|[*]|[$]|[%]|[&])*$/',$argument)){
             return new XMLArgument("label", $argument, $position+1);            
         }else{
@@ -157,7 +165,7 @@ Class Analyzer{
                 }
                 break;
             case "read":
-                if(($arrayOfArguments[0]->getType() != "variable") || $arrayOfArguments[1]->getType() != "constant"){
+                if(($arrayOfArguments[0]->getType() != "variable") || $arrayOfArguments[1]->getType() != "type"){
                     exit(21);
                 }
                 break;

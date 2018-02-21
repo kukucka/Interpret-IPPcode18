@@ -434,8 +434,11 @@ class Execute:
 
     def getInput(self):
         sys.stdin.flush()
-        entered = input()
-        return entered
+        try:
+            entered = input()
+            return entered
+        except:
+            exit(21) #//predelat
 
     def checkReadBool(self, value):
         if re.match(r'^(T|t)(R|r)(U|u)(E|e)$', value):
