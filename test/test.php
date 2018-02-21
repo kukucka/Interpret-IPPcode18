@@ -1,4 +1,5 @@
 <?php
+include('HTMLInstance.php');
 
 $shortopts  = "";
 // Required value

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Title</title>
+  <meta charset="UTF-8">
+<meta name="description" content="Tests">
+<meta name="author" content="Marek Kukucka, xkukuc04, 2BIT">
+
+</head>
+
+<body>
+The content of the document......
+  <select id="mySelect" onchange="filter()">
+    <option value="all" selected="selected">All</option>
+    <option value="passed">Passed</option>
+    <option value="failed">Failed</option>
+    </select> 
+  <p id="demo"></p>
+    
+  <table id="table">
+    <tr>
+      <th>LOCATION</th>
+      <th>PASSED</th>
+      <th>MORE</th>
+    </tr>
+  </table>
+
+
+  <script>
+    var cur= document.getElementById("mySelect").value
+function filter() {
+    console.log(cur)
+    this.cur = document.getElementById("mySelect").value;
+    document.getElementById("demo").innerHTML = "You selected: " + cur;
+}
+
+
+</script>
+</body>
+</html> 
+

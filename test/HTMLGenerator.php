@@ -1,7 +1,7 @@
 <?php
 
-Class HRMLGenerator{
-    
+Class HTMLGenerator{
+    priva
 }
 
 ?>
