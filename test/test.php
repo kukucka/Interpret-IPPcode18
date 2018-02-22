@@ -1,8 +1,14 @@
 <?php
 include('HTMLGenerator.php');
 
-$shortopts  = "";
+$shortopts  = "p::";
+$shortopts  .= "i::";
+$shortopts  .= "d::";
+$shortopts  .= "h";
+$shortopts  .= "r";
+
 // Required value
+//Existence parse and interpretu
 
 $longopts  = array(
     "parse-script::",
@@ -14,6 +20,7 @@ $longopts  = array(
 $options = getopt($shortopts, $longopts);
 
 if((count($options) + 1) != $argc){
+    print("You entered wrong arguments use --help for more informations\n");
     exit(21);
 }
 $generator = new HTMLGenerator();
@@ -22,31 +29,48 @@ $int = "interpret.py";
 $dir = "./";
 $recur = False;
 // Zjistit jestli se to ma ukoncit
-if(array_key_exists('help', $options)){
+if(array_key_exists('help', $options) || array_key_exists('h', $options)){
     print("--directory=path -path is the adress of folder to iterate through\n");
     print("--recursice - test.php will run through all folders in set folder recursively\n");
     print("--parse-script=file -file position of parse.php\n");
     print("--int-script=file -file position of interpret.py\n");
     exit(0);
 }
-if(array_key_exists('recursive', $options)){
+if(array_key_exists('recursive', $options) || array_key_exists('r', $options)){
     $recur = True;
 }
 if(array_key_exists('directory', $options)){
     $dir = $options['directory'];
 }
+if(array_key_exists('d', $options)){
+    $dir = $options['d'];
+}
 if(array_key_exists('int-script', $options)){
     $int = $options['int-script'];
 }
+if( array_key_exists('i', $options)){
+    $int = $options['i'];
+}
 if(array_key_exists('parse-script', $options)){
     $parse = $options['parse-script'];
+}
+if(array_key_exists('p', $options)){
+    $parse = $options['p'];
 }
 if($recur){
     $output = shell_exec("find $dir -name \*.src -type f" );    
 }else{
     $output = shell_exec("find $dir -maxdepth 1 -name \*.src -type f");    
 }
+if(!file_exists($parse)){
+    print("File parse.php doesnt exist\n");
+    exit(21);
+}
 
+if(!file_exists($int)){
+    print("File interpret.py doesnt exist\n");
+    exit(21);    
+}
 
 $split = preg_split('/\s+/' , $output);
 $num = 0;
@@ -87,7 +111,7 @@ foreach($split as $o){
         $rcCode = shell_exec("cat $o.rc");
         $outExpectedHTML = shell_exec("cat $o.out");
         $inHTML = shell_exec("cat $o.in");
-
+        $outHTML = "";
         // $fileOc = fopen("$o".".oc", "r") or die("Unable to open file!");        
         // $code = fgets($fileOc);
         if(trim($outCode) != 0){
