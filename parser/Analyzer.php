@@ -2,16 +2,38 @@
 
 Class Analyzer{
     private $stdin;
+    private $commentsNumber;
+    private $instructionNumber;
 
     function __construct(){
         $this->stdin = fopen('php://stdin', 'r');
+        $this->commentsNumber = 0;
         do{
             $line = utf8_encode($this->readLine()); //mozna ne encode tady musim otestovat
+            if(preg_match('/#/', $line)){
+                $this->iterateComments();
+            } 
             $line = preg_replace('/\s*/','', $line);   
         }while($line == null && !feof($this->stdin));
         if(strtolower($line) != ".ippcode18"){
             exit(21);
         }
+    }
+    
+    function iterateComments(){
+        $this->commentsNumber += 1;
+    }
+
+    function iterateInstruction(){
+        $this->instructionNumber += 1;
+    }
+
+    function getCommentsNumber(){
+        return $this->commentsNumber;
+    }
+
+    function getInstructionNumber(){
+        return $this->instructionNumber;        
     }
 
     function readLine(){
@@ -19,6 +41,9 @@ Class Analyzer{
             return null;
         }
         $line = fgets($this->stdin);
+        if(preg_match('/#/', $line)){
+            $this->iterateComments();
+        }
         $filteredLine = preg_replace('/#.*/','', $line);
         return $filteredLine;
     }
@@ -305,6 +330,7 @@ Class Analyzer{
         }else{
             exit(21);
         }
+        $this->iterateInstruction();
         return $newInstruction;
     }
 }
