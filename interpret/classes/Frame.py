@@ -53,7 +53,7 @@ class Frame:
                 print("Error varName, var doesnt exist")
                 exit(420)
         else:
-            print("Error varialbe " + varName + " doesnt exist")
+            print("Error varialbe " + str(varName) + " doesnt exist")
             exit(420)
 
     def wipeFrame(self):

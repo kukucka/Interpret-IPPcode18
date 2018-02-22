@@ -1,6 +1,6 @@
-*.txt
-.idea
 .vscode
-output.out
-venv
 .idea
+.txt
+venv
+__pychache__
+.html

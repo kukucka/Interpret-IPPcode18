@@ -19,7 +19,24 @@ class Execute:
         self.stack = Stack()
         self.callStack = Stack()
         self.labels = {}
+    #     Extension
+        self.executed_inst = 0
+        self.max_var = 0
     # TODO co vytysknout kdyz je prommena nedefinovana
+    def get_max_var(self):
+        return self.max_var
+
+    def get_executed_inst(self):
+        return self.executed_inst
+
+    def iterate_exec_inst(self):
+        self.executed_inst += 1
+
+    def check_amount_var(self):
+        new_max_var = self.frames.returnGfNumberOfVar() + self.frames.returnTfNumberOfVar() + self.frames.returnLfNumberOfVar()
+        if new_max_var > self.max_var:
+            self.max_var = new_max_var
+
     def start(self):
         self.getLabels()
         while self.curInst <= len(self.dicOfCom):
@@ -98,7 +115,8 @@ class Execute:
                 print("Error execute start")
                 exit(420)
             self.curInst += 1
-
+            self.iterate_exec_inst()
+            self.check_amount_var()
 
     def executeDprint(self, argument):
         type = argument[0].getType()

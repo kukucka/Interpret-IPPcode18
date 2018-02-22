@@ -151,3 +151,35 @@ class FrameManager:
                     sys.stderr.write("Variable " + str(key) + " is not initialized\n")
         else:
             sys.stderr.write("Local frame not defined.\n")
+
+    #FOR EXTENSION
+
+    def returnGfNumberOfVar(self):
+        list = self.gf.copyFrame()
+        num = 0
+        for key,value in list.items():
+            if self.gf.checkIfVarInicialized(key):
+                num += 1
+        return num
+
+    def returnTfNumberOfVar(self):
+        if self.tfDefined == True:
+            list = self.tf.copyFrame()
+            num = 0
+            for key,value in list.items():
+                if self.tf.checkIfVarInicialized(key):
+                    num += 1
+            return num
+        else:
+            return 0
+    def returnLfNumberOfVar(self):
+        if self.lfDefined == True:
+            list = self.lf.copyFrame()
+            num = 0
+            for key,value in list.items():
+                if self.lf.checkIfVarInicialized(key):
+                    num += 1
+            return num
+
+        else:
+            return 0

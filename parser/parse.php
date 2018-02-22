@@ -9,6 +9,7 @@ include('Analyzer.php');
 //TODO popsat rozsireni ze vytvori prazdny soubor
 $loc = false;
 $comm = false;
+$stats = false;
 $file = "";
 
 $shortopts  = "h";
@@ -44,6 +45,7 @@ if(array_key_exists('comments', $options)){
 }
 if(array_key_exists('stats', $options)){
     $file = $options['stats'];
+    $stats = true;
 }else if($comm || $loc){
     exit(10);
 }
@@ -72,28 +74,29 @@ while(($line=$analyzer->readLine()) != null){
 $xmlCreator->endXML();
 $commentNumbers = $analyzer->getCommentsNumber();
 $instructionNumber = $analyzer->getInstructionNumber();
-
-$myfile = fopen($file, "w");
-
-if($comm && $loc){
-    if($locPos > $commPos){
-        fwrite($myfile, $commentNumbers);    
-        fwrite($myfile, "\n");        
-        fwrite($myfile, $instructionNumber);    
+//ROZSIRENI
+if($stats){
+    $myfile = fopen($file, "w");
+    if($comm && $loc){
+        if($locPos > $commPos){
+            fwrite($myfile, $commentNumbers);    
+            fwrite($myfile, "\n");        
+            fwrite($myfile, $instructionNumber);    
+        }else{
+            fwrite($myfile, $instructionNumber); 
+            fwrite($myfile, "\n");                
+            fwrite($myfile, $commentNumbers);    
+        }
     }else{
-        fwrite($myfile, $instructionNumber); 
-        fwrite($myfile, "\n");                
-        fwrite($myfile, $commentNumbers);    
+        if($comm){
+            fwrite($myfile, $commentNumbers);    
+        }
+        if($loc){
+            fwrite($myfile, $instructionNumber);    
+        }
     }
-}else{
-    if($comm){
-        fwrite($myfile, $commentNumbers);    
-    }
-    if($loc){
-        fwrite($myfile, $instructionNumber);    
-    }
+    fclose($myfile);
 }
 
-fclose($myfile);
 exit(0);
 ?>
