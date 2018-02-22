@@ -1,5 +1,5 @@
 <?php
-include('HTMLInstance.php');
+include('HTMLGenerator.php');
 
 $shortopts  = "";
 // Required value
@@ -16,7 +16,7 @@ $options = getopt($shortopts, $longopts);
 if((count($options) + 1) != $argc){
     exit(21);
 }
-
+$generator = new HTMLGenerator();
 $parse = "parse.php";
 $int = "interpret.py";
 $dir = "./";
@@ -82,34 +82,54 @@ foreach($split as $o){
 //php5.6 nez to nahraju a python3.6, co kdyz tam bude vic radku, vyresit read
 foreach($split as $o){
     if($o != ""){
-        $out = shell_exec("cat $o.src | php $parse > $o.xml; echo $?" );
-        $fileRc = fopen("$o".".rc", "r") or die("Unable to open file!");        
-        $code2 = fgets($fileRc);
-        fclose($fileRc);   
+        $noMistake = true;
+        $outCode = shell_exec("cat $o.src | php $parse > $o.xml; echo $?" );
+        $rcCode = shell_exec("cat $o.rc");
+        $outExpectedHTML = shell_exec("cat $o.out");
+        $inHTML = shell_exec("cat $o.in");
+
         // $fileOc = fopen("$o".".oc", "r") or die("Unable to open file!");        
         // $code = fgets($fileOc);
-        if(trim($out) != 0){
-            if(trim($out) != trim($code2)){
-                print("ERROR PARSE");
+        if(trim($outCode) != 0){
+            if(trim($outCode) != trim($rcCode)){
+                $noMistake = false;                
             }else{
-                print("PLANNED");
+                $noMistake = true;                
             }
         }else{
-            $out2 = shell_exec("cat $o.in | python3.6 $int --source=$o.xml > $o.tmp; echo $?");
-            shell_exec("cat $o.xml");
+            $outCode = shell_exec("cat $o.in | python3.6 $int --source=$o.xml > $o.tmp; echo $?");
+            $outHTML = shell_exec("cat $o.tmp");
+
             $diffOut = shell_exec("diff $o.out $o.tmp");
-            if(trim($out2) != trim($code2)){
-                print("ERROR INT CODES");
+            if(trim($outCode) != trim($rcCode)){
+                $noMistake = false;
             }else if($diffOut != ""){
-                print("ERROR INT VALUE");
+                $noMistake = false;
             }
             unlink($o . ".tmp");
             unlink($o . ".xml");   
         }
+        if($noMistake){
+            $generator->tablePiece($o, "PASSED");
+        }else{
+            $generator->tablePiece($o, "FAILED");
+        }
+        $generator->textInputElementPiece($o, $inHTML);
+        $generator->textOutputElementPiece($o, $outHTML);
+        $generator->textExpectedOutputElementPiece($o, $outExpectedHTML);
+        $generator->textOutputCodeElementPiece($o, $outCode);
+        $generator->textExpectedOutputCodeElementPiece($o, $rcCode);
         // print "$out2";        
     }
 }    
+// $generator->tablePiece("test1", "FAILED");
+// $generator->textInputElementPiece("test1", "42");
+// $generator->textOutputElementPiece("test1", "Ahoj kame");
+// $generator->textExpectedOutputElementPiece("test1", "ahoj Kame");
+// $generator->textOutputCodeElementPiece("test1", "0");
+// $generator->textExpectedOutputCodeElementPiece("test1", "21");
 
-var_dump($split);
+$generator->fullHTML();
+// var_dump($split);
 
 ?>

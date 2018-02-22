@@ -153,7 +153,6 @@ Class Analyzer{
             case "eq":
             case "and":
             case "or":
-            case "not":
             case "stri2int":
             case "concat":
             case "getchar":
@@ -172,6 +171,7 @@ Class Analyzer{
             case "write":
             case "dprint":
             case "pushs":
+            case "not":            
                 if($arrayOfArguments[0]->getType() != "variable" && $arrayOfArguments[0]->getType() != "constant"){
                     exit(21);
                 }
@@ -220,7 +220,7 @@ Class Analyzer{
             }elseif(preg_match('/(A|a)(N|n)(D|d)/', $instruction)){
                 $newInstruction = new XMLInstruction('and',3);
             }elseif(preg_match('/(N|n)(O|o)(T|t)/', $instruction)){
-                $newInstruction = new XMLInstruction('not',3);
+                $newInstruction = new XMLInstruction('not',2);
             }else{
                 exit(21);
             }

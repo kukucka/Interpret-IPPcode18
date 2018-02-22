@@ -493,7 +493,6 @@ class Execute:
             self.assignValueToVar(arguments[0].getValue(), value, 'int')
         elif typeOfOperation == AR.IDIV:
             if values[1] == 0:
-                print("ERROR cant divide with zero")
                 exit(57)
             value = int(values[0] / values[1])
             self.assignValueToVar(arguments[0].getValue(), value, 'int')

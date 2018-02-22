@@ -50,7 +50,7 @@
     <tr class="myTr">
       <td class="myTd">LOCATIONsssssssssssssssssssssssssssssssssssss11</td>
       <td class="myTd fail">FAILED</td>
-      <td onclick="showMore('LOCATIONsssssssssssssssssssssssssssssssssssss11', 'SUCESS')">MORE</td>
+      <td onclick="showMore('LOCATION11', 'SUCESS')">MORE</td>
     </tr>
     <tr class="myTr">
         <td class="myTd">LOCATION11</td>
@@ -125,77 +125,4 @@
   <textarea rows="4" cols="50" class="LOCATION3" style="display:none" disabled>
       
   </textarea>
-  <script>
-    var cur= document.getElementById("mySelect").value;
-    var table = document.getElementById("myTable");
-    var tr = table.getElementsByTagName("tr");
-    var visible = 'all';
-    var isShowing = false;
-    var outputs = "";
-    var lastName = "";
-    show();
-
-function filter() {
-    this.cur = document.getElementById("mySelect").value;
-    show() ;
-}
-function show() {
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1].innerText;
-    if(td === "PASSED" && this.cur === "passed"){
-      tr[i].style.display = "";
-    }else if(td === "FAILED" && this.cur === "failed"){
-      tr[i].style.display = "";
-    }else if(this.cur === "all"){
-      tr[i].style.display = "";
-    }else{
-      tr[i].style.display = "none";
-    }
-  }
-}
-
-function showMore(name, status){
-  if(this.isShowing){
-    if(name === this.lastName){
-      for (i = 0; i < outputs.length; i++) {
-        this.outputs[i].style.display = "none";
-      }
-      this.isShowing = false;
-      this.outputs = "";
-      showInfo("", "");      
-    }else{
-      for(i = 0; i < outputs.length; i++) {
-        this.outputs[i].style.display = "none";
-      }
-      this.lastName = name;    
-      this.outputs = document.getElementsByClassName(name);
-      for (i = 0; i < outputs.length; i++) {
-        this.outputs[i].style.display = "";
-      }
-      showInfo(name, status);      
-    }
-  }else{
-    this.lastName = name;    
-    this.outputs = document.getElementsByClassName(name);
-    for (i = 0; i < outputs.length; i++) {
-      this.outputs[i].style.display = "";
-    }
-    this.isShowing = true;
-    showInfo(name, status);      
-  }
-}
-  function showInfo(name, status){
-    document.getElementById("info-name").innerText=name;
-    document.getElementById("info-status").innerHTML=status
-    if(status === "FAILED"){
-      document.getElementById("info-status").setAttribute("class", "fail");       
-    }else{
-      document.getElementById("info-status").setAttribute("class", "pass");             
-    }
-  }
-
-
-</script>
-</body>
-</html> 
-
+  <script> var cur= document.getElementById("mySelect").value; var table = document.getElementById("myTable"); var tr = table.getElementsByTagName("tr"); var visible = 'all'; var isShowing = false; var outputs = ""; var lastName = ""; show(); function filter() { this.cur = document.getElementById("mySelect").value; removeInfo() ; show() ; } function show() { for (i = 0; i < tr.length; i++) { td = tr[i].getElementsByTagName("td")[1].innerText; if(td === "PASSED" && this.cur === "passed"){ tr[i].style.display = ""; }else if(td === "FAILED" && this.cur === "failed"){ tr[i].style.display = ""; }else if(this.cur === "all"){ tr[i].style.display = ""; }else{ tr[i].style.display = "none"; } } } function showMore(name, status){ if(this.isShowing){ if(name === this.lastName){ for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = "none"; } this.isShowing = false; this.outputs = ""; showInfo("", ""); }else{ for(i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = "none"; } this.lastName = name; this.outputs = document.getElementsByClassName(name); for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = ""; } showInfo(name, status); } }else{ this.lastName = name; this.outputs = document.getElementsByClassName(name); for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = ""; } this.isShowing = true; showInfo(name, status); } } function showInfo(name, status){ document.getElementById("info-name").innerText=name; document.getElementById("info-status").innerHTML=status; if(status === "FAILED"){ document.getElementById("info-status").setAttribute("class", "fail"); }else{ document.getElementById("info-status").setAttribute("class", "pass"); } } function removeInfo(){ if(this.isShowing){ for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = "none"; } this.isShowing = false; this.outputs = ""; showInfo("", ""); } } </script> </body> </html> 

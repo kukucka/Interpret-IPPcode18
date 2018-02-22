@@ -2,12 +2,9 @@
 DEFVAR GF@counter
 not GF@counter bool@false
 write GF@counter
-
 not GF@counter bool@true
 write GF@counter
-
 not GF@counter GF@counter
 write GF@counter
-
 not GF@counter GF@counter
 write GF@counter

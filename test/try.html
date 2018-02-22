@@ -1,0 +1,212 @@
+
+<!DOCTYPE html> <html> <head> <title>Page Title</title> <meta charset="UTF-8"> <meta name="description" content="Tests"> <meta name="author" content="Marek Kukucka, xkukuc04, 2BIT"> </head> <style> #myTable { border-collapse: collapse; border: 1px solid #ddd; font-size: 16px; } .myTr{ border-bottom: 1px solid #ddd; } .pass{ color: green; } .fail{ color: red; } .myTd{ padding-right: 25px; } #info-name{ font-size: 18px; padding-left: 15px; padding-right: 25px; } #info-status{ font-size: 18px; } </style> <body> <h1>Tester</h1> <div>Choose tests: <select id="mySelect" onchange="filter()"> <option value="all" selected="selected">All</option> <option value="passed">Passed</option> <option value="failed">Failed</option> </select> <h2>Test result/s</h2> </div> <table id="myTable"> <tr class="myTr"><td class="myTd">./AddTest/move</td><td class="myTd pass">PASSED</td><td onclick="showMore('./AddTest/move', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./AddTest/subTest.src/test2</td><td class="myTd pass">PASSED</td><td onclick="showMore('./AddTest/subTest.src/test2', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./AddTest/test1</td><td class="myTd pass">PASSED</td><td onclick="showMore('./AddTest/test1', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./read_write/read_write_int</td><td class="myTd pass">PASSED</td><td onclick="showMore('./read_write/read_write_int', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/add_correct/add_correct</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/add_correct/add_correct', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/arithmetic_operations/add</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/arithmetic_operations/add', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/arithmetic_operations/div</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/arithmetic_operations/div', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/arithmetic_operations/div_with_zero</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/arithmetic_operations/div_with_zero', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/arithmetic_operations/mul</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/arithmetic_operations/mul', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/arithmetic_operations/sub</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/arithmetic_operations/sub', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/empty_file/empty_file</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/empty_file/empty_file', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/label_test/jump</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/label_test/jump', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/label_test/jumpneq</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/label_test/jumpneq', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/logic_operations/and</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/logic_operations/and', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/logic_operations/compare/eq</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/logic_operations/compare/eq', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/logic_operations/compare/gt</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/logic_operations/compare/gt', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/logic_operations/compare/lt</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/logic_operations/compare/lt', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/logic_operations/not</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/logic_operations/not', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/logic_operations/or</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/logic_operations/or', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/read_write/read_write_int</td><td class="myTd pass">PASSED</td><td onclick="showMore('./stack_literal/read_write/read_write_int', 'PASSED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/stack_literal/stack_literal</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/stack_literal/stack_literal', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/stack_variable/stack_variable</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/stack_variable/stack_variable', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/test_move/test_move</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/test_move/test_move', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./stack_literal/type/type</td><td class="myTd fail">FAILED</td><td onclick="showMore('./stack_literal/type/type', 'FAILED')">More</td></tr> <tr class="myTr"><td class="myTd">./Test4/test3</td><td class="myTd pass">PASSED</td><td onclick="showMore('./Test4/test3', 'PASSED')">More</td></tr> </table> <p> <span id="info-name"></span> <span id="info-status"></span> </p> <p class="./AddTest/move" style="display:none">Input</p><textarea rows="6" cols="50"  class="./AddTest/move" style="display:none" disabled><?xml version="1.0" encoding="UTF-8"?>
+<program language="IPPcode18">
+ <instruction order="1" opcode="DEFVAR">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+ <instruction order="2" opcode="MOVE">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="string"></arg2>
+ </instruction>
+ <instruction order="3" opcode="LABEL">
+  <arg1 type="label">while</arg1>
+ </instruction>
+ <instruction order="4" opcode="JUMPIFEQ">
+  <arg1 type="label">end</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="string">aaa</arg3>
+ </instruction>
+ <instruction order="5" opcode="WRITE">
+  <arg1 type="string">counter\032obsahuje\032</arg1>
+ </instruction>
+ <instruction order="6" opcode="WRITE">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+ <instruction order="7" opcode="WRITE">
+  <arg1 type="string">\010</arg1>
+ </instruction>
+ <instruction order="8" opcode="CONCAT">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="string">a</arg3>
+ </instruction>
+ <instruction order="9" opcode="JUMP">
+  <arg1 type="label">while</arg1>
+ </instruction>
+ <instruction order="10" opcode="LABEL">
+  <arg1 type="label">end</arg1>
+ </instruction>
+</program>
+</textarea> <p class="./AddTest/move" style="display:none">Output</p><textarea rows="12" cols="50"  class="./AddTest/move" style="display:none" disabled>counter obsahuje 
+counter obsahuje a
+counter obsahuje aa
+</textarea> <p class="./AddTest/move" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./AddTest/move" style="display:none" disabled>counter obsahuje 
+counter obsahuje a
+counter obsahuje aa
+</textarea> <p class="./AddTest/move" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./AddTest/move" style="display:none" disabled>0
+</textarea> <p class="./AddTest/move" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./AddTest/move" style="display:none" disabled>0
+</textarea> <p class="./AddTest/subTest.src/test2" style="display:none">Input</p><textarea rows="6" cols="50"  class="./AddTest/subTest.src/test2" style="display:none" disabled><?xml version="1.0" encoding="UTF-8"?>
+<program language="IPPcode18">
+ <instruction order="1" opcode="DEFVAR">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+ <instruction order="2" opcode="MOVE">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="string"></arg2>
+ </instruction>
+ <instruction order="3" opcode="LABEL">
+  <arg1 type="label">while</arg1>
+ </instruction>
+ <instruction order="4" opcode="JUMPIFEQ">
+  <arg1 type="label">end</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="string">aaa</arg3>
+ </instruction>
+ <instruction order="5" opcode="WRITE">
+  <arg1 type="string">counter\032obsahuje\032</arg1>
+ </instruction>
+ <instruction order="6" opcode="WRITE">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+ <instruction order="7" opcode="WRITE">
+  <arg1 type="string">\010</arg1>
+ </instruction>
+ <instruction order="8" opcode="CONCAT">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="string">a</arg3>
+ </instruction>
+ <instruction order="9" opcode="JUMP">
+  <arg1 type="label">while</arg1>
+ </instruction>
+ <instruction order="10" opcode="LABEL">
+  <arg1 type="label">end</arg1>
+ </instruction>
+</program>
+</textarea> <p class="./AddTest/subTest.src/test2" style="display:none">Output</p><textarea rows="12" cols="50"  class="./AddTest/subTest.src/test2" style="display:none" disabled>counter obsahuje 
+counter obsahuje a
+counter obsahuje aa
+</textarea> <p class="./AddTest/subTest.src/test2" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./AddTest/subTest.src/test2" style="display:none" disabled>counter obsahuje 
+counter obsahuje a
+counter obsahuje aa
+</textarea> <p class="./AddTest/subTest.src/test2" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./AddTest/subTest.src/test2" style="display:none" disabled>0
+</textarea> <p class="./AddTest/subTest.src/test2" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./AddTest/subTest.src/test2" style="display:none" disabled>0
+</textarea> <p class="./AddTest/test1" style="display:none">Input</p><textarea rows="6" cols="50"  class="./AddTest/test1" style="display:none" disabled><?xml version="1.0" encoding="UTF-8"?>
+<program language="IPPcode18">
+ <instruction order="1" opcode="DEFVAR">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+ <instruction order="2" opcode="MOVE">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="string"></arg2>
+ </instruction>
+ <instruction order="3" opcode="LABEL">
+  <arg1 type="label">while</arg1>
+ </instruction>
+ <instruction order="4" opcode="JUMPIFEQ">
+  <arg1 type="label">end</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="string"></arg3>
+ </instruction>
+ <instruction order="5" opcode="WRITE">
+  <arg1 type="string">řetězec\032s\032lomí</arg1>
+ </instruction>
+ <instruction order="6" opcode="WRITE">
+  <arg1 type="var">GF@counter</arg1>
+ </instruction>
+ <instruction order="7" opcode="WRITE">
+  <arg1 type="string">\010</arg1>
+ </instruction>
+ <instruction order="8" opcode="CONCAT">
+  <arg1 type="var">GF@counter</arg1>
+  <arg2 type="var">GF@counter</arg2>
+  <arg3 type="string">a</arg3>
+ </instruction>
+ <instruction order="9" opcode="JUMP">
+  <arg1 type="label">while</arg1>
+ </instruction>
+ <instruction order="10" opcode="LABEL">
+  <arg1 type="label">end</arg1>
+ </instruction>
+ <instruction order="11" opcode="MOVE">
+  <arg1 type="var">GF@Souther</arg1>
+  <arg2 type="bool">false</arg2>
+ </instruction>
+</program>
+</textarea> <p class="./AddTest/test1" style="display:none">Output</p><textarea rows="12" cols="50"  class="./AddTest/test1" style="display:none" disabled>Error varName, var doesnt exist
+</textarea> <p class="./AddTest/test1" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./AddTest/test1" style="display:none" disabled>Error varName, var doesnt exist
+</textarea> <p class="./AddTest/test1" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./AddTest/test1" style="display:none" disabled>164
+</textarea> <p class="./AddTest/test1" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./AddTest/test1" style="display:none" disabled>164
+</textarea> <p class="./read_write/read_write_int" style="display:none">Input</p><textarea rows="6" cols="50"  class="./read_write/read_write_int" style="display:none" disabled>54</textarea> <p class="./read_write/read_write_int" style="display:none">Output</p><textarea rows="12" cols="50"  class="./read_write/read_write_int" style="display:none" disabled>54</textarea> <p class="./read_write/read_write_int" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./read_write/read_write_int" style="display:none" disabled>54</textarea> <p class="./read_write/read_write_int" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./read_write/read_write_int" style="display:none" disabled>0
+</textarea> <p class="./read_write/read_write_int" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./read_write/read_write_int" style="display:none" disabled>0</textarea> <p class="./stack_literal/add_correct/add_correct" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/add_correct/add_correct" style="display:none" disabled></textarea> <p class="./stack_literal/add_correct/add_correct" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/add_correct/add_correct" style="display:none" disabled>25</textarea> <p class="./stack_literal/add_correct/add_correct" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/add_correct/add_correct" style="display:none" disabled>25</textarea> <p class="./stack_literal/add_correct/add_correct" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/add_correct/add_correct" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/add_correct/add_correct" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/add_correct/add_correct" style="display:none" disabled>0</textarea> <p class="./stack_literal/arithmetic_operations/add" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/arithmetic_operations/add" style="display:none" disabled></textarea> <p class="./stack_literal/arithmetic_operations/add" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/add" style="display:none" disabled>5</textarea> <p class="./stack_literal/arithmetic_operations/add" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/add" style="display:none" disabled>5</textarea> <p class="./stack_literal/arithmetic_operations/add" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/add" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/arithmetic_operations/add" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/add" style="display:none" disabled>0</textarea> <p class="./stack_literal/arithmetic_operations/div" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/arithmetic_operations/div" style="display:none" disabled></textarea> <p class="./stack_literal/arithmetic_operations/div" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/div" style="display:none" disabled>-2</textarea> <p class="./stack_literal/arithmetic_operations/div" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/div" style="display:none" disabled>-2</textarea> <p class="./stack_literal/arithmetic_operations/div" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/div" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/arithmetic_operations/div" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/div" style="display:none" disabled>0</textarea> <p class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none" disabled></textarea> <p class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none" disabled></textarea> <p class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none" disabled></textarea> <p class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none" disabled>57
+</textarea> <p class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/div_with_zero" style="display:none" disabled>57</textarea> <p class="./stack_literal/arithmetic_operations/mul" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/arithmetic_operations/mul" style="display:none" disabled></textarea> <p class="./stack_literal/arithmetic_operations/mul" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/mul" style="display:none" disabled>-50</textarea> <p class="./stack_literal/arithmetic_operations/mul" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/mul" style="display:none" disabled>-50</textarea> <p class="./stack_literal/arithmetic_operations/mul" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/mul" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/arithmetic_operations/mul" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/mul" style="display:none" disabled>0</textarea> <p class="./stack_literal/arithmetic_operations/sub" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/arithmetic_operations/sub" style="display:none" disabled></textarea> <p class="./stack_literal/arithmetic_operations/sub" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/sub" style="display:none" disabled>-25</textarea> <p class="./stack_literal/arithmetic_operations/sub" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/arithmetic_operations/sub" style="display:none" disabled>-25</textarea> <p class="./stack_literal/arithmetic_operations/sub" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/sub" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/arithmetic_operations/sub" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/arithmetic_operations/sub" style="display:none" disabled>0</textarea> <p class="./stack_literal/empty_file/empty_file" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/empty_file/empty_file" style="display:none" disabled></textarea> <p class="./stack_literal/empty_file/empty_file" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/empty_file/empty_file" style="display:none" disabled>-25</textarea> <p class="./stack_literal/empty_file/empty_file" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/empty_file/empty_file" style="display:none" disabled></textarea> <p class="./stack_literal/empty_file/empty_file" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/empty_file/empty_file" style="display:none" disabled>21
+</textarea> <p class="./stack_literal/empty_file/empty_file" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/empty_file/empty_file" style="display:none" disabled>21</textarea> <p class="./stack_literal/label_test/jump" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/label_test/jump" style="display:none" disabled></textarea> <p class="./stack_literal/label_test/jump" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/label_test/jump" style="display:none" disabled>012</textarea> <p class="./stack_literal/label_test/jump" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/label_test/jump" style="display:none" disabled>0
+1
+2</textarea> <p class="./stack_literal/label_test/jump" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/label_test/jump" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/label_test/jump" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/label_test/jump" style="display:none" disabled>0</textarea> <p class="./stack_literal/label_test/jumpneq" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/label_test/jumpneq" style="display:none" disabled></textarea> <p class="./stack_literal/label_test/jumpneq" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/label_test/jumpneq" style="display:none" disabled>0123456789</textarea> <p class="./stack_literal/label_test/jumpneq" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/label_test/jumpneq" style="display:none" disabled>0
+1
+2
+3
+4
+5
+6
+7
+8
+9</textarea> <p class="./stack_literal/label_test/jumpneq" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/label_test/jumpneq" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/label_test/jumpneq" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/label_test/jumpneq" style="display:none" disabled>0</textarea> <p class="./stack_literal/logic_operations/and" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/logic_operations/and" style="display:none" disabled></textarea> <p class="./stack_literal/logic_operations/and" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/and" style="display:none" disabled>truefalsefalsefalse</textarea> <p class="./stack_literal/logic_operations/and" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/and" style="display:none" disabled>true
+false
+false
+false</textarea> <p class="./stack_literal/logic_operations/and" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/and" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/logic_operations/and" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/and" style="display:none" disabled>0</textarea> <p class="./stack_literal/logic_operations/compare/eq" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/logic_operations/compare/eq" style="display:none" disabled></textarea> <p class="./stack_literal/logic_operations/compare/eq" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/compare/eq" style="display:none" disabled>falsetruetruefalsetruefalsefalse</textarea> <p class="./stack_literal/logic_operations/compare/eq" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/compare/eq" style="display:none" disabled>false
+true
+true
+false
+true
+false
+false</textarea> <p class="./stack_literal/logic_operations/compare/eq" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/compare/eq" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/logic_operations/compare/eq" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/compare/eq" style="display:none" disabled>0</textarea> <p class="./stack_literal/logic_operations/compare/gt" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/logic_operations/compare/gt" style="display:none" disabled></textarea> <p class="./stack_literal/logic_operations/compare/gt" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/compare/gt" style="display:none" disabled>falsetruefalsetruefalsetruefalse</textarea> <p class="./stack_literal/logic_operations/compare/gt" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/compare/gt" style="display:none" disabled>false
+true
+false
+true
+false
+true
+false</textarea> <p class="./stack_literal/logic_operations/compare/gt" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/compare/gt" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/logic_operations/compare/gt" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/compare/gt" style="display:none" disabled>0</textarea> <p class="./stack_literal/logic_operations/compare/lt" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/logic_operations/compare/lt" style="display:none" disabled></textarea> <p class="./stack_literal/logic_operations/compare/lt" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/compare/lt" style="display:none" disabled>truetruefalsefalsefalsefalsetrue</textarea> <p class="./stack_literal/logic_operations/compare/lt" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/compare/lt" style="display:none" disabled>true
+true
+false
+false
+false
+false
+true</textarea> <p class="./stack_literal/logic_operations/compare/lt" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/compare/lt" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/logic_operations/compare/lt" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/compare/lt" style="display:none" disabled>0</textarea> <p class="./stack_literal/logic_operations/not" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/logic_operations/not" style="display:none" disabled></textarea> <p class="./stack_literal/logic_operations/not" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/not" style="display:none" disabled>truefalsetruefalse</textarea> <p class="./stack_literal/logic_operations/not" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/not" style="display:none" disabled>truefalsetruefalse</textarea> <p class="./stack_literal/logic_operations/not" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/not" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/logic_operations/not" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/not" style="display:none" disabled>0</textarea> <p class="./stack_literal/logic_operations/or" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/logic_operations/or" style="display:none" disabled></textarea> <p class="./stack_literal/logic_operations/or" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/or" style="display:none" disabled>truetruetruefalse</textarea> <p class="./stack_literal/logic_operations/or" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/logic_operations/or" style="display:none" disabled>true
+true
+true
+false</textarea> <p class="./stack_literal/logic_operations/or" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/or" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/logic_operations/or" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/logic_operations/or" style="display:none" disabled>0</textarea> <p class="./stack_literal/read_write/read_write_int" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/read_write/read_write_int" style="display:none" disabled>54</textarea> <p class="./stack_literal/read_write/read_write_int" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/read_write/read_write_int" style="display:none" disabled>54</textarea> <p class="./stack_literal/read_write/read_write_int" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/read_write/read_write_int" style="display:none" disabled>54</textarea> <p class="./stack_literal/read_write/read_write_int" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/read_write/read_write_int" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/read_write/read_write_int" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/read_write/read_write_int" style="display:none" disabled>0</textarea> <p class="./stack_literal/stack_literal/stack_literal" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/stack_literal/stack_literal" style="display:none" disabled></textarea> <p class="./stack_literal/stack_literal/stack_literal" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/stack_literal/stack_literal" style="display:none" disabled>false42</textarea> <p class="./stack_literal/stack_literal/stack_literal" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/stack_literal/stack_literal" style="display:none" disabled>false
+42</textarea> <p class="./stack_literal/stack_literal/stack_literal" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/stack_literal/stack_literal" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/stack_literal/stack_literal" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/stack_literal/stack_literal" style="display:none" disabled>0</textarea> <p class="./stack_literal/stack_variable/stack_variable" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/stack_variable/stack_variable" style="display:none" disabled></textarea> <p class="./stack_literal/stack_variable/stack_variable" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/stack_variable/stack_variable" style="display:none" disabled>426442</textarea> <p class="./stack_literal/stack_variable/stack_variable" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/stack_variable/stack_variable" style="display:none" disabled>42
+64
+42</textarea> <p class="./stack_literal/stack_variable/stack_variable" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/stack_variable/stack_variable" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/stack_variable/stack_variable" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/stack_variable/stack_variable" style="display:none" disabled>0</textarea> <p class="./stack_literal/test_move/test_move" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/test_move/test_move" style="display:none" disabled></textarea> <p class="./stack_literal/test_move/test_move" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/test_move/test_move" style="display:none" disabled>4264falsetrue</textarea> <p class="./stack_literal/test_move/test_move" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/test_move/test_move" style="display:none" disabled>42
+64
+false
+true</textarea> <p class="./stack_literal/test_move/test_move" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/test_move/test_move" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/test_move/test_move" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/test_move/test_move" style="display:none" disabled>0</textarea> <p class="./stack_literal/type/type" style="display:none">Input</p><textarea rows="6" cols="50"  class="./stack_literal/type/type" style="display:none" disabled></textarea> <p class="./stack_literal/type/type" style="display:none">Output</p><textarea rows="12" cols="50"  class="./stack_literal/type/type" style="display:none" disabled>intintboolbool</textarea> <p class="./stack_literal/type/type" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./stack_literal/type/type" style="display:none" disabled>int
+int
+bool
+bool</textarea> <p class="./stack_literal/type/type" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/type/type" style="display:none" disabled>0
+</textarea> <p class="./stack_literal/type/type" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./stack_literal/type/type" style="display:none" disabled>0</textarea> <p class="./Test4/test3" style="display:none">Input</p><textarea rows="6" cols="50"  class="./Test4/test3" style="display:none" disabled></textarea> <p class="./Test4/test3" style="display:none">Output</p><textarea rows="12" cols="50"  class="./Test4/test3" style="display:none" disabled>counter obsahuje 
+counter obsahuje a
+counter obsahuje aa
+</textarea> <p class="./Test4/test3" style="display:none">Expected Output</p><textarea rows="12" cols="50"  class="./Test4/test3" style="display:none" disabled>counter obsahuje 
+counter obsahuje a
+counter obsahuje aa
+</textarea> <p class="./Test4/test3" style="display:none">Output Code</p><textarea rows="4" cols="50"  class="./Test4/test3" style="display:none" disabled>0
+</textarea> <p class="./Test4/test3" style="display:none">Expected Output Code</p><textarea rows="4" cols="50"  class="./Test4/test3" style="display:none" disabled>0</textarea>  <script> var cur= document.getElementById("mySelect").value; var table = document.getElementById("myTable"); var tr = table.getElementsByTagName("tr"); var visible = 'all'; var isShowing = false; var outputs = ""; var lastName = ""; show(); function filter() { this.cur = document.getElementById("mySelect").value; removeInfo() ; show() ; } function show() { for (i = 0; i < tr.length; i++) { td = tr[i].getElementsByTagName("td")[1].innerText; if(td === "PASSED" && this.cur === "passed"){ tr[i].style.display = ""; }else if(td === "FAILED" && this.cur === "failed"){ tr[i].style.display = ""; }else if(this.cur === "all"){ tr[i].style.display = ""; }else{ tr[i].style.display = "none"; } } } function showMore(name, status){ if(this.isShowing){ if(name === this.lastName){ for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = "none"; } this.isShowing = false; this.outputs = ""; showInfo("", ""); }else{ for(i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = "none"; } this.lastName = name; this.outputs = document.getElementsByClassName(name); for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = ""; } showInfo(name, status); } }else{ this.lastName = name; this.outputs = document.getElementsByClassName(name); for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = ""; } this.isShowing = true; showInfo(name, status); } } function showInfo(name, status){ document.getElementById("info-name").innerText=name; document.getElementById("info-status").innerHTML=status; if(status === "FAILED"){ document.getElementById("info-status").setAttribute("class", "fail"); }else{ document.getElementById("info-status").setAttribute("class", "pass"); } } function removeInfo(){ if(this.isShowing){ for (i = 0; i < this.outputs.length; i++) { this.outputs[i].style.display = "none"; } this.isShowing = false; this.outputs = ""; showInfo("", ""); } } </script> </body> </html>
