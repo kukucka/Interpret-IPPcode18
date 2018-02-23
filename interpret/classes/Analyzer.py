@@ -5,8 +5,7 @@ from .Argument import Argument
 # pouzit dictionary na ukladani jednotlivych instrukci key = order
 # TODO kdyz bude order = 0 je to chyba
 # TODO prejmenovat na parser
-# TODO checknout zda text obsahuje white space?
-# TODO za GF@ neni nic prazdno
+
 class Analyzer:
     def __init__(self, file):
         self.file = file
@@ -33,13 +32,13 @@ class Analyzer:
         except Exception as ex:
             print(type(ex))
             print(ex)
-            exit(21)
+            exit(31)
 
     def checkRoot(self, root):
         if root.tag == 'program':
             self.checkRootAtributes(root)
         else:
-            exit(420)
+            exit(31)
 
     def checkRootAtributes(self, root):
         if (len(root.attrib) >= 1) and (len(root.attrib)) <= 3:
@@ -52,18 +51,18 @@ class Analyzer:
                     continue
                 else:
                     print("Error checkRootAtributes")
-                    exit(420)
+                    exit(31)
             if not isLanguage:
                 print("Error checkRootAtributes")
-                exit(420)
+                exit(31)
         else:
             print("Error checkRootAtributes")
-            exit(420)
+            exit(31)
 
     def checkLanguage(self, value):
         if (value != "IPPcode18"):
             print("Error checkLanguage")
-            exit(420)
+            exit(31)
 
 
     def checkElements(self, root):
@@ -73,7 +72,7 @@ class Analyzer:
                 # self.checkArguments(child)
             else:
                 print("Error checkElements")
-                exit(420)
+                exit(31)
 
     def createInstruction(self, instruction):
         self.checkInstructionAtributes(instruction)
@@ -88,10 +87,10 @@ class Analyzer:
                     positionOfArg += 1
                 else:
                     print("Error createInstruction")
-                    exit(420)
+                    exit(31)
         else:
             print("Error createInstruction")
-            exit(420)
+            exit(32)
         # self.checkArguments(newInstruction)
         self.checkArgumentsValidy(newInstruction)
         self.addToDictionaryOfCommands(newInstruction, instruction)
@@ -111,15 +110,15 @@ class Analyzer:
             listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
             listOfArgs[1].getType() != 'bool'):
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         elif opCode == 'DEFVAR' or opCode == 'POPS':
             if listOfArgs[0].getType() != 'var':
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         elif opCode == 'LABEL':
             if listOfArgs[0].getType() != 'label':
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         elif (opCode == 'ADD' or opCode == 'SUB' or opCode == 'MUL' or opCode == 'IDIV' or
         opCode == 'LT' or opCode == 'GT' or opCode == 'EQ' or opCode == 'AND' or opCode == 'OR' or
         opCode == 'STRI2INT' or opCode == 'CONCAT' or opCode == 'GETCHAR' or
@@ -130,20 +129,20 @@ class Analyzer:
             listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
             listOfArgs[2].getType() != 'bool')):
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         elif opCode == 'READ':
             if listOfArgs[0].getType() != 'var' or listOfArgs[1].getType() != 'type':
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         elif opCode == 'WRITE' or opCode == 'DPRINT' or opCode == 'PUSHS':
             if(listOfArgs[0].getType() != 'var' and listOfArgs[0].getType() != 'string' and
              listOfArgs[0].getType() != 'int' and listOfArgs[0].getType() != 'bool'):
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         elif opCode == 'LABEL' or opCode == 'JUMP' or opCode == 'CALL':
             if listOfArgs[0].getType() != 'label':
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         elif opCode == 'JUMPIFEQ' or opCode == 'JUMPIFNEQ':
             if(listOfArgs[0].getType() != 'label' or (listOfArgs[1].getType() != 'var' and
             listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
@@ -151,10 +150,10 @@ class Analyzer:
             listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
             listOfArgs[2].getType() != 'bool')):
                 print("Error checkArgumentsValidy")
-                exit(420)
+                exit(32)
         else:
             print("Error checkArgumentsValidy")
-            exit(420)
+            exit(32)
 
     def addToDictionaryOfCommands(self, newInstruction, instruction):
         self.dictionaryOfCommands.update({instruction.get('order'): newInstruction})
@@ -169,7 +168,7 @@ class Analyzer:
                     isOrder = True
                     if instruction.get('order') == str(0):
                         print("Error checkInstructionAtributes order == 0")
-                        exit(420)
+                        exit(32)
                 elif key == 'opcode':
                     isOpcode = True
                     self.checkOpcode(value)
@@ -177,20 +176,20 @@ class Analyzer:
                     continue
                 else:
                     print("Error checkInstructionAtributes")
-                    exit(420)
+                    exit(31)
             if not isOrder and not isOpcode:
                 print("Error checkInstructionAtributes")
-                exit(420)
+                exit(31)
         else:
             print("Error checkInstructionAtributes")
-            exit(420)
+            exit(31)
 
     def checkOpcode(self, value):
         for key in self.dictionaryOfOpcodes:
             if key == value:
                 return
         print("Error checkOpcode")
-        exit(420)
+        exit(32)
 
     #
     #

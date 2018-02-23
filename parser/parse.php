@@ -35,27 +35,7 @@ if(array_key_exists('help', $options) || array_key_exists('h', $options)){
     print("--comments pocita vyskyt komentaru\n");
     exit(0);
 }
-if(array_key_exists('loc', $options)){
-    $loc = true;
-    $locPos = getPositon('--loc', $argc, $argv);
-}
-if(array_key_exists('comments', $options)){
-    $comm = true;
-    $commPos = getPositon('--comments', $argc, $argv);    
-}
-if(array_key_exists('stats', $options)){
-    $file = $options['stats'];
-    $stats = true;
-}else if($comm || $loc){
-    exit(10);
-}
-function getPositon($str, $num, $argv){
-    for($i = 0; $i < $num; $i++){
-       if($argv[$i] == $str){
-           return $i;
-       }
-    }
-}
+
 
 $analyzer = new Analyzer;
 $xmlCreator = new XMLCreator;
@@ -74,7 +54,31 @@ while(($line=$analyzer->readLine()) != null){
 $xmlCreator->endXML();
 $commentNumbers = $analyzer->getCommentsNumber();
 $instructionNumber = $analyzer->getInstructionNumber();
-//ROZSIRENI
+
+//Extension
+
+if(array_key_exists('loc', $options)){
+    $loc = true;
+    $locPos = getPositon('--loc', $argc, $argv);
+}
+if(array_key_exists('comments', $options)){
+    $comm = true;
+    $commPos = getPositon('--comments', $argc, $argv);
+}
+if(array_key_exists('stats', $options)){
+    $file = $options['stats'];
+    $stats = true;
+}else if($comm || $loc){
+    exit(10);
+}
+function getPositon($str, $num, $argv){
+    for($i = 0; $i < $num; $i++){
+        if($argv[$i] == $str){
+            return $i;
+        }
+    }
+}
+
 if($stats){
     $myfile = fopen($file, "w");
     if($comm && $loc){

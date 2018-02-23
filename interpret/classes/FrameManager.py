@@ -26,14 +26,14 @@ class FrameManager:
             self.tf.addVarToDictionary(var)
         else:
             print("ERROR addVarToTf")
-            exit(420)
+            exit(55)
 
     def addVarToLf(self, var):
         if self.lfDefined:
             self.lf.addVarToDictionary(var)
         else:
             print("ERROR addVarToLf")
-            exit(420)
+            exit(55)
 
     def getVarFromGf(self, var):
         return self.gf.findVar(var)
@@ -46,14 +46,14 @@ class FrameManager:
             self.tf.updateValueOfVar(var, value)
         else:
             print("ERROR updateVarInTf")
-            exit(420)
+            exit(55)
 
     def updateVarInLf(self, var, value):
         if self.lfDefined:
             self.lf.updateValueOfVar(var, value)
         else:
             print("ERROR updateVarInLf")
-            exit(420)
+            exit(55)
 
     def isVarInGf(self, varName):
         return self.gf.isVarDefined(varName)
@@ -63,21 +63,21 @@ class FrameManager:
             return self.tf.isVarDefined(varName)
         else:
             print("ERROR isVarInTf")
-            exit(420)
+            exit(55)
 
     def isVarInLf(self, varName):
         if self.lfDefined:
             return self.lf.isVarDefined(varName)
         else:
             print("ERROR isVarInLf")
-            exit(420)
+            exit(55)
 
     def getVarFromTf(self, var):
         if self.tfDefined:
             return self.tf.findVar(var)
         else:
             print("ERROR getVarFromTf")
-            exit(420)
+            exit(55)
 
         return self.tf.findVar(var)
 
@@ -86,7 +86,7 @@ class FrameManager:
             return self.lf.findVar(var)
         else:
             print("ERROR getVarFromLf")
-            exit(420)
+            exit(55)
 
     def pushTfToLfStack(self):
         self.lfStack.push(self.tf.copyFrame())

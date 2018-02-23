@@ -24,7 +24,7 @@ class Frame:
            return True
         else:
             print("Error varName, var doesnt exist")
-            exit(420)
+            exit(54)
 
     def findVar(self, varName):
         if varName in self.dictionaryOfVariables.keys():
@@ -32,14 +32,14 @@ class Frame:
                 value = self.dictionaryOfVariables.get(varName)
                 if value is None:
                     print("Error varName, var has no value")
-                    exit(420)
+                    exit(56)
                 return value
             except KeyError:
                 print("Error variable, is not initialized")
-                exit(420)
+                exit(56)
         else:
             print("Error varialbe " + varName + " doesnt exist")
-            exit(420)
+            exit(54)
 
     def checkIfVarInicialized(self, varName):
         if varName in self.dictionaryOfVariables.keys():
@@ -51,10 +51,10 @@ class Frame:
                     return True
             except KeyError:
                 print("Error varName, var doesnt exist")
-                exit(420)
+                exit(54)
         else:
             print("Error varialbe " + str(varName) + " doesnt exist")
-            exit(420)
+            exit(54)
 
     def wipeFrame(self):
         self.dictionaryOfVariables.clear()

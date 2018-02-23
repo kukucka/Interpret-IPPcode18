@@ -113,7 +113,7 @@ class Execute:
                 self.executeBreak()
             else:
                 print("Error execute start")
-                exit(420)
+                exit(52)
             self.curInst += 1
             self.iterate_exec_inst()
             self.check_amount_var()
@@ -161,14 +161,14 @@ class Execute:
                 return labelName
             else:
                 print("Error isLabel, this is not a label")
-                exit(420)
+                exit(52)
 
     def getLabelPosition(self, labelName):
         if labelName in self.labels.keys():
             return self.labels.get(labelName)
         else:
             print("Label doesnt exist")
-            exit(420)
+            exit(52)
 
     def setCurInst(self, position):
         self.curInst = int(position)
@@ -219,7 +219,7 @@ class Execute:
     def executeReturn(self):
         if self.callStack.isEmpty():
             print("Cant return anything from empty callStack")
-            exit(420)
+            exit(56)
         else:
             self.setCurInst(self.callStack.pop())
 
@@ -293,10 +293,10 @@ class Execute:
                 return modifiedString
             else:
                 print(argument.getValue() + " is not a strings")
-                exit(420)
+                exit(53)
         else:
             print(argument.getValue() + " is not a type of strings")
-            exit(420)
+            exit(53)
 
     def transferString(self, str):
         toConvert = []
@@ -318,13 +318,13 @@ class Execute:
                         toConvert = []
                 else:
                     print("ERROR")
-                    exit(124)
+                    exit(32)
             if letter == '\\':
                 found = True
             i += 1
         if found:
             print("ERROR")
-            exit(125)
+            exit(32)
         strToMod = ''.join(strToMod)
         # strMod = re.sub(r'[\\][0-9][0-9][0-9]', r'[0-9][0-9][0-9]', str)
         # print(strMod)
@@ -337,7 +337,7 @@ class Execute:
             return True
         else:
             print("ERROR in checkVarValidity during executeDefvar ")
-            exit(420)
+            exit(32)
     # TODO nejaka divna vec zbyla v lf kdyz z nej popnu
     def executeDefvar(self, arguments):
         # if instruction.getListOfArguments()
@@ -345,7 +345,7 @@ class Execute:
         # preg_match('/^string@/', $argument
         if len(arguments[0].getValue().split()) != 1:
             print("Cant define multiple variables in one command")
-            exit(420)
+            exit(32)
         varName = arguments[0].getValue().strip()
         value = arguments[0].getValue().split('@', 1)
         if re.match(r'^GF@', varName):
@@ -363,7 +363,7 @@ class Execute:
                 if self.checkVarValidity(value[1]):
                     self.frames.addVarToLf(value[1])
             else:
-                print("ERROR temporary frame not defined")
+                print("ERROR local frame not defined")
                 exit(55)
 
     def executeCreateframe(self):
@@ -410,7 +410,7 @@ class Execute:
                 self.frames.updateVarInTf(name[1], variable)
         else:
             print("ERROR executeMove")
-            exit(420)
+            exit(52)
 
     def executeWrite(self, argument):
         if argument[0].getType() == 'var':
@@ -448,7 +448,7 @@ class Execute:
                 self.assignValueToVar(argument[0].getValue(), '', 'string')
         else:
             print("Wrong argument for READ")
-            exit(420)
+            exit(52)
 
     def getInput(self):
         sys.stdin.flush()
@@ -456,7 +456,7 @@ class Execute:
             entered = input()
             return entered
         except:
-            exit(21) #//predelat
+            exit(99) #//predelat
 
     def checkReadBool(self, value):
         if re.match(r'^(T|t)(R|r)(U|u)(E|e)$', value):
@@ -488,13 +488,13 @@ class Execute:
                 return self.returnValue(argument.getValue())
             else:
                 print("NOT and int")
-                exit(430)
+                exit(53)
         elif argument.getType() == 'int':
             number = self.isInt(argument.getValue())
             return number
         else:
             print("NOT an int")
-            exit(430)
+            exit(53)
 
     def executeArithmeticOperations(self, arguments, typeOfOperation):
         values = []
@@ -516,7 +516,7 @@ class Execute:
             self.assignValueToVar(arguments[0].getValue(), value, 'int')
         else:
             print("ERROR executeArithmeticOperations not ints")
-            exit(420)
+            exit(52)
 
 
     def executeCompareOperations(self, arguments, typeOfOperator):
@@ -538,7 +538,7 @@ class Execute:
                 self.assignValueToVar(arguments[0].getValue(), 'false', 'bool')
         else:
             print("Error inexecute CompareOperations")
-            exit(430)
+            exit(52)
 
     def executeLogicOperations(self, arguments, typeOfOperator):
         args = []
@@ -591,20 +591,20 @@ class Execute:
                     return self.getBoolValues(argument)
                 else:
                     print("ERROR not a bool")
-                    exit(420)
+                    exit(53)
             else:
                 print("ERROR not a bool")
-                exit(420)
+                exit(53)
         else:
             if argument.getType() == 'bool':
                 if self.isBool(argument.getValue()):
                     return self.getBoolValues(argument)
                 else:
                     print("ERROR not a bool")
-                    exit(420)
+                    exit(53)
             else:
                 print("ERROR not a bool")
-                exit(420)
+                exit(53)
 
     def getBoolValues(self,argument):
         if argument.getType() == 'var':
@@ -659,7 +659,7 @@ class Execute:
                 argValue.append(str(arguments[2].getValue()))
         if arg1 != arg2:
             print("ERROR compareTypesOfArguments types are not equal")
-            exit(420)
+            exit(53)
         return argValue
 
 
@@ -669,7 +669,7 @@ class Execute:
             result = int(result)
             return result
         except ValueError:
-            exit(430)
+            exit(53)
 
     def isStr(self, value):
         result = self.checkIfValueEqualsType(value, 'string')
@@ -677,7 +677,7 @@ class Execute:
             result = str(result)
             return True
         except ValueError:
-            exit(430)
+            exit(53)
 
     def isBool(self, value):
         result = self.checkIfValueEqualsType(value, 'bool')
@@ -685,7 +685,7 @@ class Execute:
             result = str(result)
             return True
         except ValueError:
-            exit(430)
+            exit(53)
 
 
     # TODO mozna pouzit pro konkatenaci pridat parametr type
@@ -697,21 +697,21 @@ class Execute:
                 self.frames.updateVarInGf(name[1], var)
             else:
                 print("ERROR cant assign to undefinded variable")
-                exit(420)
+                exit(54)
         elif re.match(r'^TF@', variable.strip()):
             if self.frames.isVarInTf(name[1]):
                 var = Variable(name[1], value, type)
                 self.frames.updateVarInTf(name[1], var)
             else:
                 print("ERROR cant assign to undefinded variable")
-                exit(420)
+                exit(54)
         elif re.match(r'^LF@', variable.strip()):
             if self.frames.isVarInLf(name[1]):
                 var = Variable(name[1], value, type)
                 self.frames.updateVarInLf(name[1], var)
             else:
                 print("ERROR cant assign to undefinded variable")
-                exit(420)
+                exit(54)
 
 
     def returnType(self, argument):
@@ -757,14 +757,14 @@ class Execute:
                     return int(value)
                 except ValueError:
                     print("Value is not int")
-                    exit(200)
+                    exit(53)
             else:
                 print("ERROR checkifValueEqualsType")
-                exit(430)
+                exit(53)
         elif type == 'string':
             if (len(value.split()) != 1) and (value != ''):
                 print("Not a string")
-                exit(421)
+                exit(53)
             #         TODO tady bude check jestli je string valid
             else:
                 return value
@@ -776,10 +776,10 @@ class Execute:
                     return 'false'
                 else:
                     print("Not bool checkifValueEqualsType")
-                    exit(430)
+                    exit(53)
             else:
                 print("ERROR checkifValueEqualsType")
-                exit(430)
+                exit(53)
         else:
             print("ERROR checkifValueEqualsType")
-            exit(430)
+            exit(53)
