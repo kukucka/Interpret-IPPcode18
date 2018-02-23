@@ -3,14 +3,15 @@ include('XMLInstruction.php');
 include('XMLCreator.php');
 include('XMLArgument.php');
 include('Analyzer.php');
-//TODO argument
-//TODO zkontrolovat errory cisla
-//TODO je otazka zda GF muze byt i Gf atd.
 //TODO popsat rozsireni ze vytvori prazdny soubor
-$loc = false;
-$comm = false;
-$stats = false;
-$file = "";
+
+
+/**
+ * Argumenty jsou zpracovani za vyuziti funkce getopt.
+ * Podporuji zpracovani argumentu help/h dale podporuji argumenty
+ * pro rozsireni STATP stats/loc/comments.
+ * Pri zadani jineho komentare dojde chybe
+ */
 
 $shortopts  = "h";
 
@@ -24,7 +25,7 @@ $options = getopt($shortopts, $longopts);
 
 if((count($options) + 1) != $argc){
     print("You entered wrong arguments use --help for more informations\n");
-    exit(21);
+    exit(10);
 }
 if(array_key_exists('help', $options) || array_key_exists('h', $options)){
     print("Parse.php prevadi kod IPPcode18 do symbolickuch intrukci\n");
@@ -36,7 +37,16 @@ if(array_key_exists('help', $options) || array_key_exists('h', $options)){
     exit(0);
 }
 
-
+/**
+ * Provede se vytvoreni nove instance objektu Analyzer a XMLCreator.
+ * Pote probehne inicializace tvorby XML souboru.
+ * Nasleduje nacitani a zpracovavani instrukci ze vstupu(stdin).
+ * V momente kdy j intrukce a jeji argumnty zpracovany dojde k jejich
+ * je jejich zpracovany tvar predan funkci createArgument()
+ * ktera pote vytvori instrukci v pozadovanem formatu.
+ * Po zpracovani vsech udaju ze vstupu je vygenerovan vysledek
+ * ve forme XML na vystup(stdout)
+ */
 $analyzer = new Analyzer;
 $xmlCreator = new XMLCreator;
 $xmlCreator->initiateXML();
@@ -52,10 +62,39 @@ while(($line=$analyzer->readLine()) != null){
     $xmlCreator->createArguments($instruction, $arrayOfArguments);
 }
 $xmlCreator->endXML();
+
+
+//Extension
+/**
+ * Rozsireni STATP
+ * V zavislosti na zadanych argumentech vygeneruje vystupni soubor, ktery
+ * muze obsahovat pocet radku, na kterych se vyskytuji komentare a/nebo pocet
+ * radku, na kterych se vyskytuji instrukce.
+ * Argumenty:
+ * --stats=file - znaci soubor do ktereho se ma ulozit vysledek
+ * --loc - do vysledneho souvoru bude vypsan pocet radku s instrucki
+ * --comments - do vysledneho souboru bude vypsan pocet radsku s komentarem
+ * V pripade ze bude zadan pouze argument --stats=file, dojde k vygenerovani
+ * prazdneho souboru, dale pokud budou zadany oba argument poradi vysledku
+ * v cilovem souboru file je urceno podle jejich poradi pri zadani
+ */
+
+/**
+ * do commentNumbers je ulozen pocet radku,na kterych se vyskytl komentar
+ * do instructionNumber je ulozen pocet radku,na kterych se vyskytla instrukce
+ */
 $commentNumbers = $analyzer->getCommentsNumber();
 $instructionNumber = $analyzer->getInstructionNumber();
 
-//Extension
+/**
+ * pokud by argument zadan ulozi se bool hodnota true do prommene
+ * ktera znaci argument(jmenovite) a v pripade zadani stats se do promenne
+ * file ulozi nazev souboru ze --stats=file
+ */
+$loc = false;
+$comm = false;
+$stats = false;
+$file = "";
 
 if(array_key_exists('loc', $options)){
     $loc = true;

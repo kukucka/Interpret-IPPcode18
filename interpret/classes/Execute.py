@@ -414,14 +414,14 @@ class Execute:
 
     def executeWrite(self, argument):
         if argument[0].getType() == 'var':
-            print(self.returnValue(argument[0].getValue()),end='') #mozna pridat ,end=''
+            print(self.returnValue(argument[0].getValue())) #mozna pridat ,end=''
         else:
             self.checkIfValueEqualsType(argument[0].getValue(), argument[0].getType())
             if argument[0].getType() == 'string':
                 strMod = self.checkAndReturnString(argument[0])
-                print(strMod, end='') #mozna pridat ,end=''
+                print(strMod) #mozna pridat ,end=''
             else:
-                print(argument[0].getValue(),end='') #mozna pridat ,end=''
+                print(argument[0].getValue()) #mozna pridat ,end=''
     # TODO checknout ze int je opravdu int   <arg2 type="int">LF@loll</arg2> checkIfValueEqualsType udelam funcki ktera odkaze
     # na tuhle a checkne to a vrati bool zatim je to rozbite
 
