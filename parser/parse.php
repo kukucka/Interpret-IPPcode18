@@ -118,6 +118,11 @@ function getPositon($str, $num, $argv){
     }
 }
 
+/**
+ * pokud je zadan argument stats je proveden vypis
+ * do souboru v zavislosti na dalsich zadanych argumentech
+ * patricich k rozsireni STATP
+ */
 if($stats){
     $myfile = fopen($file, "w");
     if($comm && $loc){

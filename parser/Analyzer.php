@@ -1,10 +1,21 @@
 <?php
 
+/**
+ * Class Analyzer
+ * Slouzi k analyze vstupu, provadi se zde nacitani vstupu
+ * a kontroly zda je vstup validni
+ */
 Class Analyzer{
     private $stdin;
     private $commentsNumber;
     private $instructionNumber;
 
+    /**
+     * Analyzer constructor.
+     * Provadi nacitani vstupu dokud nenarazi na prvni radek, ktery
+     * neobsahuje komentar nebo neni prazdny. Pokud na tomto radku
+     * neni .IPPcode18 jedna se o chybu
+     */
     function __construct(){
         $this->stdin = fopen('php://stdin', 'r');
         $this->commentsNumber = 0;
@@ -19,23 +30,40 @@ Class Analyzer{
             exit(21);
         }
     }
-    
+
+    /**
+     * funkce, ktera slouzi pro extension STATP
+     * stara se o zaznamenani toho na kolika radcich se vyskytnul komentar
+     */
     function iterateComments(){
         $this->commentsNumber += 1;
     }
-
+    /**
+     * funkce, ktera slouzi pro extension STATP
+     * stara se o zaznamenani toho na kolika radcich se vyskytnula instrukce
+     */
     function iterateInstruction(){
         $this->instructionNumber += 1;
     }
 
+    /**
+     * @return $commentsNuber - pocet radku, na kterych se vyskytuje komentar
+     */
     function getCommentsNumber(){
         return $this->commentsNumber;
     }
 
+    /**
+     * @return $instructionNumber - pocer radku, na kterych se vyskytuje instrukce
+     */
     function getInstructionNumber(){
         return $this->instructionNumber;        
     }
 
+    /**
+     * @return $filteredLine - radek ze vstupu, ze ktereho byly odstraneny komentare
+     * nacte radek ze vstupu(stdin) a odsrani komentare
+     */
     function readLine(){
         if(feof($this->stdin)){
             return null;
@@ -48,6 +76,11 @@ Class Analyzer{
         return $filteredLine;
     }
 
+    /**
+     * @param $line - string reprezentujici jeden radek
+     * @return $arrayOfWords - rozdeli vstupni string na jednotlive slova a odfiltruje bile znaku
+     *
+     */
     function splitIntoWords($line){
         $arrayOfWords = preg_split('/\s+/', $line, -1, PREG_SPLIT_NO_EMPTY);
         if(count($arrayOfWords) == 0){
@@ -56,6 +89,11 @@ Class Analyzer{
         return $arrayOfWords;
     }
 
+    /**
+     * @param $arrayOfArguments - pole argumentu dane insrukce
+     * @param $instruction - objekt reprezenrujici instrukci
+     * @return $classifiedArguments - pole klasifikovanych argumentu
+     */
     function handleArguments($arrayOfArguments, $instruction){
         $numOfArguments = count($arrayOfArguments);
         $classifiedArguments = null;
@@ -77,6 +115,10 @@ Class Analyzer{
         }
     }
 
+    /**
+     * @param $string
+     * provede kontrolu zda string obsahuje pouze validni escape sequence
+     */
     function checkEscapeSequences($string){
         $isOn = false;
         $num = 0;
@@ -100,7 +142,14 @@ Class Analyzer{
             exit(21);
         }
     }
-      
+
+    /**
+     * @param $argument
+     * @param $position - pozice arguentu v insrukci
+     * @param $instruction
+     * @return XMLArgument - objekt reprezentujici argument instrukce
+     * provadi analyzu argumentu a vytvori objekt typu XMLArgument, jenz jej reprezentuje
+     */
     function analyzeArgument($argument, $position, $instruction){
         if(preg_match('/^int@/', $argument)){
             $splitArgument = explode('@', $argument, 2);
@@ -138,6 +187,11 @@ Class Analyzer{
         }
     }
 
+    /**
+     * @param $instruction
+     * @param $arrayOfArguments
+     * porovna typ jednotlivych argumentu zda souhlasi s ocekavanym typem , ktery dana instrukce vyzaduje
+     */
     function checkTypesOfArgumentsInInstruction($instruction, $arrayOfArguments){
         switch ($instruction->getName()){
             case "createframe":
@@ -220,6 +274,13 @@ Class Analyzer{
         }
     }
 
+    /**
+     * @param $instruction
+     * @return XMLInstruction - objekt reprezentujici instrukci
+     * provede kontrolu zda je instrukce validni, tim ze porovna jmeno instrukce se
+     * seznamem instrukci a pote vytvori objekt reprezentujici instrukci a ulozi do nej
+     * nazev a pocet vyzadovanych argumentu
+     */
     function analyzeInstruction($instruction){
         $length = strlen($instruction);
 

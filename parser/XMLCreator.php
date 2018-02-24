@@ -1,13 +1,25 @@
 <?php
 
+/**
+ * Class XMLCreator
+ * Slouzi k vytvoreni vysledneho vystupu ktery bude ve formatu XML
+ */
 class XMLCreator{
     static private $counter;
     private $xmlDocument;
+
+    /**
+     * XMLCreator constructor.
+     * provede se inicializace pocitadla a xml dokumentu
+     */
     function __construct(){
         self::$counter = 1;
         $this->xmlDocument = xmlwriter_open_memory();
     }
 
+    /**
+     * Provede zakladní nastaeni XML dokumentu
+     */
     function initiateXML(){
         xmlwriter_start_document($this->xmlDocument, '1.0', 'UTF-8');
         xmlwriter_set_indent($this->xmlDocument, 1);#druhy argument je boolovska hodnota, ktera ovlada pristup do XML
@@ -17,6 +29,9 @@ class XMLCreator{
         xmlwriter_end_attribute($this->xmlDocument);
     }
 
+    /**
+     * Ukonci tvorbu xml souboru a vysise jej na vystup
+     */
     function endXML(){
         xmlwriter_end_element($this->xmlDocument);
         xmlwriter_end_document($this->xmlDocument);
@@ -24,6 +39,10 @@ class XMLCreator{
     
     }
 
+    /**
+     * @param $instruction
+     * Prevede instrukci do formatu XML
+     */
     private function newInstruction($instruction){
         xmlwriter_start_element($this->xmlDocument, 'instruction');
         xmlwriter_start_attribute($this->xmlDocument, 'order');
@@ -35,10 +54,18 @@ class XMLCreator{
         self::$counter++;
     }
 
+    /**
+     * @param $instruction
+     * ukonci instrukci danou instrukci
+     */
     private function endInstruction($instruction){
         xmlwriter_end_element($this->xmlDocument);
     }
 
+    /**
+     * @param $argument
+     * prevede argument instrukce do formatu XML
+     */
     private function newArgument($argument){
         xmlwriter_start_element($this->xmlDocument, 'arg' . $argument->getPosition());
         xmlwriter_start_attribute($this->xmlDocument, 'type');
@@ -48,6 +75,12 @@ class XMLCreator{
         xmlwriter_end_element($this->xmlDocument);
     }
 
+    /**
+     * @param $instruction
+     * @param $arrayOfArguments - pole argumentu dane instrukce
+     * provede prevod jedne instrukce a jejich argumentu z jazyka IPPcode18
+     * do jazyka symbolickych instrukci
+     */
     function createArguments($instruction, $arrayOfArguments){
         $this->newInstruction($instruction);
         $count = count($arrayOfArguments);
