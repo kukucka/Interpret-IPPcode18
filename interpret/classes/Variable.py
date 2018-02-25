@@ -1,26 +1,45 @@
+"""
+reprezentuje jednotlive promenne, obsahuje jmeno, hodnotu a typ
+"""
 class Variable:
+    """
+    @:argument name - jmeno promenne
+    @:argument value - hodnota promenne
+    @:argument type - typ promenne
+    """
     def __init__(self, name, value, type):
-        # self.reach = reach #tim myslim jestli je to GF,LF,TF
         self.name = name
         self.value = value
         self.type = type
-
-    def getType(self):
+    """
+    @:return type - typ promenne
+    vrati typ promenne
+    """
+    def get_type(self):
         return self.type
-
-    def getValue(self):
+    """
+    @:return value - hodnota promenne
+    vrati hodnotu promenne
+    """
+    def get_value(self):
         return self.value
-
-    # def getReach(self):
-    #     return self.reach
-
-    def getName(self):
+    """
+    @:return name - jmeno promenne
+    vrati jmeno promenne
+    """
+    def get_name(self):
         return self.name
-
-    def setValue(self, value):
+    """
+    @:argument value - hodnota promenne
+    nastavi hodnotu promenne
+    """
+    def set_value(self, value):
         self.value = value
-
-    def setType(self, type):
+    """
+    @:argument type - typ promenne
+    nastavi typ promenne
+    """
+    def set_type(self, type):
         self.type = type
 
 

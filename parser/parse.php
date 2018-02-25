@@ -1,8 +1,8 @@
 <?php
-include('XMLInstruction.php');
-include('XMLCreator.php');
-include('XMLArgument.php');
-include('Analyzer.php');
+include('./classes/XMLInstruction.php');
+include('./classes/XMLCreator.php');
+include('./classes/XMLArgument.php');
+include('./classes/Analyzer.php');
 //TODO popsat rozsireni ze vytvori prazdny soubor
 
 

@@ -66,7 +66,7 @@ if args.insts and args.vars:
         i += 1
 
 cl = Analyzer(file)
-dicOfVar = cl.analyzeXmlFile()
+dicOfVar = cl.analyze_xml_file()
 s = Execute(dicOfVar)
 s.start()
 

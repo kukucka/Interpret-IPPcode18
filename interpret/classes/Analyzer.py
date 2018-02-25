@@ -2,30 +2,41 @@ import xml.etree.ElementTree as ET
 from .Instruction import Instruction
 from .Argument import Argument
 
-# pouzit dictionary na ukladani jednotlivych instrukci key = order
-# TODO kdyz bude order = 0 je to chyba
-# TODO prejmenovat na parser
-
+"""
+kontroluje zda nema XML soubor chybny format, dale provadi zakladni lexikalni a 
+syntaktickou analyzu vstupniho souboru
+"""
 class Analyzer:
+    """
+    @:argument file - vstupni soubor
+    konstruktor vytvori dictionaryOfOpcodes(slovnik operacnich kodu), kde jsou na
+    pozici klice ulozeny nazvy operacnich kodu, ktere mohou instrukce obsahovat
+    a na pozici hodnoty pocet argumentu, ktere maji instrukce s danym operacnim kodem obsahovat
+    """
     def __init__(self, file):
         self.file = file
-        self.dictionaryOfOpcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1,
+        self.dictionary_of_opcodes = {'MOVE': 2, 'CREATEFRAME': 0, 'PUSHFRAME': 0, 'DEFVAR': 1, 'CALL': 1,
                          'RETURN': 0, 'PUSHS': 1, 'POPS': 1, 'ADD': 3, 'SUB': 3, 'MUL': 3,
                          'IDIV': 3, 'LT': 3, 'GT': 3, 'EQ': 3, 'AND': 3, 'OR': 3, 'NOT': 2,
                          'INT2CHAR': 2, 'STRI2INT': 3, 'READ': 2, 'WRITE': 1, 'CONCAT': 3,
                          'STRLEN': 2, 'GETCHAR': 3, 'SETCHAR': 3, 'TYPE': 2, 'LABEL': 1,
                          'JUMP': 1, 'JUMPIFEQ': 3, 'JUMPIFNEQ': 3, 'DPRINT': 1, 'BREAK': 0,
-                         'POPFRAME': 0}
-        self.dictionaryOfCommands = {}
+                                      'POPFRAME': 0}
+        self.dictionary_of_commands = {}
 
-
-    def analyzeXmlFile(self):
-        root = self.getRoot()
-        self.checkRoot(root)
-        self.checkElements(root)
-        return self.dictionaryOfCommands
-
-    def getRoot(self):
+    """
+    @:return dictionaryOfCommands - slovnik, ve kterem jsou ulozeny jednotlive prikazy
+    """
+    def analyze_xml_file(self):
+        root = self.get_root()
+        self.check_root(root)
+        self.check_elements(root)
+        return self.dictionary_of_commands
+    """
+    @:return tree.getroot() - korenovy element
+    provede analyzu vstupniho souboru a vrati korenovy element XML souboru
+    """
+    def get_root(self):
         try:
             tree = ET.parse(self.file)
             return tree.getroot()
@@ -33,172 +44,185 @@ class Analyzer:
             print(type(ex))
             print(ex)
             exit(31)
-
-    def checkRoot(self, root):
+    """
+    @:argument root - korenovy element
+    provadi kontrolu zda ma korenovy element pozadovanou znacku a pokud ano zavola
+    funkci ktera provede kontrolu atributu korenu
+    """
+    def check_root(self, root):
         if root.tag == 'program':
-            self.checkRootAtributes(root)
+            self.check_root_attributes(root)
         else:
             exit(31)
-
-    def checkRootAtributes(self, root):
+    """
+    @:argument root - korenovy element
+    provadi kontrolu atributu korenu
+    """
+    def check_root_attributes(self, root):
         if (len(root.attrib) >= 1) and (len(root.attrib)) <= 3:
-            isLanguage = False
+            is_language = False
             for key, value in root.attrib.items():
                 if key == 'language':
-                    isLanguage = True
-                    self.checkLanguage(value)
+                    is_language = True
+                    self.check_language(value)
                 elif key == 'name' or key == 'description':
                     continue
                 else:
-                    print("Error checkRootAtributes")
+                    print("Error check_root_attributes")
                     exit(31)
-            if not isLanguage:
-                print("Error checkRootAtributes")
+            if not is_language:
+                print("Error check_root_attributes")
                 exit(31)
         else:
-            print("Error checkRootAtributes")
+            print("Error check_root_attributes")
             exit(31)
-
-    def checkLanguage(self, value):
+    """
+    @:argument value - hodnota prirazena atributu language
+    provede kontrolu jestli ma atribut language spravnou hodnotu
+    """
+    def check_language(self, value):
         if (value != "IPPcode18"):
-            print("Error checkLanguage")
+            print("Error check_language")
             exit(31)
 
-
-    def checkElements(self, root):
+    """
+    @:argument root - korenovy element
+    provede kontrolu zda ma podelement spravnou znacku a pokud ano
+    je zavolana funkce, ktera provede vytvoreni instrukce
+    """
+    def check_elements(self, root):
         for child in root:
             if child.tag == 'instruction':
-                self.createInstruction(child)
-                # self.checkArguments(child)
+                self.create_instruction(child)
             else:
-                print("Error checkElements")
+                print("Error check_elements")
                 exit(31)
-
-    def createInstruction(self, instruction):
-        self.checkInstructionAtributes(instruction)
-        newInstruction = Instruction(instruction.get('opcode'));
-        if len(instruction) == self.dictionaryOfOpcodes.get(instruction.get('opcode')):
-            positionOfArg = 1
+    """
+    @:argument instruction - podelement korenoveho elementu reprezentujici instrukci
+    zavola funkci, ktera provede kontrolu atributu elementu instruction, dale provede kontrolu
+    znacek jednotlivych podelementu elemntu instruction a vytvori jejich reprezentaci
+    """
+    def create_instruction(self, instruction):
+        self.check_instruction_attributes(instruction)
+        new_instruction = Instruction(instruction.get('opcode'));
+        if len(instruction) == self.dictionary_of_opcodes.get(instruction.get('opcode')):
+            position_of_arg = 1
             for child in instruction:
-                if child.tag == 'arg'+str(positionOfArg):
+                if child.tag == 'arg'+str(position_of_arg):
                     argument = Argument(child.get('type'), child.text)
-                    # print(argument.getType() + " " + argument.getValue())
-                    newInstruction.setArgument(argument)
-                    positionOfArg += 1
+                    new_instruction.set_argument(argument)
+                    position_of_arg += 1
                 else:
-                    print("Error createInstruction")
+                    print("Error create_instruction")
                     exit(31)
         else:
-            print("Error createInstruction")
+            print("Error create_instruction")
             exit(32)
-        # self.checkArguments(newInstruction)
-        self.checkArgumentsValidy(newInstruction)
-        self.addToDictionaryOfCommands(newInstruction, instruction)
-        # newInstruction.setArgument()
-
-    def checkArgumentsValidy(self, instruction):
-        opCode = instruction.getOpcode()
-        numOfArgs = instruction.getNumberOfArguments()
-        listOfArgs = instruction.getListOfArguments()
-        # print(opCode + " " + str(numOfArgs))
-        if(opCode == 'CREATEFRAME' or opCode == 'PUSHFRAME' or opCode == 'POPFRAME' or
-        opCode == 'RETURN' or opCode == 'BREAK'):
+        self.check_arguments_validity(new_instruction)
+        self.add_to_dictionary_of_commands(new_instruction, instruction)
+    """
+    @:argument instruction - objekt Instruction
+    provede kontrolu zda jednotlive typy argumentu odpovidaji dane instrukci 
+    """
+    def check_arguments_validity(self, instruction):
+        op_code = instruction.get_opcode()
+        list_of_args = instruction.get_list_of_arguments()
+        if(op_code == 'CREATEFRAME' or op_code == 'PUSHFRAME' or op_code == 'POPFRAME' or
+        op_code == 'RETURN' or op_code == 'BREAK'):
             return
-        elif (opCode == 'MOVE' or opCode == 'INT2CHAR' or opCode == 'STRLEN' or opCode == 'TYPE' or
-            opCode == 'NOT'):
-            if listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
-            listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
-            listOfArgs[1].getType() != 'bool'):
-                print("Error checkArgumentsValidy")
+        elif (op_code == 'MOVE' or op_code == 'INT2CHAR' or op_code == 'STRLEN' or op_code == 'TYPE' or
+            op_code == 'NOT'):
+            if list_of_args[0].get_type() != 'var' or (list_of_args[1].get_type() != 'var' and
+                                                       list_of_args[1].get_type() != 'string' and list_of_args[1].get_type() != 'int' and
+                                                       list_of_args[1].get_type() != 'bool'):
+                print("Error check_arguments_validity")
                 exit(32)
-        elif opCode == 'DEFVAR' or opCode == 'POPS':
-            if listOfArgs[0].getType() != 'var':
-                print("Error checkArgumentsValidy")
+        elif op_code == 'DEFVAR' or op_code == 'POPS':
+            if list_of_args[0].get_type() != 'var':
+                print("Error check_arguments_validity")
                 exit(32)
-        elif opCode == 'LABEL':
-            if listOfArgs[0].getType() != 'label':
-                print("Error checkArgumentsValidy")
+        elif op_code == 'LABEL':
+            if list_of_args[0].get_type() != 'label':
+                print("Error check_arguments_validity")
                 exit(32)
-        elif (opCode == 'ADD' or opCode == 'SUB' or opCode == 'MUL' or opCode == 'IDIV' or
-        opCode == 'LT' or opCode == 'GT' or opCode == 'EQ' or opCode == 'AND' or opCode == 'OR' or
-        opCode == 'STRI2INT' or opCode == 'CONCAT' or opCode == 'GETCHAR' or
-        opCode == 'SETCHAR'):
-            if (listOfArgs[0].getType() != 'var' or (listOfArgs[1].getType() != 'var' and
-            listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
-            listOfArgs[1].getType() != 'bool') or (listOfArgs[2].getType() != 'var' and
-            listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
-            listOfArgs[2].getType() != 'bool')):
-                print("Error checkArgumentsValidy")
+        elif (op_code == 'ADD' or op_code == 'SUB' or op_code == 'MUL' or op_code == 'IDIV' or
+        op_code == 'LT' or op_code == 'GT' or op_code == 'EQ' or op_code == 'AND' or op_code == 'OR' or
+        op_code == 'STRI2INT' or op_code == 'CONCAT' or op_code == 'GETCHAR' or
+        op_code == 'SETCHAR'):
+            if (list_of_args[0].get_type() != 'var' or (list_of_args[1].get_type() != 'var' and
+                                                        list_of_args[1].get_type() != 'string' and list_of_args[1].get_type() != 'int' and
+                                                        list_of_args[1].get_type() != 'bool') or (list_of_args[2].get_type() != 'var' and
+                                                                                                  list_of_args[2].get_type() != 'string' and list_of_args[2].get_type() != 'int' and
+                                                                                                  list_of_args[2].get_type() != 'bool')):
+                print("Error check_arguments_validity")
                 exit(32)
-        elif opCode == 'READ':
-            if listOfArgs[0].getType() != 'var' or listOfArgs[1].getType() != 'type':
-                print("Error checkArgumentsValidy")
+        elif op_code == 'READ':
+            if list_of_args[0].get_type() != 'var' or list_of_args[1].get_type() != 'type':
+                print("Error check_arguments_validity")
                 exit(32)
-        elif opCode == 'WRITE' or opCode == 'DPRINT' or opCode == 'PUSHS':
-            if(listOfArgs[0].getType() != 'var' and listOfArgs[0].getType() != 'string' and
-             listOfArgs[0].getType() != 'int' and listOfArgs[0].getType() != 'bool'):
-                print("Error checkArgumentsValidy")
+        elif op_code == 'WRITE' or op_code == 'DPRINT' or op_code == 'PUSHS':
+            if(list_of_args[0].get_type() != 'var' and list_of_args[0].get_type() != 'string' and
+             list_of_args[0].get_type() != 'int' and list_of_args[0].get_type() != 'bool'):
+                print("Error check_arguments_validity")
                 exit(32)
-        elif opCode == 'LABEL' or opCode == 'JUMP' or opCode == 'CALL':
-            if listOfArgs[0].getType() != 'label':
-                print("Error checkArgumentsValidy")
+        elif op_code == 'LABEL' or op_code == 'JUMP' or op_code == 'CALL':
+            if list_of_args[0].get_type() != 'label':
+                print("Error check_arguments_validity")
                 exit(32)
-        elif opCode == 'JUMPIFEQ' or opCode == 'JUMPIFNEQ':
-            if(listOfArgs[0].getType() != 'label' or (listOfArgs[1].getType() != 'var' and
-            listOfArgs[1].getType() != 'string' and listOfArgs[1].getType() != 'int' and
-            listOfArgs[1].getType() != 'bool') or (listOfArgs[2].getType() != 'var' and
-            listOfArgs[2].getType() != 'string' and listOfArgs[2].getType() != 'int' and
-            listOfArgs[2].getType() != 'bool')):
-                print("Error checkArgumentsValidy")
+        elif op_code == 'JUMPIFEQ' or op_code == 'JUMPIFNEQ':
+            if(list_of_args[0].get_type() != 'label' or (list_of_args[1].get_type() != 'var' and
+                                                         list_of_args[1].get_type() != 'string' and list_of_args[1].get_type() != 'int' and
+                                                         list_of_args[1].get_type() != 'bool') or (list_of_args[2].get_type() != 'var' and
+                                                                                                   list_of_args[2].get_type() != 'string' and list_of_args[2].get_type() != 'int' and
+                                                                                                   list_of_args[2].get_type() != 'bool')):
+                print("Error check_arguments_validity")
                 exit(32)
         else:
-            print("Error checkArgumentsValidy")
+            print("Error check_arguments_validity")
             exit(32)
 
-    def addToDictionaryOfCommands(self, newInstruction, instruction):
-        self.dictionaryOfCommands.update({instruction.get('order'): newInstruction})
-        # print(self.dictionaryOfCommands)
-
-    def checkInstructionAtributes(self, instruction):
+    """
+    @:argument new_instruction - objekt Instruction
+    @:argument instruction - podelementu korenoveho elementu
+    prida novy prikaz do slovniku prikazu
+    """
+    def add_to_dictionary_of_commands(self, new_instruction, instruction):
+        self.dictionary_of_commands.update({instruction.get('order'): new_instruction})
+    """
+    @:argument instruction - podelement korenove elementu
+    provede kontrolu jednotlivych atributu elementu instruction 
+    """
+    def check_instruction_attributes(self, instruction):
         if (len(instruction.attrib) >= 2) and (len(instruction.attrib)) <= 4:
-            isOrder = False
-            isOpcode = False
+            is_order = False
+            is_opcode = False
             for key, value in instruction.attrib.items():
                 if key == 'order':
-                    isOrder = True
+                    is_order = True
                     if instruction.get('order') == str(0):
-                        print("Error checkInstructionAtributes order == 0")
+                        print("Error check_instruction_attributes order == 0")
                         exit(32)
                 elif key == 'opcode':
-                    isOpcode = True
-                    self.checkOpcode(value)
+                    is_opcode = True
+                    self.check_opcode(value)
                 elif key == 'name' or key == 'description':
                     continue
                 else:
-                    print("Error checkInstructionAtributes")
+                    print("Error check_instruction_attributes")
                     exit(31)
-            if not isOrder and not isOpcode:
-                print("Error checkInstructionAtributes")
+            if not is_order and not is_opcode:
+                print("Error check_instruction_attributes")
                 exit(31)
         else:
-            print("Error checkInstructionAtributes")
+            print("Error check_instruction_attributes")
             exit(31)
-
-    def checkOpcode(self, value):
-        for key in self.dictionaryOfOpcodes:
+    """
+    @:argument value - hodnota operacniho kodu
+    provede kontrolu zda je operacni kod validni 
+    """
+    def check_opcode(self, value):
+        for key in self.dictionary_of_opcodes:
             if key == value:
                 return
-        print("Error checkOpcode")
+        print("Error check_opcode")
         exit(32)
-
-    #
-    #
-    # def checkAttributesOfInstruction(self, attributes):
-    #
-    # def checkArgumentsOfElement(self, element):
-    #
-    # def checkAttributesOfArgument(self, argument):
-    #
-    # def checkTextOfArgument(self, argument):
-    #
-
